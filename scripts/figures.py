@@ -6,8 +6,11 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.patheffects as pe
 import numpy as np
-from cities import CITIES, CEILING
+from PIL import Image
+import tiles
+from cities import CITIES, CEILING, RADIUS_KM
 
 SURFACE = "#fcfcfb"; INK = "#0b0b0b"; SECOND = "#52514e"; MUTED = "#898781"
 GRID = "#e1e0d9"; BASE = "#c3c2b7"; CRITICAL = "#d03b3b"; NAT = "#898781"
@@ -21,6 +24,9 @@ plt.rcParams.update({
     "axes.spines.top": False, "axes.spines.right": False, "font.size": 11,
 })
 
+HALO = [pe.withStroke(linewidth=2.6, foreground=SURFACE)]   # text over a basemap
+
+
 def style(ax):
     ax.grid(axis="x", visible=False)
     ax.spines["left"].set_visible(False)
@@ -32,11 +38,14 @@ def style(ax):
 def arr(v):
     return np.array([np.nan if x is None else x for x in v], dtype=float)
 
-def save(fig, path):
+def save(fig, path, colors=None):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     fig.savefig(path, dpi=144, bbox_inches="tight")
     plt.close(fig)
-    print(f"wrote {path}")
+    if colors:      # a truecolour basemap costs 750 kB, and every build commits one
+        Image.open(path).convert("RGB").quantize(
+            colors=colors, dither=Image.Dither.NONE).save(path, optimize=True)
+    print(f"wrote {path} ({os.path.getsize(path) // 1024} kB)")
 
 def end_label(ax, x, y, text, color):
     ax.annotate(text, (x, y), xytext=(6, 0), textcoords="offset points",
@@ -120,25 +129,30 @@ fig.tight_layout(rect=(0, 0, 1, 0.94))
 save(fig, "outputs/compare/figures/dry_share.png")
 
 # ---- locator map ----------------------------------------------------------
-geo = json.load(open("data/geo/france.geojson"))
+def rings(path):
+    """Every outer ring of every feature in a GeoJSON file, as (xs, ys)."""
+    geo = json.load(open(path))
+    feats = geo["features"] if geo.get("type") == "FeatureCollection" else [geo]
+    for ft in feats:
+        g = ft["geometry"]
+        polys = ([g["coordinates"]] if g["type"] == "Polygon" else
+                 g["coordinates"] if g["type"] == "MultiPolygon" else [])
+        for poly in polys:
+            yield [p[0] for p in poly[0]], [p[1] for p in poly[0]]
+
 fig, ax = plt.subplots(figsize=(6.2, 6.2))
-def rings_of(geom):
-    if geom["type"] == "Polygon":
-        return [geom["coordinates"][0]]
-    if geom["type"] == "MultiPolygon":
-        return [p[0] for p in geom["coordinates"]]
-    return []
-feats = geo["features"] if geo.get("type") == "FeatureCollection" else [geo]
-for ft in feats:
-    for ring in rings_of(ft["geometry"]):
-        xs = [p[0] for p in ring]; ys = [p[1] for p in ring]
-        ax.fill(xs, ys, color="#f0efec", zorder=1)
-        ax.plot(xs, ys, color=BASE, lw=0.7, zorder=2)
+for xs, ys in rings("data/geo/france.geojson"):
+    ax.fill(xs, ys, color="#f0efec", zorder=1)
+    ax.plot(xs, ys, color=BASE, lw=0.7, zorder=3)
+if os.path.exists("data/geo/departements.geojson"):   # gives the outline some country
+    for xs, ys in rings("data/geo/departements.geojson"):
+        ax.plot(xs, ys, color=GRID, lw=0.5, zorder=2)
 for c in CITIES:
     ax.plot(c["lon"], c["lat"], "o", color=c["color"], ms=10,
-            mec=SURFACE, mew=1.5, zorder=3)
+            mec=SURFACE, mew=1.5, zorder=4)
     ax.annotate(c["name"], (c["lon"], c["lat"]), xytext=(8, 4),
-                textcoords="offset points", fontsize=11, color=INK, zorder=4)
+                textcoords="offset points", fontsize=11, color=INK, zorder=5,
+                path_effects=HALO)
 ax.set_xlim(-5.5, 10); ax.set_ylim(41, 51.5)
 ax.set_aspect(1 / math.cos(math.radians(46.2)))
 ax.axis("off")
@@ -163,38 +177,59 @@ for c in CITIES:
     fig.tight_layout()
     save(fig, f"outputs/{c['slug']}/figures/prices.png")
 
-    # station map in km east/north of the centre
-    kx = 111.32 * math.cos(math.radians(c["lat"]))
-    fig, ax = plt.subplots(figsize=(6.8, 6.8))
+    # station map: OSM tiles, in km east/north of the centre
+    fig, ax = plt.subplots(figsize=(7.0, 7.4))
+    kmu = tiles.km_per_unit(c["lat"])
+    cx, cy = tiles.merc(c["lon"], c["lat"])
+    try:
+        img, extent = tiles.basemap(c["lat"], c["lon"], RADIUS_KM + 1, surface=SURFACE)
+        im = ax.imshow(np.asarray(img), extent=extent, origin="upper", zorder=0,
+                       interpolation="antialiased")
+        im.set_clip_path(plt.Circle((0, 0), RADIUS_KM, transform=ax.transData))
+    except Exception as e:      # offline, or the tile server said no: plain frame
+        print(f"  no basemap for {c['slug']} ({e})")
+
     groups = {"cap": [], "diesel": [], "none": [], "dry": []}
     for p in s["points"]:
-        x = (p["lon"] - c["lon"]) * kx
-        y = (p["lat"] - c["lat"]) * 110.57
+        x, y = tiles.merc(p["lon"], p["lat"])
         k = ("dry" if p["dry_diesel"] else
              "cap" if p["at_cap"] else
              "diesel" if p["gazole"] else "none")
-        groups[k].append((x, y))
-    for k, spec in (("none", dict(marker="o", mfc="none", mec=BASE, ms=5, mew=1,
-                                  label="no diesel reported")),
-                    ("diesel", dict(marker="o", color=MUTED, ms=6,
-                                    label="diesel above the ceiling")),
-                    ("cap", dict(marker="o", color="#2a78d6", ms=8, mec=SURFACE, mew=1,
-                                 label="diesel at 2,250 €")),
-                    ("dry", dict(marker="x", color=CRITICAL, ms=8, mew=2.2,
-                                 label="diesel dry (flagged ≤ 30 d)"))):
+        groups[k].append(((x - cx) * kmu, -(y - cy) * kmu))
+    for k, spec in (("none", dict(marker="o", mfc="none", mec=SECOND, ms=6.5, mew=1.3,
+                                  label="no diesel reported", zorder=3)),
+                    ("diesel", dict(marker="o", color=SECOND, ms=7.5, mec=SURFACE, mew=1.2,
+                                    label="diesel above the ceiling", zorder=4)),
+                    ("cap", dict(marker="o", color=c["color"], ms=10, mec=SURFACE, mew=1.6,
+                                 label="diesel at 2,250 €", zorder=5)),
+                    ("dry", dict(marker="X", color=CRITICAL, ms=11, mec=SURFACE, mew=1.4,
+                                 label="diesel dry (flagged ≤ 30 d)", zorder=6))):
         if groups[k]:
             xs, ys = zip(*groups[k])
             ax.plot(xs, ys, ls="none", **spec)
-    for r_km in (5, 10, 15):
-        ax.add_patch(plt.Circle((0, 0), r_km, fill=False, color=GRID, lw=1, ls=(0, (3, 3))))
-        ax.annotate(f"{r_km} km", (0, r_km), xytext=(0, 3), textcoords="offset points",
-                    ha="center", color=MUTED, fontsize=8)
-    ax.plot(0, 0, marker="*", color=INK, ms=13)
-    ax.annotate(c["name"], (0, 0), xytext=(8, -12), textcoords="offset points",
-                fontsize=10, color=INK, fontweight="bold")
-    ax.set_xlim(-16.5, 16.5); ax.set_ylim(-16.5, 16.5)
+
+    # the 15 km edge is the selection; 5 and 10 stay unlabelled, since a label
+    # inside the disc lands on a town name sooner or later
+    ax.add_patch(plt.Circle((0, 0), RADIUS_KM, fill=False, color=SECOND, lw=1.2, zorder=2))
+    for r_km in (5, 10):
+        ax.add_patch(plt.Circle((0, 0), r_km, fill=False, color=SECOND, lw=0.8,
+                                ls=(0, (2, 4)), alpha=0.5, zorder=2))
+    ax.plot(0, 0, marker="*", color=INK, ms=15, mec=SURFACE, mew=1.2, zorder=7)
+    ax.annotate(c["name"], (0, 0), xytext=(11, -15), textcoords="offset points",
+                fontsize=10.5, color=INK, fontweight="bold", zorder=7, path_effects=HALO)
+
+    lim = RADIUS_KM + 0.9
+    bx, by = -lim + 0.5, -lim - 0.8                 # scale bar, on the surface below the disc
+    ax.plot([bx, bx + 5], [by, by], color=SECOND, lw=1.8, solid_capstyle="butt", zorder=7)
+    for xx in (bx, bx + 5):
+        ax.plot([xx, xx], [by - 0.3, by + 0.3], color=SECOND, lw=1.1, zorder=7)
+    ax.annotate("5 km", (bx + 2.5, by + 0.4), ha="center", va="bottom",
+                fontsize=8.5, color=SECOND)
+    ax.annotate(tiles.ATTRIB, (lim, by), ha="right", va="center",
+                fontsize=7.5, color=MUTED)
+    ax.set_xlim(-lim, lim); ax.set_ylim(-lim - 1.6, lim)
     ax.set_aspect("equal"); ax.axis("off")
-    ax.legend(loc="upper left", fontsize=9, numpoints=1, frameon=True,
-              facecolor=SURFACE, edgecolor="none", framealpha=0.9)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.01), ncol=2, frameon=False,
+              fontsize=9.5, numpoints=1, handletextpad=0.5, columnspacing=1.6)
     ax.set_title(f"Stations within 15 km — snapshot {s['end']}", loc="left", pad=10)
-    save(fig, f"outputs/{c['slug']}/figures/stations_map.png")
+    save(fig, f"outputs/{c['slug']}/figures/stations_map.png", colors=192)

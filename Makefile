@@ -15,6 +15,8 @@ fetch:
 	cd work && unzip -oq 'annuel_2025.zip' && unzip -oq 'annuel_2026.zip' && unzip -oq 'instantane.zip'
 	test -s data/geo/france.geojson || curl -sS -o data/geo/france.geojson \
 	  https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/metropole.geojson
+	test -s data/geo/departements.geojson || curl -sS -o data/geo/departements.geojson \
+	  https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson
 
 parse:
 	$(PY) scripts/extract_multi.py $(A2025) $(A2026) $(INST)

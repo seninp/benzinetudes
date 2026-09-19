@@ -168,15 +168,16 @@ coverage is still ramping and would show up as a fake price move.
 | `donnees.roulez-eco.fr/opendata/annee/<year>` | every price update of the year, station by station, with outage flags |
 | `donnees.roulez-eco.fr/opendata/instantane` | the current price at every station, no outage flags |
 | OpenStreetMap via Overpass | station brands, matched by position |
-| `france-geojson` (Grégoire David) | the France outline on the locator map |
+| `tile.openstreetmap.org` | the basemap under each station map, desaturated and cached locally |
+| `france-geojson` (Grégoire David) | France and its departments on the locator map |
 
 ## How to run
 
     make fetch    # download the two annual archives (~300 MB unzipped each) + instant feed
     make report   # parse, aggregate, draw figures, rewrite README.md
 
-Python 3 with matplotlib (`make venv` creates `.venv` with it); everything
-else is standard library.
+The figures need matplotlib and Pillow (`make venv` creates `.venv` with both);
+the parsers run on the system Python with the standard library alone.
 
 ## Project layout
 
@@ -185,14 +186,18 @@ else is standard library.
     scripts/*_multi.py    one-pass parsers over the country-wide files
     scripts/build_data.py CSVs -> per-city summary.json
     scripts/figures.py    all PNGs under outputs/
+    scripts/tiles.py      OSM basemap tiles for the station maps
     scripts/build_readme.py  regenerates this README.md
     data/<city>/          per-city aggregates (tracked; raw XML is not)
+    data/geo/tiles/       tile cache, gitignored — only the first build downloads
     work/                 raw downloads, gitignored
 
 ## Licence
 
 Price data: Ministère de l'Économie, [Licence Ouverte v2.0 (Etalab)](https://www.etalab.gouv.fr/licence-ouverte-open-licence/).
-Brands: © OpenStreetMap contributors, ODbL. Code: MIT.
+Brands and basemap: © OpenStreetMap contributors — data under ODbL, tiles from
+openstreetmap.org under its [tile usage policy](https://operations.osmfoundation.org/policies/tiles/).
+Code: MIT.
 """)
 
 open("README.md", "w").write("\n".join(L))

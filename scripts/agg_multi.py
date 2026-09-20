@@ -28,6 +28,7 @@ def main(daily_csv):
     for slug, _ in subsets:
         sinks[slug] = (defaultdict(lambda: defaultdict(float)), defaultdict(lambda: defaultdict(int)))
     end_day = date.today()
+    obs_max = None          # last day the archive actually observed
 
     cur, buf = None, []
     def flush():
@@ -43,8 +44,17 @@ def main(daily_csv):
             k = (sid, fuel)
             if k != cur:
                 flush(); cur, buf = k, []
-            buf.append((date.fromisoformat(day), float(price)))
+            d = date.fromisoformat(day)
+            if obs_max is None or d > obs_max:
+                obs_max = d
+            buf.append((d, float(price)))
     flush()
+
+    # The series is forward-filled to today, but the archive stops earlier and
+    # its last day is partial; record where the observations really end.
+    with open("data/archive_end.txt", "w") as f:
+        f.write(obs_max.isoformat() + "\n")
+    print(f"archive observations end {obs_max}, series filled to {end_day}", file=sys.stderr)
 
     for slug, (T, C) in sinks.items():
         path = "data/nat_daily.csv" if slug == "nat" else f"data/{slug}/loc_daily.csv"

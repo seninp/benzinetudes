@@ -47,7 +47,9 @@ Zurich is absent because Switzerland publishes no station-level fuel-price
 open data; no Swiss city can be built from public feeds.
 
 Everything below is regenerated from the feed by `make report` — no number is
-transcribed by hand. Data current through **{end}**, built {today}.
+transcribed by hand. Data current through **{end}**, built {today}; the annual
+archive's observations stop at {compare['archive_end']}, so the newest point in
+each series is carried forward (see [Reading the data](#reading-the-data)).
 A sibling of [climatudes](https://github.com/seninp/climatudes), which applies
 the same one-method-many-cities idea to weather records.
 
@@ -135,7 +137,7 @@ so a dash never proves the fuel is missing:
 
 add(f"""## Reading the data
 
-Four properties of this feed are invisible in the files themselves and easy
+Five properties of this feed are invisible in the files themselves and easy
 to get wrong:
 
 1. **No brand field exists anywhere** — not in the annual archives, not in the
@@ -151,9 +153,13 @@ to get wrong:
    flag with a start and no end is an open outage — but ancient open ones mean
    "stopped selling that fuel", which is why only flags at most 30 days old
    count as dry.
-4. **The dry series revises backwards.** Outage flags land in the archive one
-   to two days late, so the last days of every dry-count chart are provisional
-   and tend to move up on the next build.
+4. **The dry series revises backwards.** Outage flags and their end dates land
+   in the archive one to two days late, so the last days of every dry-count
+   chart are provisional and can move either way on the next build.
+5. **The annual archive lags the build, and its last day is partial.** The
+   newest point in every price series is each station's last posted price
+   carried forward, not a day that was measured. The snapshot tables and the
+   nearest-ceiling-pump lines come from the instant feed and are current.
 
 Method: a station's last posted price each day is carried forward until its
 next update and stops counting 30 days later, so closed sites leave the mean

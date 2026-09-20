@@ -42,6 +42,7 @@ def main():
         days.append(d); d += timedelta(days=1)
 
     compare = {"end": end.isoformat(), "start": START.isoformat(),
+               "archive_end": open("data/archive_end.txt").read().strip(),
                "nat_diesel": round(nat["Gazole"][end], 3), "cities": []}
     nat_series = {f: [round(nat[f][d], 4) if d in nat[f] else None for d in days]
                   for f in ("Gazole", "E10")}

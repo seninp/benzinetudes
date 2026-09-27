@@ -49,7 +49,7 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 31270004,CUGNAUX,34 Rue de la Vimona,12.18,Intermarché,recognised,way/70496368,brand=Intermarché | name=Intermarché,4,
 31270005,CUGNAUX,Rue Henry Gladi,12.31,Carrefour,recognised,node/312218346,brand=Carrefour | name=Carrefour,156,
 31300008,TOULOUSE,6 AVENUE DU GOUPE MORHANGE,12.46,Total Access,recognised,way/64893194,brand=Total Access | name=Rocade Purpan,38,
-31000004,TOULOUSE,65 ROUTE D AGDE,12.52,,unmatched,,,,
+31000004,TOULOUSE,65 ROUTE D AGDE,12.55,,unmatched,,,,
 31500007,Toulouse,231 FAUBOURG BONNEFOY,12.66,Esso,recognised,node/675734768,brand=Esso | operator=Esso | name=Esso 24/7,23,
 31270007,Villeneuve-Tolosane,8 AVENUE DE FRANCAZAL,12.69,Total Access,recognised,node/7588684694,brand=Total Access | name=Total Access,100,
 31100003,TOULOUSE,30 Chemin de Ferro-Lébrès,12.78,Intermarché,recognised,node/302014807,brand=Intermarché | name=Station Intermarché,158,

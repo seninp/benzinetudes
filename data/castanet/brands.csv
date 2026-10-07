@@ -63,7 +63,6 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 31200002,Toulouse,211 Route d'Albi,14.36,TotalEnergies,recognised,way/76306802,brand=TotalEnergies | operator=Total | name=Total,68,
 31000003,Toulouse,138 Avenue de Fronton,14.38,Intermarché,recognised,node/2182442713,brand=Intermarché | name=Intermarché,85,
 31170008,TOURNEFEUILLE,20 boulevard Vincent Auriol,14.53,Avia,recognised,node/2153375440,brand=Avia | operator=Avia | name=Avia Xpress,4,
-31170002,TOURNEFEUILLE,5 Rue Bertrand Panouse,14.55,Auchan,recognised,way/74785397,brand=Auchan | name=Auchan,56,
 31700004,Blagnac,9 Avenue du Général Compans,14.73,Esso,recognised,node/288551381,brand=Esso | operator=Esso | name=Esso,39,
 31600011,MURET,68 avenue Jacques Douzans,14.75,,unmatched,,,,
 31240003,SAINT-JEAN,6 AVENUE DE DANCELLE,14.79,Intermarché,recognised,way/399954639,brand=Intermarché,127,

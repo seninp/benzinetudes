@@ -27,7 +27,6 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 69007008,LYON,AVENUE TONY GARNIER,4.15,TotalEnergies,recognised,node/25214045,brand=TotalEnergies | name=Total Access,80,
 69007009,LYON,AVENUE TONY GARNIER,4.24,Total Access,recognised,node/571833146,brand=Total Access | operator=Total | name=Total Access,62,
 69160006,Tassin la Demi Lune,35 Avenue Général Brosset,4.31,Auchan,recognised,node/252155883,brand=Auchan | operator=Auchan | name=Auchan,33,
-69160001,TASSIN-LA-DEMI-LUNE,35 AVENUE GENERAL BROSSET,4.31,Auchan,recognised,node/252155883,brand=Auchan | operator=Auchan | name=Auchan,33,1
 69350003,LA MULATIERE,66 RUE STEPHANE DECHANT,4.52,TotalEnergies,recognised,node/917259723,brand=Total | operator=Total | name=Total,77,
 69005002,LYON,131 Rue Joliot-Curie,4.54,Eni,recognised,node/2308064621,brand=Eni | operator=Eni | name=Eni,117,
 69005005,LYON 5EME,165 RUE JOLIOT CURIE,4.69,Avia,recognised,way/835788716,brand=Avia | operator=Avia | name=Avia,37,

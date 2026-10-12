@@ -27,9 +27,11 @@ DW     := work/dashboard
 LOCK   := /tmp/fuel-pipeline.lock
 HOST   := psenin@192.168.10.51
 RDIR   := git/benzinetudes
-# what publish copies to poptiplex; everything else there is built on it
-SRC    := Makefile .gitignore scripts dashboard/scripts dashboard/tools \
-          dashboard/report_template.html dashboard/README.md
+# what publish copies to poptiplex; everything else there is built on it.
+# Each directory is mirrored on its own: rsync -R --delete would also delete
+# every sibling of a copied directory, dashboard/data among them.
+SRCDIRS  := scripts dashboard/scripts dashboard/tools
+SRCFILES := Makefile .gitignore dashboard/report_template.html dashboard/README.md
 BUILT  := README.md data outputs castanet dashboard/data dashboard/benzine-prices.html
 # the dashboard parsers' products that its HTML step reads; px_<year>.csv come too
 DPRODUCTS := nat_daily.csv loc_daily.csv stations_now.csv st_all.csv capshare.csv \
@@ -126,7 +128,9 @@ venv:
 # --- run on the Mac ----------------------------------------------------------
 # MSG names the commit; the default is the daily data-refresh message.
 publish:
-	rsync -aR --delete --exclude __pycache__ $(SRC) $(HOST):$(RDIR)/
+	rsync -aR $(SRCFILES) $(HOST):$(RDIR)/
+	for d in $(SRCDIRS); do \
+	  rsync -a --delete --exclude __pycache__ $$d/ $(HOST):$(RDIR)/$$d/ || exit 1; done
 	ssh $(HOST) 'cd $(RDIR) && make && make push MSG="$(MSG)"'
 	git fetch -q origin
 	git reset -q origin/main

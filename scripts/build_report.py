@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""Build the fuel-price report HTML from the extracted CSVs."""
-import csv, json, re
+"""Compute everything the report shows, from the CSVs in data/, into data/report_data.json.
+
+Run from the repository root; render_html.py then embeds the JSON in the template.
+"""
+import csv, json, math, re, statistics
 from collections import defaultdict
 from datetime import date, timedelta
+from config import (CAP_DAY, CENTER_LAT, CENTER_LON, CENTER_NAME, DIESEL_CAP,
+                    DRY_WINDOW, PETROL_CAP, RADIUS_KM, START, TOTAL_GROUP)
 
-START = date(2025, 1, 15)      # before this, station coverage is still ramping up
 # Last day present in the aggregated series (agg.py runs it through fetch day).
 END = max(date.fromisoformat(r["day"]) for r in csv.DictReader(open("data/nat_daily.csv")))
 # Last day the archive actually observed. Every measurement — trend windows, the dry
 # count, any comparison — must end here, never on END: the days between are
 # forward-filled, so a carried-forward price would count as a reading.
 OBS_END = date.fromisoformat(open("data/archive_end.txt").read().strip())
-CENTER = "Castanet-Tolosan (31320)"
-CENTER_LAT, CENTER_LON = 43.5161, 1.5000
-RADIUS = 15
 FUELS = ["Gazole", "E10", "SP98", "SP95", "E85", "GPLc"]
 LABEL = {"Gazole": "Diesel (Gazole)", "E10": "Petrol E10 (SP95-E10)",
          "SP98": "Petrol SP98", "SP95": "Petrol SP95", "E85": "Superethanol E85",
@@ -40,12 +41,10 @@ def series(src, fuel):
     return [round(src[fuel][d], 4) if d in src[fuel] else None for d in days]
 
 BRANDS = {r["id"]: r for r in csv.DictReader(open("data/brands.csv"))}
-TOTAL_GROUP = ("TotalEnergies", "Total Access", "Élan (TotalEnergies)")
 RIVALS = ("Intermarché", "Super U")
 
 # Open stock outages from the annual archive (the instant feed carries none).
 # A flag older than DRY_WINDOW days means "stopped selling that fuel", not "dry".
-DRY_WINDOW = 30
 RUPTURES = defaultdict(dict)
 for r in csv.DictReader(open("data/ruptures.csv")):
     RUPTURES[r["id"]][r["fuel"]] = r["debut"]
@@ -59,7 +58,6 @@ INTERVALS = [(r["id"], r["fuel"], r["debut"], r["fin"])
 
 def bearing(lat, lon):
     """8-point compass bearing from the centre to a station."""
-    import math
     p1, p2 = math.radians(CENTER_LAT), math.radians(lat)
     dl = math.radians(lon - CENTER_LON)
     y = math.sin(dl) * math.cos(p2)
@@ -83,16 +81,16 @@ def frtown(s):
 
 stations = []
 for r in csv.DictReader(open("data/stations_now.csv")):
+    # Stations posting nothing today stay in; the table shows them as silent.
     prices = {f: (float(r[f]) if r[f] else None) for f in FUELS}
-    if True:   # keep stations posting nothing today; the table shows them as silent
-        b = BRANDS.get(r["id"], {})
-        stations.append({"id": r["id"], "ville": frtown(r["ville"]),
-                         "adresse": r["adresse"], "cp": r["cp"],
-                         "dist": float(r["dist_km"]), "prices": prices,
-                         "maj": r["maj"][:16],
-                         "brand": b.get("brand", ""),
-                         "brand_shared": b.get("shared", "") == "1",
-                         "dir": bearing(float(r["lat"]), float(r["lon"]))})
+    b = BRANDS.get(r["id"], {})
+    stations.append({"id": r["id"], "ville": frtown(r["ville"]),
+                     "adresse": r["adresse"], "cp": r["cp"],
+                     "dist": float(r["dist_km"]), "prices": prices,
+                     "maj": r["maj"][:16],
+                     "brand": b.get("brand", ""),
+                     "brand_shared": b.get("shared", "") == "1",
+                     "dir": bearing(float(r["lat"]), float(r["lon"]))})
 stations.sort(key=lambda s: s["dist"])
 
 snap = max((st["maj"] for st in stations if st["maj"]), default="")[:10]
@@ -138,8 +136,7 @@ for d in days:
     cap_nat.append(round(100 * int(r["nat_cap"]) / int(r["nat_n"]), 2) if int(r["nat_n"]) else None)
     cap_loc.append(round(100 * int(r["loc_cap"]) / int(r["loc_n"]), 2) if int(r["loc_n"]) else None)
 
-CAP = 2.250
-PETROL_CAP = 1.990
+CAP = DIESEL_CAP
 # "At the ceiling" is only a third of the picture, and on its own it misleads: 16%
 # of stations post diesel at exactly 2,250 EUR, but three quarters post *above* it.
 # Without that third number a reader takes the cap for a national maximum, which it
@@ -184,7 +181,6 @@ for f, v in arch.items():
 # "at". The local Total-group series is the direct evidence: their diesel maximum
 # is exactly 2,250 EUR on every day from 7 April on, and when the market fell back
 # in April and June they went below the cap again rather than sitting on it.
-CAP_DAY = date(2026, 4, 8)
 cap_story = {"day": CAP_DAY.isoformat(),
              "before": cap_hist.get(CAP_DAY - timedelta(days=1)),
              "after": cap_hist.get(CAP_DAY),
@@ -198,7 +194,6 @@ if cap_hist:
     if tr:
         cap_story["trough"] = {"day": tr.isoformat(), **cap_hist[tr]["nat"]}
 
-import statistics
 by_brand = defaultdict(list)
 for st in stations:
     if st["prices"]["Gazole"] is not None:
@@ -330,7 +325,7 @@ for fuel in TREND_FUELS:
         # band whose top was already below the price printed in the tile beside it.
         # Compute them, over the life of the series and since the cap arrived.
         hist = {d: v for d, v in src[fuel].items() if d <= OBS_END}
-        for tag2, floor in (("all", START), ("since_cap", date(2026, 4, 8))):
+        for tag2, floor in (("all", START), ("since_cap", CAP_DAY)):
             h = {d: v for d, v in hist.items() if d >= floor}
             if not h:
                 continue
@@ -517,9 +512,9 @@ for fuel in ["Gazole", "E10", "SP98", "E85"]:
                   "spark": [v for v in series(loc, fuel)[-90:] if v is not None]})
 
 DATA = {
-  "meta": {"center": CENTER, "radius": RADIUS, "start": START.isoformat(),
+  "meta": {"center": CENTER_NAME, "radius": int(RADIUS_KM), "start": START.isoformat(),
            "end": END.isoformat(),
-           "archive_end": open("data/archive_end.txt").read().strip(),
+           "archive_end": OBS_END.isoformat(),
            "built": max((st["maj"] for st in stations if st["maj"]), default="")[:10],
            "n_stations": len(stations),
            "n_priced": sum(1 for s in stations if any(v is not None for v in s["prices"].values())),
@@ -584,7 +579,7 @@ DATA = {
                        "brand": castanet["brand"], "maj": castanet["maj"],
                        "ville": castanet["ville"], "adresse": castanet["adresse"]},
           "save": round(castanet["prices"]["Gazole"] - CAP, 3),
-          "since": "2026-04-08"},
+          "since": CAP_DAY.isoformat()},
 }
 open("data/report_data.json", "w").write(json.dumps(DATA, separators=(",", ":")))
 print(f"days={len(days)} stations={len(stations)} months={len(monthly)}")

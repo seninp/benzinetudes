@@ -9,8 +9,9 @@ snapshot for today's figures and uses the archive only for the diesel history.
 """
 import csv, sys
 import xml.etree.ElementTree as ET
+from config import DIESEL_CAP, PETROL_CAP
 
-CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990, "SP95": 1.990}
+CEILING = {"Gazole": DIESEL_CAP, "E10": PETROL_CAP, "SP98": PETROL_CAP, "SP95": PETROL_CAP}
 
 def main(xml_path, out_csv):
     n = {f: 0 for f in CEILING}

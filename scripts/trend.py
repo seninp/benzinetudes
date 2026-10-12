@@ -12,12 +12,11 @@ Same carry-forward rule as agg.py — last posted price stands, station drops ou
 """
 import csv, sys
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date
+from common import carry_forward
+from config import MIN_STATIONS, STALE_DAYS, START, TOTAL_GROUP
 
-STALE_DAYS = 30
-START = date(2025, 1, 15)
 FUELS = ("Gazole", "E10", "SP98")
-TOTAL_GROUP = ("TotalEnergies", "Total Access", "Élan (TotalEnergies)")
 
 
 def run(brands_csv, archive_end_path, out_csv, *px_paths):
@@ -38,19 +37,12 @@ def run(brands_csv, archive_end_path, out_csv, *px_paths):
         # A station with no OSM brand match counts as "other": it is certainly not
         # Total-group, since all 21 Total sites here matched.
         g = group.get(sid, "other")
-        rows = sorted(d.items())
-        idx, last = 0, rows[0][1]
-        day, stop = rows[0][0], min(rows[-1][0] + timedelta(days=STALE_DAYS), end_day)
-        while day <= stop:
-            while idx < len(rows) and rows[idx][0] <= day:
-                last = rows[idx][1]
-                idx += 1
+        for day, last in carry_forward(sorted(d.items()), end_day, STALE_DAYS):
             if day >= START:
                 c = agg[fuel][day][g]
                 c[0] += last
                 c[1] += 1
                 c[2] = max(c[2], last)
-            day += timedelta(days=1)
 
     with open(out_csv, "w", newline="") as f:
         w = csv.writer(f)
@@ -62,10 +54,9 @@ def run(brands_csv, archive_end_path, out_csv, *px_paths):
         for fuel in FUELS:
             for day in sorted(agg[fuel]):
                 t, o = agg[fuel][day]["total"], agg[fuel][day]["other"]
-                # 3 stations is agg.py's floor for a mean worth printing
                 w.writerow([day.isoformat(), fuel,
-                            round(t[0] / t[1], 4) if t[1] >= 3 else "", t[1], round(t[2], 4),
-                            round(o[0] / o[1], 4) if o[1] >= 3 else "", o[1], round(o[2], 4)])
+                            round(t[0] / t[1], 4) if t[1] >= MIN_STATIONS else "", t[1], round(t[2], 4),
+                            round(o[0] / o[1], 4) if o[1] >= MIN_STATIONS else "", o[1], round(o[2], 4)])
     last = max(agg["Gazole"])
     t, o = agg["Gazole"][last]["total"], agg["Gazole"][last]["other"]
     print(f"{out_csv}: through {last}; diesel {t[1]} Total-group stations "

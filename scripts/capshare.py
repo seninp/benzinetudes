@@ -6,49 +6,31 @@ Reads the sorted daily rows produced by dump_daily.py.
 """
 import csv, sys
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date
+from common import carry_forward, read_daily
+from config import DIESEL_CAP, PETROL_CAP, STALE_DAYS
 
-STALE = 30
 END = date.today()   # archives are downloaded fresh at run time
-CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990}
+CEILING = {"Gazole": DIESEL_CAP, "E10": PETROL_CAP, "SP98": PETROL_CAP}
 
 def main(daily_csv, subset_csv, out_csv):
     sub = set(r["id"] for r in csv.DictReader(open(subset_csv)))
     # (fuel, day) -> [n, at_ceiling, below]  for nation and local subset
     nat = defaultdict(lambda: [0, 0, 0])
     loc = defaultdict(lambda: [0, 0, 0])
-
-    def flush(key, rows):
-        if not rows:
-            return
-        sid, fuel = key
+    for sid, fuel, rows in read_daily(daily_csv):
         if fuel not in CEILING:
-            return
+            continue
         cap = CEILING[fuel]
-        d, last, i = rows[0][0], rows[0][1], 0
-        stop = min(rows[-1][0] + timedelta(days=STALE), END)
-        while d <= stop:
-            while i < len(rows) and rows[i][0] <= d:
-                last = rows[i][1]; i += 1
-            for tgt in (nat,) + ((loc,) if sid in sub else ()):
+        tgts = (nat,) + ((loc,) if sid in sub else ())
+        for d, last in carry_forward(rows, END, STALE_DAYS):
+            for tgt in tgts:
                 c = tgt[(fuel, d)]
                 c[0] += 1
                 if abs(last - cap) < 1e-9:
                     c[1] += 1
                 elif last < cap:
                     c[2] += 1
-            d += timedelta(days=1)
-
-    cur, buf = None, []
-    for sid, fuel, day, price in csv.reader(open(daily_csv)):
-        k = (sid, fuel)
-        if k != cur:
-            if cur:
-                flush(cur, buf)
-            cur, buf = k, []
-        buf.append((date.fromisoformat(day), float(price)))
-    if cur:
-        flush(cur, buf)
 
     with open(out_csv, "w", newline="") as f:
         w = csv.writer(f)

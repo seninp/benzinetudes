@@ -1,18 +1,9 @@
 #!/usr/bin/env python3
 """Extract fuel-price time series for stations near a point from PrixCarburants XML."""
-import csv, math, sys
+import csv, sys
 import xml.etree.ElementTree as ET
-
-CENTER_LAT, CENTER_LON = 43.5161, 1.5000   # Castanet-Tolosan (31320)
-RADIUS_KM = 15.0
-
-def haversine(la1, lo1, la2, lo2):
-    R = 6371.0088
-    p1, p2 = math.radians(la1), math.radians(la2)
-    dp = p2 - p1
-    dl = math.radians(lo2 - lo1)
-    a = math.sin(dp/2)**2 + math.cos(p1)*math.cos(p2)*math.sin(dl/2)**2
-    return 2*R*math.asin(math.sqrt(a))
+from common import haversine_km
+from config import CENTER_LAT, CENTER_LON, RADIUS_KM
 
 def run(xml_path, st_out, px_out):
     stations, rows = {}, []
@@ -27,7 +18,7 @@ def run(xml_path, st_out, px_out):
             el.clear(); continue
         if lat == 0.0 and lon == 0.0:
             el.clear(); continue
-        d = haversine(CENTER_LAT, CENTER_LON, lat, lon)
+        d = haversine_km(CENTER_LAT, CENTER_LON, lat, lon)
         if d <= RADIUS_KM:
             sid = el.get("id")
             adr = (el.findtext("adresse") or "").strip()

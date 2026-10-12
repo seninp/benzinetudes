@@ -8,7 +8,8 @@ turn and the first *recognised* one wins, rather than the first non-empty one.
 
 Usage: brands.py <osm_fuel.json> <stations_now.csv> <out.csv>
 """
-import csv, json, math, sys
+import csv, json, sys
+from common import haversine_km
 
 MATCH_M = 250          # a prix-carburants station and an OSM node this close are the same site
 
@@ -75,13 +76,6 @@ def brand_of(tags):
             return f.strip(), "raw"
     return "", "none"
 
-def haversine_m(la1, lo1, la2, lo2):
-    R = 6371008.8
-    p1, p2 = math.radians(la1), math.radians(la2)
-    a = (math.sin((p2 - p1) / 2) ** 2 +
-         math.cos(p1) * math.cos(p2) * math.sin(math.radians(lo2 - lo1) / 2) ** 2)
-    return 2 * R * math.asin(math.sqrt(a))
-
 def main(osm_path, st_path, out_path):
     pts = []
     for e in json.load(open(osm_path))["elements"]:
@@ -99,7 +93,7 @@ def main(osm_path, st_path, out_path):
         la, lo = float(r["lat"]), float(r["lon"])
         best, bd = None, 1e9
         for i, p in enumerate(pts):
-            d = haversine_m(la, lo, p["lat"], p["lon"])
+            d = 1000 * haversine_km(la, lo, p["lat"], p["lon"])
             if d < bd:
                 best, bd, bi = p, d, i
         ok = best and bd <= MATCH_M

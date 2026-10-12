@@ -34,9 +34,9 @@ expensive year, which is a forecast wearing a habit's clothes.
 import csv, sys
 from collections import defaultdict
 from datetime import date, timedelta
+from common import carry_forward
+from config import STALE_DAYS, START
 
-STALE_DAYS = 30          # mirrors agg.py: a station stops counting 30 days after its last update
-START = date(2025, 1, 15)
 RECENT_DAYS = 180
 FUELS = ("Gazole", "E10", "SP98")
 DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -56,19 +56,6 @@ def load(paths):
     return {k: sorted(v.items()) for k, v in hist.items()}
 
 
-def daily(rows, end_day):
-    """Carry each posted price forward, stopping STALE_DAYS after the last post."""
-    out, idx, last = {}, 0, rows[0][1]
-    d, stop = rows[0][0], min(rows[-1][0] + timedelta(days=STALE_DAYS), end_day)
-    while d <= stop:
-        while idx < len(rows) and rows[idx][0] <= d:
-            last = rows[idx][1]
-            idx += 1
-        out[d] = last
-        d += timedelta(days=1)
-    return out
-
-
 def run(px_paths, archive_end_path, dev_out, upd_out):
     end_day = date.fromisoformat(open(archive_end_path).read().strip())
     recent_from = end_day - timedelta(days=RECENT_DAYS)
@@ -84,7 +71,7 @@ def run(px_paths, archive_end_path, dev_out, upd_out):
     devw = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
     weeks_seen = defaultdict(lambda: defaultdict(int))
     for (sid, fuel), rows in hist.items():
-        ser = daily(rows, end_day)
+        ser = dict(carry_forward(rows, end_day, STALE_DAYS))
         byweek = defaultdict(dict)
         for d, p in ser.items():
             if d >= START:

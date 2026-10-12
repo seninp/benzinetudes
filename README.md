@@ -6,11 +6,48 @@ against the French mean.
 
 ## Running it
 
-    ./fetch.sh
+    make            # remote + report + castanet: the daily rebuild
+    make local      # when poptiplex is unreachable: the heavy half on this Mac (~3 min)
+    make report     # rebuild the HTML from data/ alone
 
-The two annual archives are ~300 MB of XML each, so `fetch.sh` downloads and
-parses them on **poptiplex** (`psenin@192.168.10.51`) and copies back only the
-aggregated CSVs. Nothing in this pipeline touches Sanofi infrastructure.
+The annual archives are ~300 MB of XML each unzipped, so `make remote` runs
+`scripts/remote.sh` on **poptiplex** (`psenin@192.168.10.51`) and copies back
+only the aggregated CSVs. `make local` runs the same script in `work/`. There is
+one annual archive per year from 2025 on, picked up without edits. `make castanet`
+sends `data/report_data.json` to the benzinetudes checkout on poptiplex and
+renders its Castanet deep-dive there; commit and push happen in that repo.
+`./fetch.sh` still works and calls `make`. Nothing in this pipeline touches
+Sanofi infrastructure.
+
+## Layout
+
+    Makefile                 remote / local / report / castanet
+    fetch.sh                 calls make, for the habit
+    report_template.html     the dashboard, with a /*__DATA__*/ placeholder
+    benzine-prices.html      the built report (open this)
+    scripts/                 heavy half (remote.sh runs it on poptiplex or in work/)
+      config.py              study area, dates, ceilings, brand groups
+      common.py              daily-row reader, carry-forward, distance (shared with benzinetudes)
+      remote.sh              download, then every step below down to fetch_osm.py
+      extract.py             per-station price history within the radius
+      merge_stations.py      one station list across the yearly files
+      dump_daily.py          whole-country daily last-price rows
+      agg.py                 forward-filled daily means, national and local
+      snapshot.py            today's price at each local station
+      capshare.py            daily share of stations pinned at a ceiling
+      ceilings_now.py        today's ceiling shares from the instant feed
+      ruptures.py            stock-outage flags: open ones, plus every interval
+                             (rupture_hist.csv) for the dry-count history
+      fetch_osm.py           Overpass query for OSM fuel stations
+    scripts/                 report half, on the Mac
+      brands.py              match stations to OSM brands
+      trend.py               local means split Total-group / other brands
+      weekday.py             day-of-week effect
+      build_report.py        CSVs -> data/report_data.json
+      render_html.py         report_data.json + template -> benzine-prices.html
+    tools/snapshot_churn.py  one-off: per-fuel reporting churn between two snapshots
+    data/                    every intermediate the report reads
+    !backups/                HTML snapshots before each version bump
 
 ## Source
 
@@ -53,6 +90,9 @@ sit within ~100 m and OSM maps one feature, the further one is flagged `?`.
   would otherwise show up as a fake price move.
 
 ## Findings (data to 2026-09-13, snapshot 2026-09-17 evening)
+
+A dated record of the first build. The current figures are in
+`benzine-prices.html`, which recomputes each finding on every build.
 
 1. Local diesel is **2,296 €/L**, up **0,664 €** in twelve months. Almost all of
    the rise happened in March 2026: 1,724 € on 1 March to 2,220 € on 31 March,
@@ -100,7 +140,7 @@ right now; the annual archive counts any station that reported within 30 days.
 For diesel they nearly agree (20,0% against 22,0%); for petrol they do not
 (15,7% against 23,5% for E10).
 
-`scripts/snapshot_churn.py` explains it. Between the 2026-09-14 and 2026-09-15
+`tools/snapshot_churn.py` explains it. Between the 2026-09-14 and 2026-09-15
 snapshots, 222 stations started reporting E10 and **220 of them at exactly
 1,990 €**; 194 started reporting SP98, 191 at the ceiling. Diesel churns too but
 on a base three times larger — 74 arrivals, 71 at the ceiling. So capped sites
@@ -108,23 +148,3 @@ drop in and out of the feed per fuel and always arrive at the ceiling. The
 snapshot share is therefore a lower bound, the archive is the better estimate,
 and the ceiling-share *history* is drawn for diesel only, where a 0,8% daily
 churn is small enough to ignore.
-
-## Files
-
-    fetch.sh              download + rebuild
-    scripts/              parsers that run on poptiplex
-      extract.py          per-station price history within the radius
-      dump_daily.py       whole-country daily last-price rows
-      agg.py              forward-filled daily means, national and local
-      snapshot.py         today's price at each local station
-      capshare.py         daily share of stations pinned at a ceiling
-      ruptures.py         stock-outage flags: open ones, plus every interval
-                          (rupture_hist.csv) for the dry-count history
-      brands.py           match stations to OSM brands
-      fetch_osm.py        Overpass query for OSM fuel stations
-      ceilings_now.py     today's ceiling shares from the instant feed
-      snapshot_churn.py   per-fuel reporting churn between two snapshots
-    build_report.py       CSVs -> data/report_data.json
-    report_template.html  report, with /*__DATA__*/ placeholder
-    benzine-prices.html   the built report (open this)
-    data/                 aggregated CSVs + report_data.json

@@ -6,8 +6,11 @@ The public endpoints 504 under load, so each is tried in turn with a pause. An
 answer with no elements counts as a failure: overpass.osm.ch, for one, is a
 Swiss-only extract that answers 200 and empty for France, and writing that over
 the cache would wipe every brand. A partial answer cut off by the server's own
-timeout carries a "remark" and counts as a failure too. If every attempt fails and a previous answer
-is on disk, it is kept — brands change far more slowly than prices.
+timeout carries a "remark" and counts as a failure too. So does an answer from
+a database older than the cached one: mirrors lag, and on 2026-10-12
+overpass.private.coffee answered from a July 2026 base, which would have
+reverted three months of tag edits. If every attempt fails and a previous
+answer is on disk, it is kept — brands change far more slowly than prices.
 
 Usage: fetch_osm.py <out.json> [lat] [lon] [radius_m]
 
@@ -28,6 +31,9 @@ def main(out, lat="43.5161", lon="1.5000", radius="15500"):
          f"  way[amenity=fuel](around:{radius},{lat},{lon});\n"
          f"  relation[amenity=fuel](around:{radius},{lat},{lon});\n"
          f");\nout tags center;")
+    cached_base = ""
+    if os.path.exists(out):
+        cached_base = json.load(open(out)).get("osm3s", {}).get("timestamp_osm_base", "")
     # One try per endpoint: a run holds the pipeline lock while it waits here.
     for url in ENDPOINTS:
         req = urllib.request.Request(
@@ -42,6 +48,9 @@ def main(out, lat="43.5161", lon="1.5000", radius="15500"):
                 raise ValueError("answer has no elements")
             if ans.get("remark"):
                 raise ValueError(f"partial answer: {ans['remark']}")
+            base = ans.get("osm3s", {}).get("timestamp_osm_base", "")
+            if base < cached_base:
+                raise ValueError(f"database from {base}, older than the cached {cached_base}")
             open(out, "wb").write(body)
             print(f"wrote {out}: {n} elements, {len(body)} bytes (via {url})", file=sys.stderr)
             return

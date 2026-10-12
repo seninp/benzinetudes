@@ -123,8 +123,8 @@ Diesel across the brands that OSM could name, within 15 km:
 
 | Brand | Stations | Cheapest | Median | Dearest |
 |---|---:|---:|---:|---:|
-| TotalEnergies *(at the ceiling)* | 3 | 2.250 | 2.250 | 2.250 |
-| Total Access *(at the ceiling)* | 2 | 2.250 | 2.250 | 2.250 |
+| TotalEnergies *(at the ceiling)* | 4 | 2.250 | 2.250 | 2.250 |
+| Total Access *(at the ceiling)* | 1 | 2.250 | 2.250 | 2.250 |
 | E.Leclerc | 2 | 2.299 | 2.299 | 2.299 |
 | Intermarché | 9 | 2.289 | 2.309 | 2.499 |
 | Super U | 3 | 2.278 | 2.319 | 2.339 |

@@ -6,7 +6,31 @@ never serves a stale build.
 """
 import hashlib, json
 from datetime import date
-from cities import CITIES
+from cities import CITIES, CEILING_DAY
+
+def dry_peaks():
+    """The sentence naming each city's peak dry share and its distance from the ceiling."""
+    peaks = []
+    for c in CITIES:
+        ser = summaries[c["slug"]]["series"]
+        pk = max(x for x in ser["dry_pct"] if x is not None)
+        peaks.append((c["name"], pk, date.fromisoformat(ser["days"][ser["dry_pct"].index(pk)])))
+    shares = ", ".join(f"{name} {pk:.1f}%" for name, pk, _ in peaks)
+    days = {d for _, _, d in peaks}
+    if len(days) == 1:
+        d = days.pop()
+        return (f"The dry share peaked in every city on {d:%-d %B %Y} ({shares}), "
+                f"{before(d, CEILING_DAY)} the ceiling first appeared:")
+    each = "; ".join(f"{name} {pk:.1f}% on {d:%-d %B %Y}" for name, pk, d in peaks)
+    return (f"The dry share peaked at {each}. The ceiling first appeared on "
+            f"{CEILING_DAY:%-d %B %Y}:")
+
+def before(d, ref):
+    """'two days before', 'one day after', 'the day' — d relative to ref."""
+    n = (ref - d).days
+    words = ("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+    k = words[abs(n) - 1] if 0 < abs(n) <= 9 else str(abs(n))
+    return f"{k} day{'s' * (abs(n) != 1)} {'before' if n > 0 else 'after'}" if n else "the day"
 
 def v(path):
     h = hashlib.md5(open(path, "rb").read()).hexdigest()[:8]
@@ -86,8 +110,7 @@ radius holds:
 
 ![Share of diesel stations posting exactly the ceiling price, by city]({v('outputs/compare/figures/ceiling_share.png')})
 
-The dry count moves days ahead of the visible price story. Its all-time peak,
-in early April 2026, came two days before the ceiling first appeared:
+The dry count moves ahead of the visible price story. {dry_peaks()}
 
 ![Share of station-fuel pairs flagged out of stock, by city]({v('outputs/compare/figures/dry_share.png')})
 """)
@@ -179,19 +202,22 @@ coverage is still ramping and would show up as a fake price move.
 
 ## How to run
 
-    make          # fetch + report, holding the lock the benzine pipeline also takes
-    make fetch    # download one annual archive per year since 2025 + the instant feed
-    make report   # parse, aggregate, draw figures, rewrite README.md
-    make castanet # the Castanet deep-dive, from benzine's report_data.json
+    make           # fetch + every report below, under a lock
+    make fetch     # download one annual archive per year since 2025 + the instant feed
+    make report    # parse, aggregate, draw figures, rewrite README.md
+    make dashboard # dashboard/benzine-prices.html, the interactive Castanet dashboard
+    make castanet  # castanet/README.md, from the dashboard's report_data.json
+    make publish   # from a second checkout: rsync sources to the build host,
+                   # build, commit and push there, then fast-forward here
 
 The figures need matplotlib and Pillow (`make venv` creates `.venv` with both);
-the parsers run on the system Python with the standard library alone.
+the parsers and the dashboard run on the system Python with the standard library alone.
 
 ## Project layout
 
-    Makefile              refresh / fetch / report / castanet / venv
+    Makefile              refresh / fetch / report / dashboard / castanet / publish
     scripts/cities.py     the city list and shared constants
-    scripts/common.py     daily-row reader, carry-forward, distance (shared with benzine)
+    scripts/common.py     daily-row reader, carry-forward, dry count, distance
     scripts/extract.py, dump_daily.py, agg.py, capshare.py, ruptures.py, snapshot.py
                           one-pass parsers over the country-wide files
     scripts/osm_all.py, fetch_osm.py, brands.py
@@ -203,6 +229,7 @@ the parsers run on the system Python with the standard library alone.
     castanet/             that deep-dive and its figures
     scripts/tiles.py      OSM basemap tiles for the station maps
     scripts/build_readme.py  regenerates this README.md
+    dashboard/            the single-city HTML dashboard and its own scripts and data
     data/<city>/          per-city aggregates (tracked; raw XML is not)
     data/geo/tiles/       tile cache, gitignored — only the first build downloads
     work/                 raw downloads, gitignored

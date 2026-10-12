@@ -1,4 +1,4 @@
-"""Constants shared by the benzine scripts. Change the study area here, nowhere else."""
+"""Constants shared by the dashboard scripts. Change the study area here, nowhere else."""
 from datetime import date
 
 CENTER_NAME = "Castanet-Tolosan (31320)"

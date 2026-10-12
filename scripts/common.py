@@ -1,7 +1,4 @@
-"""Helpers shared by the aggregation scripts.
-
-The same file lives in benzine and benzinetudes; keep the two copies identical.
-"""
+"""Helpers shared by the aggregation scripts of both reports."""
 import csv, math
 from datetime import date, timedelta
 
@@ -50,3 +47,21 @@ def carry_forward(rows, end_day, stale_days):
             i += 1
         yield d, last
         d += timedelta(days=1)
+
+
+def dry_series(intervals, days, window, ids=None):
+    """Dry station-fuel pairs on each of days.
+
+    intervals are (id, fuel, debut, fin) rows of rupture_hist.csv, ISO dates, fin
+    empty while open. A pair is dry on day d when an outage began in the window
+    days up to d and had not ended by d (fin is the first day back in stock). An
+    older flag means the station stopped selling that fuel. A pair counts once
+    however many of its intervals overlap. ids, if given, limits the stations.
+    """
+    out = []
+    for d in days:
+        iso, floor = d.isoformat(), (d - timedelta(days=window)).isoformat()
+        out.append(len({(sid, fuel) for sid, fuel, debut, fin in intervals
+                        if (ids is None or sid in ids) and floor <= debut <= iso
+                        and (not fin or fin > iso)}))
+    return out

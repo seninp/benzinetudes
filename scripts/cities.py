@@ -13,6 +13,7 @@ MIN_STATIONS = 3            # a day enters a mean only where this many stations 
 DRY_WINDOW = 30             # an outage counts while open, at most 30 days after debut
 FUELS = ("Gazole", "SP95", "SP98", "E10", "E85", "GPLc")
 CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990}   # TotalEnergies' caps
+CEILING_DAY = date(2026, 4, 8)   # the diesel ceiling first appeared
 
 CITIES = [
     dict(slug="castanet", name="Castanet-Tolosan", lat=43.5161, lon=1.5000,

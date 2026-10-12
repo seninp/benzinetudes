@@ -7,6 +7,7 @@ import csv, json, sys
 from collections import defaultdict
 from datetime import date, timedelta
 from cities import CITIES, FUELS, CEILING, START, DRY_WINDOW
+from common import dry_series
 
 def load_daily(path):
     s, n = defaultdict(dict), defaultdict(dict)
@@ -16,22 +17,6 @@ def load_daily(path):
             s[r["fuel"]][d] = float(r["mean_price"])
             n[r["fuel"]][d] = int(r["n_stations"])
     return s, n
-
-def dry_series(hist_path, days):
-    """Dry station-fuel pairs per day: an outage counts while it is open and
-    for at most DRY_WINDOW days after it began."""
-    spans = []
-    for r in csv.DictReader(open(hist_path)):
-        if r["fuel"] not in FUELS:
-            continue
-        d0 = date.fromisoformat(r["debut"])
-        d1 = date.fromisoformat(r["fin"]) if r["fin"] else None
-        stop = d0 + timedelta(days=DRY_WINDOW)
-        spans.append((d0, min(d1, stop) if d1 else stop))
-    out = []
-    for d in days:
-        out.append(sum(1 for a, b in spans if a <= d <= b))
-    return out
 
 def main():
     nat, nat_n = load_daily("data/nat_daily.csv")
@@ -70,7 +55,10 @@ def main():
                     "loc_pct": round(100 * int(r["loc_cap"]) / max(1, int(r["loc_n"])), 1),
                     "loc_n": int(r["loc_n"]), "loc_cap": int(r["loc_cap"])}
 
-        dry = dry_series(f"data/{slug}/rupture_hist.csv", days)
+        intervals = [(r["id"], r["fuel"], r["debut"], r["fin"])
+                     for r in csv.DictReader(open(f"data/{slug}/rupture_hist.csv"))
+                     if r["fuel"] in FUELS]
+        dry = dry_series(intervals, days, DRY_WINDOW)
         active = [sum(loc_n[f].get(d, 0) for f in FUELS) or None for d in days]
         dry_pct = [round(100 * a / b, 2) if b else None for a, b in zip(dry, active)]
 

@@ -3,11 +3,10 @@
 
 The interactive dashboard (benzine-prices.html) does not render on GitHub, so
 this emits <outdir>/README.md plus <outdir>/fig/*.png from the same
-report_data.json, which the benzine pipeline builds on the Mac and copies to
-work/report_data.json (`make castanet` in benzine). Prose and figures share
-style.py with the three-city report one level up.
+report_data.json that the dashboard build writes. Prose and figures share
+style.py with the three-city report.
 
-    make castanet     # = .venv/bin/python scripts/castanet_md.py work/report_data.json castanet
+    make castanet     # = .venv/bin/python scripts/castanet_md.py dashboard/data/report_data.json castanet
 
 Every figure link carries ?v=<md5[:8]> of the PNG so GitHub's image cache never
 serves a stale build.
@@ -242,11 +241,18 @@ Monday, before Tuesday's rise.**
 """)
 
 # ---- dry count --------------------------------------------------------------
+def before(d, ref):
+    """'two days before', 'one day after', 'the day' — d relative to ref."""
+    n = (ref - d).days
+    words = ("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+    k = words[abs(n) - 1] if 0 < abs(n) <= 9 else str(abs(n))
+    return f"{k} day{'s' * (abs(n) != 1)} {'before' if n > 0 else 'after'}" if n else "the day"
+
 add(f"""## The dry count runs ahead
 
 An out-of-stock flag appears in the annual archive before the price story turns.
 The count of station-fuel pairs flagged dry within 15 km peaked at **{peak}** on
-**{peak_day:%-d %B %Y}** — two days before the 2,250 € ceiling appeared — then
+**{peak_day:%-d %B %Y}** — {before(peak_day, cap_day)} the 2,250 € ceiling appeared — then
 fell back. It sits at {dh['all'][-1]} now.
 
 ![Out-of-stock flags within 15 km, over time]({v('dry.png')})

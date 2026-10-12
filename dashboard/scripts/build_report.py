@@ -6,6 +6,7 @@ Run from the repository root; render_html.py then embeds the JSON in the templat
 import csv, json, math, re, statistics
 from collections import defaultdict
 from datetime import date, timedelta
+from common import dry_series
 from config import (CAP_DAY, CENTER_LAT, CENTER_LON, CENTER_NAME, DIESEL_CAP,
                     DRY_WINDOW, PETROL_CAP, RADIUS_KM, START, TOTAL_GROUP)
 
@@ -50,8 +51,7 @@ for r in csv.DictReader(open("data/ruptures.csv")):
     RUPTURES[r["id"]][r["fuel"]] = r["debut"]
 
 # Every rupture interval, open or closed, to reconstruct the dry count on any
-# past day under the table's own rule: an outage counts while it is open, and
-# for at most DRY_WINDOW days after it began.
+# past day under the table's own rule (common.dry_series).
 INTERVALS = [(r["id"], r["fuel"], r["debut"], r["fin"])
              for r in csv.DictReader(open("data/rupture_hist.csv"))
              if r["fuel"] in FUELS]
@@ -217,17 +217,8 @@ d = START
 while d <= OBS_END:
     dry_days.append(d); d += timedelta(days=1)
 
-def dry_series(ids):
-    ids, out = set(ids), []
-    for d in dry_days:
-        iso, floor = d.isoformat(), (d - timedelta(days=DRY_WINDOW)).isoformat()
-        out.append(len(set((sid, fuel) for sid, fuel, debut, fin in INTERVALS
-                           if sid in ids and floor <= debut <= iso
-                           and (not fin or fin > iso))))
-    return out
-
-dry_table = dry_series([s["id"] for s in total_st + rival_st])
-dry_all = dry_series([s["id"] for s in stations])
+dry_table = dry_series(INTERVALS, dry_days, DRY_WINDOW, {s["id"] for s in total_st + rival_st})
+dry_all = dry_series(INTERVALS, dry_days, DRY_WINDOW, {s["id"] for s in stations})
 # non-Total stations that also sit exactly on the diesel ceiling
 cap_others = [{"brand": st["brand"] or "", "ville": st["ville"], "dist": st["dist"]}
               for st in stations

@@ -47,10 +47,9 @@ radius holds:
 
 ![Share of diesel stations posting exactly the ceiling price, by city](outputs/compare/figures/ceiling_share.png?v=ee385d9a)
 
-The dry count moves days ahead of the visible price story. Its all-time peak,
-in early April 2026, came two days before the ceiling first appeared:
+The dry count moves ahead of the visible price story. The dry share peaked in every city on 6 April 2026 (Castanet-Tolosan 32.2%, Lyon 21.7%, Gentilly 30.2%), two days before the ceiling first appeared:
 
-![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=b2469b67)
+![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=3bcc9323)
 
 <a id="castanet"></a>
 ## Castanet-Tolosan
@@ -207,19 +206,22 @@ coverage is still ramping and would show up as a fake price move.
 
 ## How to run
 
-    make          # fetch + report, holding the lock the benzine pipeline also takes
-    make fetch    # download one annual archive per year since 2025 + the instant feed
-    make report   # parse, aggregate, draw figures, rewrite README.md
-    make castanet # the Castanet deep-dive, from benzine's report_data.json
+    make           # fetch + every report below, under a lock
+    make fetch     # download one annual archive per year since 2025 + the instant feed
+    make report    # parse, aggregate, draw figures, rewrite README.md
+    make dashboard # dashboard/benzine-prices.html, the interactive Castanet dashboard
+    make castanet  # castanet/README.md, from the dashboard's report_data.json
+    make publish   # from a second checkout: rsync sources to the build host,
+                   # build, commit and push there, then fast-forward here
 
 The figures need matplotlib and Pillow (`make venv` creates `.venv` with both);
-the parsers run on the system Python with the standard library alone.
+the parsers and the dashboard run on the system Python with the standard library alone.
 
 ## Project layout
 
-    Makefile              refresh / fetch / report / castanet / venv
+    Makefile              refresh / fetch / report / dashboard / castanet / publish
     scripts/cities.py     the city list and shared constants
-    scripts/common.py     daily-row reader, carry-forward, distance (shared with benzine)
+    scripts/common.py     daily-row reader, carry-forward, dry count, distance
     scripts/extract.py, dump_daily.py, agg.py, capshare.py, ruptures.py, snapshot.py
                           one-pass parsers over the country-wide files
     scripts/osm_all.py, fetch_osm.py, brands.py
@@ -231,6 +233,7 @@ the parsers run on the system Python with the standard library alone.
     castanet/             that deep-dive and its figures
     scripts/tiles.py      OSM basemap tiles for the station maps
     scripts/build_readme.py  regenerates this README.md
+    dashboard/            the single-city HTML dashboard and its own scripts and data
     data/<city>/          per-city aggregates (tracked; raw XML is not)
     data/geo/tiles/       tile cache, gitignored — only the first build downloads
     work/                 raw downloads, gitignored

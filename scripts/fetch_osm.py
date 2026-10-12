@@ -9,8 +9,6 @@ the cache would wipe every brand. A partial answer cut off by the server's own
 timeout carries a "remark" and counts as a failure too. If every attempt fails and a previous answer
 is on disk, it is kept — brands change far more slowly than prices.
 
-The same file lives in benzine and benzinetudes; keep the two copies identical.
-
 Usage: fetch_osm.py <out.json> [lat] [lon] [radius_m]
 
 The defaults are Castanet-Tolosan with 500 m beyond the 15 km radius, so a

@@ -6,45 +6,41 @@ against the French mean.
 
 ## Running it
 
-    make            # remote + report + castanet: the daily rebuild
-    make local      # when poptiplex is unreachable: the heavy half on this Mac (~3 min)
-    make report     # rebuild the HTML from data/ alone
+The repository's top-level Makefile builds this dashboard with the rest:
 
-The annual archives are ~300 MB of XML each unzipped, so `make remote` runs
-`scripts/remote.sh` on **poptiplex** (`psenin@192.168.10.51`) and copies back
-only the aggregated CSVs. `make local` runs the same script in `work/`. There is
-one annual archive per year from 2025 on, picked up without edits. `make castanet`
-sends `data/report_data.json` to the benzinetudes checkout on poptiplex and
-renders its Castanet deep-dive there; commit and push happen in that repo.
-`./fetch.sh` still works and calls `make`. Nothing in this pipeline touches
-Sanofi infrastructure.
+    make dashboard       # parse the archives in work/dashboard/, then the HTML
+    make dashboard-html  # rebuild the HTML from data/ alone
+    make castanet        # castanet/README.md, the Markdown version of this report
+
+`make` at the top level downloads the archives once and builds every report.
+The annual archives are ~300 MB of XML each unzipped, so builds run on
+**poptiplex** (`psenin@192.168.10.51`); `make publish` from the Mac sends the
+sources there, builds, commits and pushes. The dashboard needs only the system
+Python, so off the LAN `make fetch dashboard` builds it on the Mac. Nothing in
+this pipeline touches Sanofi infrastructure.
 
 ## Layout
 
-    Makefile                 remote / local / report / castanet
-    fetch.sh                 calls make, for the habit
     report_template.html     the dashboard, with a /*__DATA__*/ placeholder
     benzine-prices.html      the built report (open this)
-    scripts/                 heavy half (remote.sh runs it on poptiplex or in work/)
+    scripts/                 parsers, run in work/dashboard/ over the shared downloads
       config.py              study area, dates, ceilings, brand groups
-      common.py              daily-row reader, carry-forward, distance (shared with benzinetudes)
-      remote.sh              download, then every step below down to fetch_osm.py
       extract.py             per-station price history within the radius
       merge_stations.py      one station list across the yearly files
-      dump_daily.py          whole-country daily last-price rows
       agg.py                 forward-filled daily means, national and local
       snapshot.py            today's price at each local station
       capshare.py            daily share of stations pinned at a ceiling
       ceilings_now.py        today's ceiling shares from the instant feed
       ruptures.py            stock-outage flags: open ones, plus every interval
                              (rupture_hist.csv) for the dry-count history
-      fetch_osm.py           Overpass query for OSM fuel stations
-    scripts/                 report half, on the Mac
-      brands.py              match stations to OSM brands
+    scripts/                 report half
       trend.py               local means split Total-group / other brands
       weekday.py             day-of-week effect
       build_report.py        CSVs -> data/report_data.json
       render_html.py         report_data.json + template -> benzine-prices.html
+    ../scripts/              shared with the three-city report: common.py (daily
+                             rows, carry-forward, dry count, distance),
+                             dump_daily.py, fetch_osm.py, brands.py
     tools/snapshot_churn.py  one-off: per-fuel reporting churn between two snapshots
     data/                    every intermediate the report reads
     !backups/                HTML snapshots before each version bump

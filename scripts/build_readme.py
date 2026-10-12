@@ -6,7 +6,7 @@ never serves a stale build.
 """
 import hashlib, json
 from datetime import date
-from cities import CITIES, CEILING_DAY
+from config import CITIES, CEILING, CEILING_DAY, DIESEL_CAP, RADIUS_KM
 
 def dry_peaks():
     """The sentence naming each city's peak dry share and its distance from the ceiling."""
@@ -52,18 +52,21 @@ summaries = {c["slug"]: json.load(open(f"data/{c['slug']}/summary.json")) for c 
 end = compare["end"]
 today = date.today().isoformat()
 
+KM = f"{RADIUS_KM:g} km"
+CAP = f"{DIESEL_CAP:.3f} €".replace(".", ",")
+
 L = []
 add = L.append
 
 add(f"""# Benzinetudes — the French fuel squeeze, city by city
 
-**Three places, one feed, one method. Diesel at every station within 15 km of
+**Three places, one feed, one method. Diesel at every station within {KM} of
 each centre, against the mean of all ~9,600 French stations, with
 TotalEnergies' price ceilings and the out-of-stock flags that precede them.**
 
 The data is the French government's `prix-carburants` open feed. Since March
 2026 it shows a squeeze: diesel jumped half a euro a litre inside that month,
-TotalEnergies holds a hard 2,250 € ceiling wherever the market runs above it,
+TotalEnergies holds a hard {CAP} ceiling wherever the market runs above it,
 and the count of pumps flagged dry keeps rising. This report tracks how that
 plays out in three settings — {", ".join(f"{c['name']} ({c['blurb']})" for c in CITIES)}.
 
@@ -85,7 +88,7 @@ the same one-method-many-cities idea to weather records.
 ![Map of France with the three cities marked]({v('outputs/compare/figures/locator_map.png')})
 """)
 
-add("| City | Stations (15 km) | Diesel €/L | vs France | 30 days | 12 months | At 2,250 € (30-day archive) | Fuel-pairs dry | Nearest 2,250 € pump |")
+add(f"| City | Stations ({KM}) | Diesel €/L | vs France | 30 days | 12 months | At {CAP} (30-day archive) | Fuel-pairs dry | Nearest {CAP} pump |")
 add("|---|---:|---:|---:|---:|---:|---:|---:|---|")
 for c in compare["cities"]:
     cap = c["capshares"].get("Gazole", {})
@@ -122,20 +125,20 @@ for c in CITIES:
     add(f"""<a id="{c['slug']}"></a>
 ## {s['name']}
 
-{s['n_stations']} stations lie within 15 km of {s['name']} ({c['blurb']});
+{s['n_stations']} stations lie within {KM} of {s['name']} ({c['blurb']});
 {s['n_now']} appear in the current snapshot. Diesel stands at
 **{s['diesel']:.3f} €/L** against a French mean of {s['diesel_nat']:.3f} —
 {sign(s['d30'])} over 30 days, {sign(s['d365'])} over a year.
-{cap.get('loc_pct', 0):.1f}% of its diesel stations posted exactly 2,250 €
+{cap.get('loc_pct', 0):.1f}% of its diesel stations posted exactly {CAP}
 within the last 30 days, and {s['dry_now']} station-fuel pairs
 ({s['dry_pct_now']:.1f}% of those active) are flagged dry.""")
     if near:
-        add(f"The nearest pump posting the 2,250 € ceiling right now is "
+        add(f"The nearest pump posting the {CAP} ceiling right now is "
             f"{near['km']:.1f} km away ({near['adresse'].title()}, {ville(near['ville'])}).")
     add(f"""
 ![{s['name']}: diesel and E10 price history against the French mean]({v(f"outputs/{c['slug']}/figures/prices.png")})
 
-![{s['name']}: map of stations within 15 km]({v(f"outputs/{c['slug']}/figures/stations_map.png")})
+![{s['name']}: map of stations within {KM}]({v(f"outputs/{c['slug']}/figures/stations_map.png")})
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -149,7 +152,7 @@ so a dash never proves the fuel is missing:
         for f in ("Gazole", "E10", "SP98"):
             x = p[f]
             cells.append("—" if x is None else
-                         (f"**{x:.3f}**" if abs(x - (2.25 if f == "Gazole" else 1.99)) < 1e-9
+                         (f"**{x:.3f}**" if abs(x - CEILING[f]) < 1e-9
                           else f"{x:.3f}"))
         dry = ", ".join(r["dry"]) if r["dry"] else ""
         add(f"| {r['dist']:.2f} | {r['brand'] or '?'} | {r['adresse'].title()}, {ville(r['ville'])} "
@@ -208,7 +211,7 @@ coverage is still ramping and would show up as a fake price move.
     make dashboard # dashboard/benzine-prices.html, the interactive Castanet dashboard
     make castanet  # castanet/README.md, from the dashboard's report_data.json
     make publish   # from a second checkout: rsync sources to the build host,
-                   # build, commit and push there, then fast-forward here
+                   # build, commit and push there, then reset here to the pushed commit
 
 The figures need matplotlib and Pillow (`make venv` creates `.venv` with both);
 the parsers and the dashboard run on the system Python with the standard library alone.
@@ -216,7 +219,7 @@ the parsers and the dashboard run on the system Python with the standard library
 ## Project layout
 
     Makefile              refresh / fetch / report / dashboard / castanet / publish
-    scripts/cities.py     the city list and shared constants
+    scripts/config.py     every constant: cities, dates, ceilings, brand groups
     scripts/common.py     daily-row reader, carry-forward, dry count, distance
     scripts/extract.py, dump_daily.py, agg.py, capshare.py, ruptures.py, snapshot.py
                           one-pass parsers over the country-wide files

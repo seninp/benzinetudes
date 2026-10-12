@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
-"""Compute everything the report shows, from the CSVs in data/, into data/report_data.json.
+"""Compute everything the report shows, from the CSVs in data/ and the shared
+../data/, into data/report_data.json.
 
-Run from the repository root; render_html.py then embeds the JSON in the template.
+Run from dashboard/; render_html.py then embeds the JSON in the template.
 """
 import csv, json, math, re, statistics
 from collections import defaultdict
 from datetime import date, timedelta
 from common import dry_series
-from config import (CAP_DAY, CENTER_LAT, CENTER_LON, CENTER_NAME, DIESEL_CAP,
+from config import (CEILING_DAY, CENTER_LAT, CENTER_LON, CENTER_NAME, DIESEL_CAP,
                     DRY_WINDOW, PETROL_CAP, RADIUS_KM, START, TOTAL_GROUP)
 
+# Castanet's aggregates come from the three-city pipeline (../data/castanet/);
+# data/ holds only what the dashboard derives on its own.
+SHARED, CITY = "../data", "../data/castanet"
+
 # Last day present in the aggregated series (agg.py runs it through fetch day).
-END = max(date.fromisoformat(r["day"]) for r in csv.DictReader(open("data/nat_daily.csv")))
+END = max(date.fromisoformat(r["day"]) for r in csv.DictReader(open(f"{SHARED}/nat_daily.csv")))
 # Last day the archive actually observed. Every measurement — trend windows, the dry
 # count, any comparison — must end here, never on END: the days between are
 # forward-filled, so a carried-forward price would count as a reading.
-OBS_END = date.fromisoformat(open("data/archive_end.txt").read().strip())
+OBS_END = date.fromisoformat(open(f"{SHARED}/archive_end.txt").read().strip())
 FUELS = ["Gazole", "E10", "SP98", "SP95", "E85", "GPLc"]
 LABEL = {"Gazole": "Diesel (Gazole)", "E10": "Petrol E10 (SP95-E10)",
          "SP98": "Petrol SP98", "SP95": "Petrol SP95", "E85": "Superethanol E85",
@@ -30,8 +35,8 @@ def load(path):
             n[r["fuel"]][d] = int(r["n_stations"])
     return s, n
 
-loc, loc_n = load("data/loc_daily.csv")
-nat, nat_n = load("data/nat_daily.csv")
+loc, loc_n = load(f"{CITY}/loc_daily.csv")
+nat, nat_n = load(f"{SHARED}/nat_daily.csv")
 
 days = []
 d = START
@@ -41,19 +46,19 @@ while d <= END:
 def series(src, fuel):
     return [round(src[fuel][d], 4) if d in src[fuel] else None for d in days]
 
-BRANDS = {r["id"]: r for r in csv.DictReader(open("data/brands.csv"))}
+BRANDS = {r["id"]: r for r in csv.DictReader(open(f"{CITY}/brands.csv"))}
 RIVALS = ("Intermarché", "Super U")
 
 # Open stock outages from the annual archive (the instant feed carries none).
 # A flag older than DRY_WINDOW days means "stopped selling that fuel", not "dry".
 RUPTURES = defaultdict(dict)
-for r in csv.DictReader(open("data/ruptures.csv")):
+for r in csv.DictReader(open(f"{CITY}/ruptures.csv")):
     RUPTURES[r["id"]][r["fuel"]] = r["debut"]
 
 # Every rupture interval, open or closed, to reconstruct the dry count on any
 # past day under the table's own rule (common.dry_series).
 INTERVALS = [(r["id"], r["fuel"], r["debut"], r["fin"])
-             for r in csv.DictReader(open("data/rupture_hist.csv"))
+             for r in csv.DictReader(open(f"{CITY}/rupture_hist.csv"))
              if r["fuel"] in FUELS]
 
 def bearing(lat, lon):
@@ -80,7 +85,7 @@ def frtown(s):
                               for p in parts[1:])
 
 stations = []
-for r in csv.DictReader(open("data/stations_now.csv")):
+for r in csv.DictReader(open(f"{CITY}/stations_now.csv")):
     # Stations posting nothing today stay in; the table shows them as silent.
     prices = {f: (float(r[f]) if r[f] else None) for f in FUELS}
     b = BRANDS.get(r["id"], {})
@@ -120,7 +125,7 @@ cap_days, cap_nat, cap_loc = [], [], []
 # ran 3x the length of `days`, so the chart plotted three interleaved fuels against a
 # day axis and the findings quoted the last row of the file — SP98 — as the diesel share.
 cap_by_day = {}
-for r in csv.DictReader(open("data/capshare.csv")):
+for r in csv.DictReader(open(f"{CITY}/capshare.csv")):
     d = date.fromisoformat(r["day"])
     if r["fuel"] != "Gazole" or not (START <= d <= END):
         continue
@@ -159,7 +164,7 @@ def shares(n, a, b):
 
 
 arch, cap_hist = {}, {}
-for r in csv.DictReader(open("data/capshare.csv")):
+for r in csv.DictReader(open(f"{CITY}/capshare.csv")):
     d = date.fromisoformat(r["day"])
     nn, na, nb = int(r["nat_n"]), int(r["nat_cap"]), int(r["nat_below"])
     ln, la, lb = int(r["loc_n"]), int(r["loc_cap"]), int(r["loc_below"])
@@ -181,15 +186,15 @@ for f, v in arch.items():
 # "at". The local Total-group series is the direct evidence: their diesel maximum
 # is exactly 2,250 EUR on every day from 7 April on, and when the market fell back
 # in April and June they went below the cap again rather than sitting on it.
-cap_story = {"day": CAP_DAY.isoformat(),
-             "before": cap_hist.get(CAP_DAY - timedelta(days=1)),
-             "after": cap_hist.get(CAP_DAY),
+cap_story = {"day": CEILING_DAY.isoformat(),
+             "before": cap_hist.get(CEILING_DAY - timedelta(days=1)),
+             "after": cap_hist.get(CEILING_DAY),
              "now": cap_hist.get(END),
              "trough": None}
 # The month when the cap bound on almost nobody, which is the cleanest proof that it
 # is a cap and not a floor: in June diesel fell and the 2,250 cluster emptied out.
 if cap_hist:
-    tr = min((d for d in cap_hist if d >= CAP_DAY and cap_hist[d]["nat"]),
+    tr = min((d for d in cap_hist if d >= CEILING_DAY and cap_hist[d]["nat"]),
              key=lambda d: cap_hist[d]["nat"]["at"], default=None)
     if tr:
         cap_story["trough"] = {"day": tr.isoformat(), **cap_hist[tr]["nat"]}
@@ -245,7 +250,12 @@ castanet_in_town = bool(in_town)
 SHORT = {"Gazole": "diesel", "E10": "E10", "SP98": "SP98", "SP95": "SP95",
          "E85": "E85", "GPLc": "LPG"}
 EXAMPLE_ID = "31300008"
-ex_st = next(s for s in stations if s["id"] == EXAMPLE_ID)
+# A station missing from today's instant feed posts nothing and flags nothing; take
+# its distance from the archive's station list so the build goes on.
+ex_st = next((s for s in stations if s["id"] == EXAMPLE_ID), None) or {
+    "dist": next(float(r["dist_km"]) for r in csv.DictReader(open(f"{CITY}/stations.csv"))
+                 if r["id"] == EXAMPLE_ID),
+    "prices": dict.fromkeys(FUELS), "dry": []}
 
 
 def delta(fuel, back):
@@ -316,7 +326,7 @@ for fuel in TREND_FUELS:
         # band whose top was already below the price printed in the tile beside it.
         # Compute them, over the life of the series and since the cap arrived.
         hist = {d: v for d, v in src[fuel].items() if d <= OBS_END}
-        for tag2, floor in (("all", START), ("since_cap", CAP_DAY)):
+        for tag2, floor in (("all", START), ("since_cap", CEILING_DAY)):
             h = {d: v for d, v in hist.items() if d >= floor}
             if not h:
                 continue
@@ -570,7 +580,7 @@ DATA = {
                        "brand": castanet["brand"], "maj": castanet["maj"],
                        "ville": castanet["ville"], "adresse": castanet["adresse"]},
           "save": round(castanet["prices"]["Gazole"] - CAP, 3),
-          "since": CAP_DAY.isoformat()},
+          "since": CEILING_DAY.isoformat()},
 }
 open("data/report_data.json", "w").write(json.dumps(DATA, separators=(",", ":")))
 print(f"days={len(days)} stations={len(stations)} months={len(monthly)}")

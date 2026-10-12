@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import numpy as np
 import tiles
-from cities import CITIES, CEILING, RADIUS_KM
+from config import CITIES, CEILING, RADIUS_KM
 
 compare = json.load(open("data/compare.json"))
 days = [date.fromisoformat(d) for d in compare["days"]]

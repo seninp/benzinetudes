@@ -8,8 +8,8 @@ against the French mean.
 
 The repository's top-level Makefile builds this dashboard with the rest:
 
-    make dashboard       # parse the archives in work/dashboard/, then the HTML
-    make dashboard-html  # rebuild the HTML from data/ alone
+    make dashboard       # the shared parse, the price posts, then the HTML
+    make dashboard-html  # rebuild the HTML from the parsed data alone
     make castanet        # castanet/README.md, the Markdown version of this report
 
 `make` at the top level downloads the archives once and builds every report.
@@ -23,26 +23,21 @@ this pipeline touches Sanofi infrastructure.
 
     report_template.html     the dashboard, with a /*__DATA__*/ placeholder
     benzine-prices.html      the built report (open this)
-    scripts/                 parsers, run in work/dashboard/ over the shared downloads
-      config.py              study area, dates, ceilings, brand groups
-      extract.py             per-station price history within the radius
-      merge_stations.py      one station list across the yearly files
-      agg.py                 forward-filled daily means, national and local
-      snapshot.py            today's price at each local station
-      capshare.py            daily share of stations pinned at a ceiling
+    scripts/                 run in dashboard/
+      extract.py             every timestamped price post within the radius
       ceilings_now.py        today's ceiling shares from the instant feed
-      ruptures.py            stock-outage flags: open ones, plus every interval
-                             (rupture_hist.csv) for the dry-count history
-    scripts/                 report half
       trend.py               local means split Total-group / other brands
       weekday.py             day-of-week effect
       build_report.py        CSVs -> data/report_data.json
       render_html.py         report_data.json + template -> benzine-prices.html
-    ../scripts/              shared with the three-city report: common.py (daily
-                             rows, carry-forward, dry count, distance),
-                             dump_daily.py, fetch_osm.py, brands.py
+    ../scripts/              shared with the three-city report: config.py (every
+                             constant), common.py (daily rows, carry-forward,
+                             dry count, distance), dump_daily.py, fetch_osm.py,
+                             brands.py
     tools/snapshot_churn.py  one-off: per-fuel reporting churn between two snapshots
-    data/                    every intermediate the report reads
+    data/                    price posts and the report's own intermediates; the
+                             Castanet aggregates, brands and outages come from
+                             ../data/castanet/, shared with the three-city report
     !backups/                HTML snapshots before each version bump
 
 ## Source

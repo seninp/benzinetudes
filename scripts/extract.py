@@ -6,7 +6,7 @@ Writes data/<slug>/stations.csv sorted by distance.
 """
 import csv, os, sys
 import xml.etree.ElementTree as ET
-from cities import CITIES, RADIUS_KM
+from config import CITIES, RADIUS_KM
 from common import haversine_km
 
 def main(*xml_paths):

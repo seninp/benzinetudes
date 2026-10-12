@@ -11,7 +11,7 @@ rupture_hist.csv (every interval, open or closed, for the dry-count history).
 """
 import csv, sys
 import xml.etree.ElementTree as ET
-from cities import CITIES
+from config import CITIES
 
 def main(*xml_paths):
     subs = {}

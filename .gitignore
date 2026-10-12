@@ -4,3 +4,7 @@ __pycache__/
 *.pyc
 data/geo/tiles/
 .claude/
+.DS_Store
+*.log
+*.swp
+nohup.out

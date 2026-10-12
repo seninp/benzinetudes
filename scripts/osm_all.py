@@ -5,7 +5,7 @@ A response younger than 30 days is reused — brands change slowly, and the
 public Overpass endpoints buckle under repeated big queries.
 """
 import os, sys, time
-from cities import CITIES, RADIUS_KM
+from config import CITIES, RADIUS_KM
 import fetch_osm, brands
 
 for i, c in enumerate(CITIES):

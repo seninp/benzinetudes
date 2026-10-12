@@ -59,8 +59,9 @@ def run(brands_csv, archive_end_path, out_csv, *px_paths):
                             round(o[0] / o[1], 4) if o[1] >= MIN_STATIONS else "", o[1], round(o[2], 4)])
     last = max(agg["Gazole"])
     t, o = agg["Gazole"][last]["total"], agg["Gazole"][last]["other"]
+    mean = lambda c: f"{c[0] / c[1]:.3f}" if c[1] else "-"
     print(f"{out_csv}: through {last}; diesel {t[1]} Total-group stations "
-          f"at {t[0]/t[1]:.3f} against {o[1]} others at {o[0]/o[1]:.3f}", file=sys.stderr)
+          f"at {mean(t)} against {o[1]} others at {mean(o)}", file=sys.stderr)
 
 
 if __name__ == "__main__":

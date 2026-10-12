@@ -8,7 +8,7 @@ The archives are downloaded fresh at run time, so the series runs to today.
 import csv, sys
 from collections import defaultdict
 from datetime import date
-from cities import CITIES, MIN_STATIONS, STALE_DAYS
+from config import CITIES, MIN_STATIONS, STALE_DAYS
 from common import carry_forward, read_daily
 
 def main(daily_csv):

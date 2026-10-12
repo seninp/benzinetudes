@@ -17,7 +17,7 @@ from datetime import date
 from style import BASE, CRITICAL, MUTED, NAT, SECOND, arr, end_label, save, style
 import matplotlib.pyplot as plt
 import numpy as np
-from cities import CEILING, CITIES
+from config import CEILING, CITIES
 
 CAST = CITIES[0]["color"]             # Castanet's colour in the three-city report
 FREE = "#eb6834"                      # the free (uncapped) cohort
@@ -69,7 +69,7 @@ fig, ax = plt.subplots(figsize=(9.5, 4.4))
 ax.plot(sdays, oth, color=FREE, lw=2, label="every other brand")
 ax.plot(sdays, tot, color=CAST, lw=2, label="Total-group (TotalEnergies, Total Access)")
 ax.axhline(sp["level"], color=BASE, lw=1, ls=":")
-ax.annotate("2,250 € ceiling", (sdays[300], sp["level"]), xytext=(0, 5),
+ax.annotate("2,250 € ceiling", (sdays[min(300, len(sdays) - 1)], sp["level"]), xytext=(0, 5),
             textcoords="offset points", color=MUTED, fontsize=9)
 tl = tot[~np.isnan(tot)]; ol = oth[~np.isnan(oth)]
 end_label(ax, sdays[-1], tl[-1], f"{tl[-1]:.3f}", CAST)

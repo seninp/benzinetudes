@@ -1,4 +1,5 @@
-"""The cities and shared constants of benzinetudes.
+"""Every constant of both reports: study areas, dates, ceilings, brand groups.
+Change them here, nowhere else.
 
 Zurich was asked for and is absent deliberately: Switzerland publishes no
 station-level fuel-price open data (no French-style transparency mandate),
@@ -13,7 +14,9 @@ MIN_STATIONS = 3            # a day enters a mean only where this many stations 
 DRY_WINDOW = 30             # an outage counts while open, at most 30 days after debut
 FUELS = ("Gazole", "SP95", "SP98", "E10", "E85", "GPLc")
 CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990}   # TotalEnergies' caps
+DIESEL_CAP, PETROL_CAP = CEILING["Gazole"], CEILING["E10"]
 CEILING_DAY = date(2026, 4, 8)   # the diesel ceiling first appeared
+TOTAL_GROUP = ("TotalEnergies", "Total Access", "Élan (TotalEnergies)")
 
 CITIES = [
     dict(slug="castanet", name="Castanet-Tolosan", lat=43.5161, lon=1.5000,
@@ -23,3 +26,7 @@ CITIES = [
     dict(slug="gentilly", name="Gentilly", lat=48.8133, lon=2.3444,
          color="#1baf7a", blurb="just south of the Paris périphérique; the radius covers most of Paris"),
 ]
+
+# the dashboard covers the first city alone
+CENTER_NAME = "Castanet-Tolosan (31320)"
+CENTER_LAT, CENTER_LON = CITIES[0]["lat"], CITIES[0]["lon"]

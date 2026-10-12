@@ -3,7 +3,7 @@
 import csv, sys
 import xml.etree.ElementTree as ET
 
-FUELS = ("Gazole", "SP95", "SP98", "E10", "E85", "GPLc")
+from config import FUELS
 
 def run(xml_path, out_csv):
     n = 0

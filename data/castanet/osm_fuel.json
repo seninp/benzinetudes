@@ -2,7 +2,7 @@
   "version": 0.6,
   "generator": "Overpass API 0.7.62.11 87bfad18",
   "osm3s": {
-    "timestamp_osm_base": "2026-09-18T18:46:48Z",
+    "timestamp_osm_base": "2026-10-12T02:17:03Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -678,7 +678,7 @@
     "name": "TotalEnergies Access",
     "opening_hours": "24/7",
     "phone": "+33 5 34 30 11 87",
-    "ref:FR:prix-carburants": "31000016",
+    "ref:FR:prix-carburants": "31000004",
     "shop": "convenience;gas",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 08/04/2018;www.prix-carburants.gouv.fr"
   }
@@ -692,6 +692,7 @@
     "amenity": "fuel",
     "brand": "Total",
     "brand:wikidata": "Q154037",
+    "changing_table": "no",
     "check_date": "2025-01-02",
     "compressed_air": "no",
     "contact:housenumber": "151",
@@ -1032,8 +1033,8 @@
 {
   "type": "node",
   "id": 11009665969,
-  "lat": 43.5312189,
-  "lon": 1.5344764,
+  "lat": 43.5311826,
+  "lon": 1.5344657,
   "tags": {
     "amenity": "fuel",
     "brand": "TotalEnergies",
@@ -1046,6 +1047,7 @@
     "old_name": "Kaï",
     "opening_hours": "24/7",
     "phone": "+33 5 53 89 89 73",
+    "ref:FR:SIRET": "32495819801675",
     "ref:FR:prix-carburants": "31670001",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 03/2020",
     "vending": "fuel",
@@ -1219,11 +1221,13 @@
   },
   "tags": {
     "amenity": "fuel",
-    "brand": "Total Access",
+    "brand": "TotalEnergies",
     "brand:wikidata": "Q154037",
     "brand:wikipedia": "fr:Total (entreprise)",
     "building": "yes",
     "compressed_air": "yes",
+    "contact:housenumber": "6",
+    "contact:street": "Avenue du Groupe Morhange",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
     "fuel:e85": "yes",
@@ -1232,6 +1236,7 @@
     "name": "Rocade Purpan",
     "opening_hours": "24/7",
     "phone": "+33 5 61 16 81 00",
+    "ref:FR:SIRET": "30691609901962",
     "ref:FR:prix-carburants": "31300008",
     "shop": "convenience",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 22/10/2016",
@@ -1315,7 +1320,9 @@
     "brand:wikidata": "Q154037",
     "brand:wikipedia": "fr:Total (entreprise)",
     "building": "yes",
-    "check_date": "2025-01-23",
+    "check_date": "2026-09-28",
+    "check_date:compressed_air": "2026-09-28",
+    "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
     "fuel:e85": "yes",

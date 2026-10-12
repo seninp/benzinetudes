@@ -6,7 +6,7 @@ and out of the instant feed per fuel and always come back at the ceiling.
 """
 import csv, sys
 import xml.etree.ElementTree as ET
-from cities import CITIES, FUELS
+from config import CITIES, FUELS
 
 def main(instant_xml):
     metas = {}

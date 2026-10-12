@@ -29,9 +29,9 @@ the same one-method-many-cities idea to weather records.
 
 | City | Stations (15 km) | Diesel €/L | vs France | 30 days | 12 months | At 2,250 € (30-day archive) | Fuel-pairs dry | Nearest 2,250 € pump |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| [Castanet-Tolosan](#castanet) | 110 | **2.325** | -0.023 | +0.029 | +0.698 | 28.4% (19/67) | 78 (29.4%) | 3.2 km (Ramonville Saint Agne) |
+| [Castanet-Tolosan](#castanet) | 110 | **2.325** | -0.023 | +0.029 | +0.698 | 28.4% (19/67) | 78 (29.2%) | 3.2 km (Ramonville Saint Agne) |
 | [Lyon](#lyon) | 238 | **2.361** | +0.013 | +0.024 | +0.719 | 27.9% (34/122) | 71 (15.9%) | 2.5 km (Lyon) |
-| [Gentilly](#gentilly) | 660 | **2.378** | +0.030 | +0.024 | +0.658 | 39.8% (100/251) | 137 (15.6%) | 1.2 km (Paris) |
+| [Gentilly](#gentilly) | 660 | **2.378** | +0.030 | +0.024 | +0.658 | 39.8% (100/251) | 137 (15.5%) | 1.2 km (Paris) |
 
 <sub>France mean diesel on 2026-10-12: **2.348 €/L**. "Fuel-pairs
 dry" counts station-fuel combinations flagged out of stock, under the rule used
@@ -49,7 +49,7 @@ radius holds:
 
 The dry count moves ahead of the visible price story. The dry share peaked in every city on 6 April 2026 (Castanet-Tolosan 32.2%, Lyon 21.7%, Gentilly 30.2%), two days before the ceiling first appeared:
 
-![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=3bcc9323)
+![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=d231b5da)
 
 <a id="castanet"></a>
 ## Castanet-Tolosan
@@ -60,7 +60,7 @@ The dry count moves ahead of the visible price story. The dry share peaked in ev
 +0.029 over 30 days, +0.698 over a year.
 28.4% of its diesel stations posted exactly 2,250 €
 within the last 30 days, and 78 station-fuel pairs
-(29.4% of those active) are flagged dry.
+(29.2% of those active) are flagged dry.
 The nearest pump posting the 2,250 € ceiling right now is 3.2 km away (98 Avenue Tolosane, Ramonville Saint Agne).
 
 ![Castanet-Tolosan: diesel and E10 price history against the French mean](outputs/castanet/figures/prices.png?v=1b97d530)
@@ -134,7 +134,7 @@ so a dash never proves the fuel is missing:
 +0.024 over 30 days, +0.658 over a year.
 39.8% of its diesel stations posted exactly 2,250 €
 within the last 30 days, and 137 station-fuel pairs
-(15.6% of those active) are flagged dry.
+(15.5% of those active) are flagged dry.
 The nearest pump posting the 2,250 € ceiling right now is 1.2 km away (27 Avenue De La Porte D'Italie, Paris).
 
 ![Gentilly: diesel and E10 price history against the French mean](outputs/gentilly/figures/prices.png?v=fba59e99)
@@ -212,7 +212,7 @@ coverage is still ramping and would show up as a fake price move.
     make dashboard # dashboard/benzine-prices.html, the interactive Castanet dashboard
     make castanet  # castanet/README.md, from the dashboard's report_data.json
     make publish   # from a second checkout: rsync sources to the build host,
-                   # build, commit and push there, then fast-forward here
+                   # build, commit and push there, then reset here to the pushed commit
 
 The figures need matplotlib and Pillow (`make venv` creates `.venv` with both);
 the parsers and the dashboard run on the system Python with the standard library alone.
@@ -220,7 +220,7 @@ the parsers and the dashboard run on the system Python with the standard library
 ## Project layout
 
     Makefile              refresh / fetch / report / dashboard / castanet / publish
-    scripts/cities.py     the city list and shared constants
+    scripts/config.py     every constant: cities, dates, ceilings, brand groups
     scripts/common.py     daily-row reader, carry-forward, dry count, distance
     scripts/extract.py, dump_daily.py, agg.py, capshare.py, ruptures.py, snapshot.py
                           one-pass parsers over the country-wide files

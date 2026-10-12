@@ -8,7 +8,7 @@ turn and the first *recognised* one wins, rather than the first non-empty one.
 
 Usage: brands.py <osm_fuel.json> <stations_now.csv> <out.csv>
 """
-import csv, json, sys
+import csv, json, re, sys
 from common import haversine_km
 
 MATCH_M = 250          # a prix-carburants station and an OSM node this close are the same site
@@ -29,6 +29,7 @@ PATTERNS = [
     ("carrefour",      "Carrefour"),
     ("intermarche",    "Intermarché"),
     ("leclerc",        "E.Leclerc"),
+    ("eleclerc",       "E.Leclerc"),   # "E.Leclerc" once fold drops the dot
     ("auchan",         "Auchan"),
     ("super u",        "Super U"),
     ("station u",      "Super U"),
@@ -58,9 +59,10 @@ def recognise(s):
     k = fold(s)
     if not k:
         return None
-    # longest pattern first, so "total access" beats "total"
+    # longest pattern first, so "total access" beats "total"; whole words only,
+    # so "eni" does not match "venise" nor "cora" "decoration"
     for pat, out in sorted(PATTERNS, key=lambda p: -len(p[0])):
-        if pat in k:
+        if re.search(rf"\b{re.escape(pat)}\b", k):
             return out
     return None
 

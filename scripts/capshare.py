@@ -7,7 +7,7 @@ Writes data/<slug>/capshare.csv with the national columns repeated in each file.
 import csv, sys
 from collections import defaultdict
 from datetime import date
-from cities import CITIES, CEILING, STALE_DAYS
+from config import CITIES, CEILING, STALE_DAYS
 from common import carry_forward, read_daily
 
 END = date.today()   # archives are downloaded fresh at run time

@@ -18,6 +18,7 @@ The defaults are Castanet-Tolosan with 500 m beyond the 15 km radius, so a
 station just inside the radius still finds an OSM feature just outside it.
 """
 import json, os, sys, time, urllib.parse, urllib.request
+from config import CENTER_LAT, CENTER_LON, RADIUS_KM
 
 ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
@@ -25,7 +26,7 @@ ENDPOINTS = [
     "https://overpass.private.coffee/api/interpreter",
 ]
 
-def main(out, lat="43.5161", lon="1.5000", radius="15500"):
+def main(out, lat=str(CENTER_LAT), lon=str(CENTER_LON), radius=str(int(RADIUS_KM * 1000 + 500))):
     q = (f"[out:json][timeout:120];\n(\n"
          f"  node[amenity=fuel](around:{radius},{lat},{lon});\n"
          f"  way[amenity=fuel](around:{radius},{lat},{lon});\n"

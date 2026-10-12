@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="version" content="1.10">
+<meta name="last-updated" content="2026-09-27">
+<!-- Changelog
+  1.10 (2026-09-27) Data refreshed: the archive's observations run through 26 September, the series
+      is forward-filled to the 27th, and the station snapshot is this morning's, 03:50. Local
+      diesel eased to 2,367 EUR/L from 2,380, +13,9 c over 30 days and +72,1 c over the year,
+      2,04 c below the French mean of 2,388 - the widest the local discount has been in this
+      series' recent run (1,40 c on the 24th).
+      The local squeeze and the national one moved in opposite directions, which is the refresh's
+      one real finding. Locally, every open diesel outage on a ceiling station closed: v1.9 showed
+      11 local stations at 2,250 EUR with 2 dry, and this build shows 9 with none. The three
+      stations whose diesel a 24 September snapshot flagged dry - Portet Croix Falgarde,
+      Labarthe-sur-Leze and Toulouse Route d'Albi - are all back in stock and all three post the
+      ceiling. Nationally the instant feed thinned: stations posting diesel fell from 8,986 to
+      8,832, and the share at exactly 2,250 EUR fell with it, 17,7% to 16,3%, with E10 at 1,990 EUR
+      going 16,2% to 14,2% and SP98 12,0% to 9,6%. The archive shares, which do not depend on who
+      reported that day, are unmoved at 22,5% national and 33,8% local for diesel, so the national
+      fall is reporting, not pricing.
+      The ceiling roster rotates by silence, not by price. Six stations left the 2,250 EUR list
+      since the 24th and four joined; not one of the six raised its diesel above the ceiling -
+      every one of them stopped posting a diesel price at all. Both non-Total stations on the
+      24th's list (the Balma Esso Express and an unbranded Toulouse site) went silent the same way,
+      so cap_others is empty and finding 3 now reads "all 9 local stations on the ceiling are
+      Total-group". Total-group counts are unchanged: 9 of 21 post diesel, all 9 at the ceiling.
+      Petrol outages are spreading among those same stations even as diesel recovered - 5 of the 9
+      now flag E10 dry, all since the 24th - which is worth watching next refresh.
+      Fixed a stale hardcode in finding 5. The worked example asserted in the present tense that
+      station 31300008 "reports only diesel, E85 and LPG"; that list was frozen in build_report.py
+      from a 15 September observation, and this refresh falsified it - the station now posts E10 at
+      1,990 EUR as well. The reported-fuel list and the outage clause are now read from the live
+      snapshot, and the finding carries a guard that flags the example as history if the station
+      ever starts posting SP98 again, since the whole point of the example is that it sold SP98
+      without reporting it. The SP98 sale itself stays hardcoded: it is a dated observation, not a
+      fact about today's feed.
+      The nearest in-stock ceiling station is unchanged - Ramonville, 98 avenue Tolosane, 3,17 km,
+      updated 00:01 today - and the saving against the Castanet-Tolosan Intermarche is still
+      12,9 c/L, about 8 EUR a tank. The Intermarche's own rank moved: 36 of the 56 stations posting
+      diesel are dearer than its 2,379 EUR, against 37 of 58 on the 24th, and it now sits 3,0 c
+      below the local median rather than 4,9 c, because the median itself fell from 2,428 to 2,409.
+      v1.9's forward-fill caveat held again: it warned that the 24th's dry count of 46 was carried
+      over from the 23rd and should not be read, and with the archive's own observations the 24th
+      is 44. The count then rose to 48 on the 25th and 49 on the 26th. The caveat now applies to
+      the 27th, which repeats the 26th's 49.
+  1.9 (2026-09-24) Data refreshed: the archive's observations run through 23 September, the series
+      is forward-filled to the 24th, and the station snapshot is this morning's. Local diesel is
+      flat at 2,380 EUR/L, +12,3 c over 30 days and +74,1 c over the year, 1,40 c below the French
+      mean of 2,394. The September squeeze has eased on every count: 9 of the 21 Total-group
+      stations post diesel against 4 on the 21st, 58 local stations post diesel against 51, the
+      snapshot share of French stations at exactly 2,250 EUR is back to 17,7% from 13,6%, E10 at
+      1,990 EUR to 16,2% from 9,9% and SP98 to 12,0% from 7,3%. The dry count in the
+      Total/rivals table peaked at 62 on 20 September and reads 46 for the 23rd. The Ramonville
+      Total (98 avenue Tolosane, 3,17 km), dry since 15 September, posts the ceiling again with no
+      outage flag, so the nearest ceiling station comes back in from 8,76 km to 3,17 km - 12,9 c/L
+      below the nearest pump, about 8 EUR a tank.
+      The ceiling-share chart was wrong, and had been since v1.1. capshare.csv carries one row per
+      day and fuel (E10, Gazole, SP98), and build_report.py read every row, so cap.loc and cap.nat
+      came out 1,854 long against 618 days. The chart helper takes the *last* N values, so the
+      panel titled "share of diesel-posting stations at exactly 2,250 EUR" actually plotted the
+      last 206 days of three interleaved fuels stretched across a 618-day axis; the 7-day mean
+      smoothed the sawtooth into a plausible-looking curve, which is why it survived eight
+      versions. The findings took the same arrays' last element - the last row of the file, SP98 -
+      and printed it as the diesel share, which is why they read "31% of local stations against
+      22% of French ones" while quoting a diesel ceiling. The series is now filtered to Gazole and
+      aligned to the day axis, and the findings take the last non-null value. The diesel shares
+      are 34% local and 22% French, matching the archive shares computed independently elsewhere
+      in the same file (33,8% and 22,5%). The corrected chart shows the ceiling arriving on
+      8 April (0,96% to 14,6% nationally), gone through June, and back now.
+      One nearby number is NOT a mistake, for the benefit of the next reader: finding 2's jump
+      "from 1,5% to 25%" counts only stations that posted that day (1,5% to 25,2%, with the share
+      below falling to 1,2%), while the chart counts every station with a live price carried
+      forward. The two measures differ by design; the finding describes an overnight move, so the
+      same-day measure is the right one.
+      Three further fixes, all in finding 6. First, the dry
+      clause fired on the count of dry ceiling stations but asserted that the nearest was one of
+      them; with the nearest back in stock it rendered "dry since NaN undefined" and then
+      contradicted itself two sentences later. The count and the "including the nearest" clause are
+      now guarded separately. Second, the finding called the nearest pump "one of the dearest" in
+      hard-coded prose. The Castanet-Tolosan Intermarche cut diesel from 2,429 to 2,379 EUR, which
+      leaves 37 of the 58 stations posting diesel dearer than it and puts it 4,9 c below the local
+      median; the finding now states that rank rather than an adjective that the data has to keep
+      earning. Third, the same finding called the ceiling "twice as common here as nationally"
+      while printing the two shares beside it; on the corrected diesel figures that ratio is 1,5,
+      and on the figures it used to print it was 1,4, so the claim was wrong before this refresh
+      too. It now says "more common" and lets the two percentages carry the size.
+      v1.8's forward-fill caveat held: it warned that the 21st's dry count of 62 was
+      carried over and should not be read, and with the archive's own observations the 21st is 52.
+      The caveat now applies to the 24th, which repeats the 23rd's 46.
+  1.8 (2026-09-21) Data refreshed: the archive's observations now run through 20 September, the
+      series is forward-filled to the 21st, and the station snapshot is this morning's, 06:20.
+      Local diesel holds at 2,379 EUR/L, +12,4 c over 30 days and +73,9 c over the year, 1,79 c
+      below the French mean. Two corrections. First, the findings picked the nearest station
+      posting the 2,250 EUR ceiling by price alone - the fault v1.4 fixed in the station table and
+      left here. Today that names the Saint-Orens-de-Gameville Total, 5,09 km, whose diesel has
+      been flagged out of stock since 19 September. The pick now skips open diesel outages, and
+      the finding gives both: 2 of the 4 local stations on the ceiling are dry, and the nearest
+      without a flag is 8,76 km away at 10 Boulevard de Thibaud, Toulouse. Second, v1.7 called the
+      archive's last day partial because it carried "about half a normal day's updates" - that
+      compared a Saturday against weekdays. The feed runs on a weekly cycle: 12-18k price updates
+      on weekdays, 9,6-10,8k on Saturdays, 5,0-6,0k on Sundays. The 19th (8,899 rows) and the 20th
+      (4,828) sit within a tenth of the three preceding Saturdays and Sundays, and republication
+      did not backfill the 19th (8,903 rows yesterday, 8,899 today). Row counts cannot tell a
+      partial day from a quiet one; archive_end can. The footer no longer calls the last day
+      partial, only incomplete after the evening publication. The squeeze meanwhile deepened: 4 of
+      the 21 Total-group stations post diesel against 5 yesterday, the snapshot share of French
+      stations at exactly 2,250 EUR fell to 13,6% from 15,6%, and the dry count reads 62
+      station-fuel pairs in the Total/rivals table for 20 September against 51 for the 19th,
+      approaching the 69 of 6 April. The 21st also reads 62 and should not be read: the archive
+      holds no observations for it.
+  1.7 (2026-09-20) Data refreshed to 2026-09-20. Local diesel 2,379 EUR/L, +12,6 c over 30 days
+      and +73,9 c over the year; 51 station-fuel pairs dry in the Total/rivals table. The nearest
+      station posting the 2,250 EUR ceiling moved out from 5,09 km to 8,2 km (106 route d'Espagne,
+      Portet-sur-Garonne), 17,9 c below the local mean. In today's snapshot 5 local stations hold
+      the ceiling against 8 yesterday, and 52 post diesel at all against 55; capped stations drop
+      out of the feed when they run dry, so the ceiling recedes partly because fewer pumps report.
+      Read the last two days with care: the annual archive was published on 19 September at 22:38
+      and ends there, carrying about half a normal day's updates on the 19th, so 20 September is
+      forward-filled from the 19th rather than measured. The snapshot, the station table and the
+      ceiling counts are from today. Corrects v1.6, which said the tail of the dry-pumps chart
+      "revises upward": 19 September was built at 56 dry pairs and now reads 51. Resupplies backfill
+      as end dates on open flags, so the tail revises in both directions. The final day is lower
+      again for a third reason - it counts only the flags that have arrived so far.
+  1.6 (2026-09-19) Data refreshed to 2026-09-19: local diesel 2,378 EUR/L, +12,9 c over 30 days
+      and +73,8 c over the year; 56 station-fuel pairs dry in the Total/rivals table; the nearest
+      station posting the 2,250 EUR ceiling is 5,09 km away, 17,9 c below the local mean. Fixes two
+      faults in the 17-18 September builds. The series end was pinned to 2026-09-13 in agg.py,
+      capshare.py and build_report.py, so every refresh after that date silently rebuilt the same
+      frozen series: v1.5 reported 2,296 EUR as the current price while the archive already held
+      2,371 EUR. END now comes from the last day in nat_daily.csv and the two aggregators
+      forward-fill to the fetch date. Separately, the 18 September rebuild shipped fresh numbers
+      under an unchanged v1.5 / 2026-09-17 header, so the markers understated the data by a day.
+      Outage flags land in the archive late: 18 September read 45 dry pairs when built on the 18th
+      and reads 56 today. The last days of that chart are provisional and revise upward.
+  1.5 (2026-09-17) Added the dry-pumps history chart: scripts/ruptures.py now extracts every
+      rupture interval, open or closed, from both annual archives, and the report reconstructs
+      for each day how many station-fuel pairs in the Total/Intermarché/Super U table were dry
+      under the same 30-day rule the table itself uses. Also fixed the header version pill,
+      which v1.4 left reading "v1.3 · 2026-09-15" while the meta tags said 1.4 - the pill is
+      now filled in from the meta tags at load, so the two cannot drift again.
+  1.4 (2026-09-17) Stock outages were invisible: the pipeline read prices only, and the instant
+      feed carries no rupture elements at all - they exist only in the annual archive. v1.3
+      therefore named the Ramonville Total (98 avenue Tolosane) nearest ceiling-priced station
+      while its diesel had been declared out of stock on 2026-09-15; a reader drove there. Open
+      ruptures are now extracted (scripts/ruptures.py) and shown as a red "dry" with the outage
+      start date in the tooltip; flags older than 30 days mean "no longer sells" and stay a dash.
+      The TotalEnergies table now also lists Intermarché and Super U, since during the September
+      2026 supply squeeze the capped Total sites are exactly the ones queueing and running dry.
+  1.3 (2026-09-15) Resolved v1.2's open caveat on the petrol ceiling. A reader bought SP98 at
+      1,990 EUR from station 31300008 (6 avenue du Goupe Morhange, Toulouse - "Rocade Purpan" in
+      OSM), which reports only diesel, E85 and LPG and carries no stock-outage flag. Comparing the
+      2026-09-14 and 2026-09-15 snapshots shows why: 222 stations started reporting E10 overnight
+      and 220 of them at exactly the ceiling (194/191 for SP98). Capped sites report intermittently
+      and always arrive at the ceiling, so the snapshot share is a lower bound - 3,2% of the petrol
+      base churns per day against 0,8% for diesel, which is why the two sources agreed on diesel
+      and not on petrol. v1.2 wrongly called the gap unexplained and implied a dash meant the fuel
+      was unavailable. Both ceiling shares are now shown side by side. Data refreshed to 2026-09-15.
+  1.2 (2026-09-14) Added station brands, recovered by matching the official stations to
+      OpenStreetMap fuel features (the official feed has no brand field). Added the TotalEnergies
+      station table, a brand column in the all-stations table, and a diesel-by-brand range plot.
+      This identifies the EUR 2.25 ceiling of v1.1 as TotalEnergies': all 15 Total-group stations
+      posting diesel are at exactly that price and none is below it. Also found a second ceiling on
+      petrol at EUR 1.99 and added it as a finding, quoted from the instant feed rather than the
+      archive because the two disagree on the petrol share (see the Ceilings note in the footer);
+      prices sitting on either ceiling are now bold in both tables. Station count corrected from
+      66 to 71 - the earlier figure silently dropped the 5 stations that post no price at all.
+  1.1 (2026-09-14) Raised the de-emphasis series colour to #898781 in both modes; the previous values
+      (#c3c2b7 light, #52514e dark) measured 1.75:1 and 2.19:1 against their surfaces, so the France
+      comparison line was near-invisible. Smoothed the ceiling-share series to a 7-day mean - the daily
+      share across 71 local stations jitters by several points and rendered as a comb. Corrected the
+      March end-date in finding 1 (the local mean reached 2,220 EUR on 31 March, not 27 March).
+      Added the EUR 2.25 diesel ceiling: reference line on the station scatter,
+      a share-pinned-at-the-ceiling chart, and the findings panel. Replaced the local-vs-France
+      two-line chart, where the national line was invisible underneath the local one, with the
+      local-minus-France spread. Split the alternative-fuel chart into single-series small
+      multiples, so orange/aqua no longer stand for E85/LPG in one chart and E10/SP98 in another.
+  1.0 (2026-09-14) First issue. Fuel prices around Castanet-Tolosan (31320) vs France,
+      from the official prix-carburants open data (roulez-eco.fr annual + instant feeds).
+-->
+<title>Fuel prices — Castanet-Tolosan (31320) vs France</title>
+<style>
+  :root { color-scheme: light; }
+  .viz-root {
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a;
+    --deemph:#898781; --up:#d03b3b; --down:#0ca30c;
+    --div-pos:#e34948; --div-neg:#2a78d6; --div-mid:#f0efec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) { color-scheme: dark; }
+    :root:where(:not([data-theme="light"])) .viz-root {
+      --surface-1:#1a1a19; --page:#0d0d0d;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+      --deemph:#898781; --up:#e66767; --down:#0ca30c;
+      --div-pos:#e66767; --div-neg:#3987e5; --div-mid:#383835;
+    }
+  }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  :root[data-theme="dark"] .viz-root {
+    --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+    --deemph:#898781; --up:#e66767; --down:#0ca30c;
+    --div-pos:#e66767; --div-neg:#3987e5; --div-mid:#383835;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--page); color:var(--text-primary);
+    font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width:1060px; margin:0 auto; padding:32px 24px 64px; }
+  header { display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:8px; }
+  h1 { font-size:24px; font-weight:600; margin:0 0 4px; letter-spacing:-0.01em; }
+  .sub { color:var(--text-secondary); font-size:14px; margin:0; }
+  .pill {
+    margin-left:auto; display:flex; gap:8px; align-items:center;
+    font-size:12px; color:var(--text-secondary);
+  }
+  .pill span { border:1px solid var(--border); border-radius:999px; padding:3px 10px; }
+  button {
+    font:inherit; font-size:13px; color:var(--text-secondary); cursor:pointer;
+    background:var(--surface-1); border:1px solid var(--border);
+    border-radius:8px; padding:5px 11px;
+  }
+  button:hover { color:var(--text-primary); }
+  button[aria-pressed="true"] { color:var(--text-primary); font-weight:600; border-color:var(--axis); }
+  h2 {
+    font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em;
+    color:var(--muted); margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid var(--grid);
+  }
+  .card {
+    background:var(--surface-1); border:1px solid var(--border);
+    border-radius:12px; padding:20px 22px; margin-bottom:16px;
+  }
+  .hero-row { display:flex; gap:16px; flex-wrap:wrap; align-items:stretch; }
+  .hero { flex:1 1 260px; }
+  .hero .label { font-size:13px; color:var(--text-secondary); }
+  .hero .fig { font-size:52px; font-weight:600; line-height:1.05; margin:6px 0 2px; letter-spacing:-0.02em; }
+  .hero .unit { font-size:20px; font-weight:400; color:var(--text-secondary); }
+  .tiles { flex:2 1 520px; display:grid; grid-template-columns:repeat(auto-fit,minmax(172px,1fr)); gap:16px; }
+  .tile .label { font-size:12px; color:var(--text-secondary); min-height:32px; }
+  .tile .val { font-size:26px; font-weight:600; margin:2px 0 0; letter-spacing:-0.01em; }
+  .tile .val .unit { font-size:13px; font-weight:400; color:var(--text-secondary); }
+  .delta { font-size:12px; color:var(--text-secondary); margin-top:3px; }
+  .delta b { font-weight:600; font-variant-numeric:tabular-nums; }
+  .delta .u { color:var(--up); } .delta .d { color:var(--down); }
+  .chart-head { margin-bottom:6px; }
+  .chart-title { font-size:15px; font-weight:600; }
+  .chart-sub { font-size:13px; color:var(--text-secondary); margin-top:2px; }
+  .legend { display:flex; gap:18px; flex-wrap:wrap; margin:10px 0 2px; font-size:13px; color:var(--text-secondary); }
+  .legend .key { display:inline-flex; align-items:center; gap:7px; }
+  .legend .key i { display:inline-block; width:16px; height:2px; border-radius:1px; }
+  .legend .key i.rect { width:11px; height:11px; border-radius:2px; }
+  svg { display:block; width:100%; height:auto; overflow:visible; }
+  .tip {
+    position:fixed; pointer-events:none; opacity:0; transition:opacity .09s;
+    background:var(--surface-1); border:1px solid var(--border); border-radius:9px;
+    box-shadow:0 4px 16px rgba(0,0,0,.13); padding:9px 11px; font-size:12px;
+    color:var(--text-secondary); z-index:20; min-width:150px;
+  }
+  .tip .when { font-size:11px; color:var(--muted); margin-bottom:6px; }
+  .tip .row { display:flex; align-items:center; gap:8px; margin-top:3px; }
+  .tip .row i { width:14px; height:2px; border-radius:1px; flex:none; }
+  .tip .row b { color:var(--text-primary); font-weight:600; font-variant-numeric:tabular-nums; margin-left:auto; }
+  .filters { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
+  .filters .lab { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+  table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
+  th, td { text-align:right; padding:6px 8px; border-bottom:1px solid var(--grid); white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; }
+  th { color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
+  td.name { white-space:normal; color:var(--text-secondary); }
+  tr.hl td { background:color-mix(in srgb, var(--series-1) 9%, transparent); }
+  .scroll { max-height:340px; overflow:auto; margin-top:4px; }
+  .hidden { display:none; }
+  .sm { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:22px; }
+  .find { display:grid; gap:12px; }
+  .find div { display:flex; gap:12px; font-size:14px; color:var(--text-secondary); }
+  .find b { color:var(--text-primary); font-weight:600; }
+  .find .n { flex:none; width:22px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .note { font-size:12px; color:var(--muted); margin-top:10px; }
+  .chip {
+    display:inline-block; font-size:11px; padding:1px 7px; border-radius:999px;
+    border:1px solid var(--border); color:var(--text-secondary); white-space:nowrap;
+  }
+  .chip.t { border-color:var(--series-1); color:var(--series-1); }
+  td.q { color:var(--muted); }
+  .silent td { color:var(--muted); }
+  td.dry { color:var(--up); font-weight:600; }
+  .tall { max-height:none; }
+  footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--grid); font-size:12px; color:var(--muted); }
+  footer a { color:var(--text-secondary); }
+  footer p { margin:4px 0; }
+</style>
+</head>
+<body class="viz-root" data-palette="#2a78d6,#eb6834,#1baf7a">
+<div class="wrap">
+<header>
+  <div>
+    <h1>Fuel prices around Castanet-Tolosan</h1>
+    <p class="sub" id="subtitle"></p>
+  </div>
+  <div class="pill">
+    <span id="vpill">v1.10 · 2026-09-27</span>
+    <button id="theme" aria-pressed="false">Dark</button>
+  </div>
+</header>
+
+<h2>What the data shows</h2>
+<div class="card find" id="findings"></div>
+
+<h2>Today</h2>
+<div class="hero-row">
+  <div class="card hero">
+    <div class="label">Diesel, mean of stations within 15 km</div>
+    <div class="fig" id="heroval"></div>
+    <div class="delta" id="herodelta"></div>
+    <div id="herospark"></div>
+    <div class="note" id="heronote"></div>
+  </div>
+  <div class="tiles" id="tiles"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title">Diesel today: price against distance</div>
+    <div class="chart-sub" id="scattersub"></div>
+  </div>
+  <div id="scatter"></div>
+  <div class="legend">
+    <span class="key"><i class="rect" style="background:var(--series-1)"></i>Station</span>
+    <span class="key"><i style="background:var(--deemph)"></i>€2,250 ceiling</span>
+    <button id="tbtn-st" aria-pressed="false">Show table</button>
+  </div>
+  <div id="table-st" class="hidden scroll"></div>
+</div>
+
+<h2>TotalEnergies, Intermarché and Super U</h2>
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title" id="tot-title"></div>
+    <div class="chart-sub" id="tot-sub"></div>
+  </div>
+  <div id="table-total" class="scroll tall"></div>
+  <div class="note" id="tot-note"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title">Dry pumps, day by day</div>
+    <div class="chart-sub" id="drysub"></div>
+  </div>
+  <div id="chart-dry"></div>
+  <div class="legend" id="legend-dry"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title">Diesel today by brand</div>
+    <div class="chart-sub">Median price per brand, with the range each brand spans across its local sites</div>
+  </div>
+  <div id="chart-brand"></div>
+  <div class="legend" id="legend-brand"></div>
+</div>
+
+<h2>Dynamics</h2>
+<div class="filters">
+  <span class="lab">Range</span>
+  <button data-range="607" aria-pressed="true">All (20 months)</button>
+  <button data-range="365" aria-pressed="false">Last 12 months</button>
+  <button data-range="90" aria-pressed="false">Last 90 days</button>
+  <button data-range="30" aria-pressed="false">Last 30 days</button>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title">Mean pump price within 15 km of Castanet-Tolosan</div>
+    <div class="chart-sub">Daily mean across reporting stations, € per litre</div>
+  </div>
+  <div id="chart-main"></div>
+  <div class="legend" id="legend-main"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title">Diesel: how far the local mean sits from the French mean</div>
+    <div class="chart-sub">Local 15 km mean minus the French mean, in centimes per litre. Zero means the two agree.</div>
+  </div>
+  <div id="chart-spread"></div>
+  <div class="legend" id="legend-spread"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title">Diesel stations posting exactly €2,250</div>
+    <div class="chart-sub" id="capsub"></div>
+  </div>
+  <div id="chart-cap"></div>
+  <div class="legend" id="legend-cap"></div>
+</div>
+
+<div class="card sm">
+  <div>
+    <div class="chart-head">
+      <div class="chart-title">Superethanol E85</div>
+      <div class="chart-sub">Daily mean within 15 km, € per litre</div>
+    </div>
+    <div id="chart-e85"></div>
+  </div>
+  <div>
+    <div class="chart-head">
+      <div class="chart-title">LPG (GPLc)</div>
+      <div class="chart-sub">Daily mean within 15 km, € per litre</div>
+    </div>
+    <div id="chart-gplc"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <div class="chart-title">Monthly means</div>
+    <div class="chart-sub">Table view of every series above — local 15 km mean and the French mean</div>
+  </div>
+  <div class="legend"><button id="tbtn-mo" aria-pressed="false">Show table</button></div>
+  <div id="table-mo" class="hidden scroll"></div>
+</div>
+
+<footer>
+  <p><b>Source</b> — official French fuel-price open data, <a href="https://donnees.roulez-eco.fr">donnees.roulez-eco.fr</a>
+     (Ministry of the Economy). Annual archives for 2025 and 2026 plus the instantaneous feed, fetched 2026-09-14.</p>
+  <p><b>Method</b> — stations selected by great-circle distance ≤ 15 km from Castanet-Tolosan (43.5161 N, 1.5000 E).
+     Each station's last posted price per day is carried forward until its next update, and stops counting 30 days
+     after its final update, so closed sites drop out. A day counts only where at least 3 stations report.
+     Series start 2025-01-15, after the archives' station coverage stabilises.</p>
+  <p><b>Brands</b> — the official feed has no brand field. Brands come from OpenStreetMap fuel features,
+     matched to each station by position within 250 m; 65 of the 71 stations matched. Where two stations
+     sit within ~100 m and OSM maps one feature, the further one is flagged “?”.</p>
+  <p><b>Ceilings</b> — two figures exist for every ceiling share and they differ. The instant feed counts
+     only what is reported right now; the annual archive counts any station that reported within 30 days.
+     For diesel they nearly agree (20,0% against 22,0% of stations at €2,250); for petrol they do not
+     (15,7% against 23,5% for E10). The reason is per-fuel reporting churn, measured by
+     <code>scripts/snapshot_churn.py</code> across two consecutive snapshots: 222 stations started
+     reporting E10 overnight and 220 of them at exactly €1,990, against 74 diesel arrivals on a base
+     three times larger. Capped sites drop in and out of the feed and always arrive at the ceiling, so
+     the snapshot figure is a lower bound and the archive is the better estimate of the ceiling's reach.
+     The ceiling-share history is still drawn for diesel only, where the churn is small enough to ignore.</p>
+  <p id="foot-counts"></p>
+</footer>
+</div>
+<div class="tip" id="tip"></div>
+
+<script id="report-data" type="application/json">{"meta":{"center":"Castanet-Tolosan (31320)","radius":15,"start":"2025-01-15","end":"2026-09-27","archive_end":"2026-09-26","built":"2026-09-27","n_stations":71,"n_priced":62,"n_diesel":56,"nat_n":9568,"loc_n":71},"days":["2025-01-15","2025-01-16","2025-01-17","2025-01-18","2025-01-19","2025-01-20","2025-01-21","2025-01-22","2025-01-23","2025-01-24","2025-01-25","2025-01-26","2025-01-27","2025-01-28","2025-01-29","2025-01-30","2025-01-31","2025-02-01","2025-02-02","2025-02-03","2025-02-04","2025-02-05","2025-02-06","2025-02-07","2025-02-08","2025-02-09","2025-02-10","2025-02-11","2025-02-12","2025-02-13","2025-02-14","2025-02-15","2025-02-16","2025-02-17","2025-02-18","2025-02-19","2025-02-20","2025-02-21","2025-02-22","2025-02-23","2025-02-24","2025-02-25","2025-02-26","2025-02-27","2025-02-28","2025-03-01","2025-03-02","2025-03-03","2025-03-04","2025-03-05","2025-03-06","2025-03-07","2025-03-08","2025-03-09","2025-03-10","2025-03-11","2025-03-12","2025-03-13","2025-03-14","2025-03-15","2025-03-16","2025-03-17","2025-03-18","2025-03-19","2025-03-20","2025-03-21","2025-03-22","2025-03-23","2025-03-24","2025-03-25","2025-03-26","2025-03-27","2025-03-28","2025-03-29","2025-03-30","2025-03-31","2025-04-01","2025-04-02","2025-04-03","2025-04-04","2025-04-05","2025-04-06","2025-04-07","2025-04-08","2025-04-09","2025-04-10","2025-04-11","2025-04-12","2025-04-13","2025-04-14","2025-04-15","2025-04-16","2025-04-17","2025-04-18","2025-04-19","2025-04-20","2025-04-21","2025-04-22","2025-04-23","2025-04-24","2025-04-25","2025-04-26","2025-04-27","2025-04-28","2025-04-29","2025-04-30","2025-05-01","2025-05-02","2025-05-03","2025-05-04","2025-05-05","2025-05-06","2025-05-07","2025-05-08","2025-05-09","2025-05-10","2025-05-11","2025-05-12","2025-05-13","2025-05-14","2025-05-15","2025-05-16","2025-05-17","2025-05-18","2025-05-19","2025-05-20","2025-05-21","2025-05-22","2025-05-23","2025-05-24","2025-05-25","2025-05-26","2025-05-27","2025-05-28","2025-05-29","2025-05-30","2025-05-31","2025-06-01","2025-06-02","2025-06-03","2025-06-04","2025-06-05","2025-06-06","2025-06-07","2025-06-08","2025-06-09","2025-06-10","2025-06-11","2025-06-12","2025-06-13","2025-06-14","2025-06-15","2025-06-16","2025-06-17","2025-06-18","2025-06-19","2025-06-20","2025-06-21","2025-06-22","2025-06-23","2025-06-24","2025-06-25","2025-06-26","2025-06-27","2025-06-28","2025-06-29","2025-06-30","2025-07-01","2025-07-02","2025-07-03","2025-07-04","2025-07-05","2025-07-06","2025-07-07","2025-07-08","2025-07-09","2025-07-10","2025-07-11","2025-07-12","2025-07-13","2025-07-14","2025-07-15","2025-07-16","2025-07-17","2025-07-18","2025-07-19","2025-07-20","2025-07-21","2025-07-22","2025-07-23","2025-07-24","2025-07-25","2025-07-26","2025-07-27","2025-07-28","2025-07-29","2025-07-30","2025-07-31","2025-08-01","2025-08-02","2025-08-03","2025-08-04","2025-08-05","2025-08-06","2025-08-07","2025-08-08","2025-08-09","2025-08-10","2025-08-11","2025-08-12","2025-08-13","2025-08-14","2025-08-15","2025-08-16","2025-08-17","2025-08-18","2025-08-19","2025-08-20","2025-08-21","2025-08-22","2025-08-23","2025-08-24","2025-08-25","2025-08-26","2025-08-27","2025-08-28","2025-08-29","2025-08-30","2025-08-31","2025-09-01","2025-09-02","2025-09-03","2025-09-04","2025-09-05","2025-09-06","2025-09-07","2025-09-08","2025-09-09","2025-09-10","2025-09-11","2025-09-12","2025-09-13","2025-09-14","2025-09-15","2025-09-16","2025-09-17","2025-09-18","2025-09-19","2025-09-20","2025-09-21","2025-09-22","2025-09-23","2025-09-24","2025-09-25","2025-09-26","2025-09-27","2025-09-28","2025-09-29","2025-09-30","2025-10-01","2025-10-02","2025-10-03","2025-10-04","2025-10-05","2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10","2025-10-11","2025-10-12","2025-10-13","2025-10-14","2025-10-15","2025-10-16","2025-10-17","2025-10-18","2025-10-19","2025-10-20","2025-10-21","2025-10-22","2025-10-23","2025-10-24","2025-10-25","2025-10-26","2025-10-27","2025-10-28","2025-10-29","2025-10-30","2025-10-31","2025-11-01","2025-11-02","2025-11-03","2025-11-04","2025-11-05","2025-11-06","2025-11-07","2025-11-08","2025-11-09","2025-11-10","2025-11-11","2025-11-12","2025-11-13","2025-11-14","2025-11-15","2025-11-16","2025-11-17","2025-11-18","2025-11-19","2025-11-20","2025-11-21","2025-11-22","2025-11-23","2025-11-24","2025-11-25","2025-11-26","2025-11-27","2025-11-28","2025-11-29","2025-11-30","2025-12-01","2025-12-02","2025-12-03","2025-12-04","2025-12-05","2025-12-06","2025-12-07","2025-12-08","2025-12-09","2025-12-10","2025-12-11","2025-12-12","2025-12-13","2025-12-14","2025-12-15","2025-12-16","2025-12-17","2025-12-18","2025-12-19","2025-12-20","2025-12-21","2025-12-22","2025-12-23","2025-12-24","2025-12-25","2025-12-26","2025-12-27","2025-12-28","2025-12-29","2025-12-30","2025-12-31","2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-25","2026-04-26","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-02","2026-05-03","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-09","2026-05-10","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-16","2026-05-17","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-23","2026-05-24","2026-05-25","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-05-30","2026-05-31","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-06","2026-06-07","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-13","2026-06-14","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-04","2026-07-05","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-11","2026-07-12","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-18","2026-07-19","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-01","2026-08-02","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-08","2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15","2026-08-16","2026-08-17","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-29","2026-08-30","2026-08-31","2026-09-01","2026-09-02","2026-09-03","2026-09-04","2026-09-05","2026-09-06","2026-09-07","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-12","2026-09-13","2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-19","2026-09-20","2026-09-21","2026-09-22","2026-09-23","2026-09-24","2026-09-25","2026-09-26","2026-09-27"],"labels":{"Gazole":"Diesel (Gazole)","E10":"Petrol E10 (SP95-E10)","SP98":"Petrol SP98","SP95":"Petrol SP95","E85":"Superethanol E85","GPLc":"LPG (GPLc)"},"local":{"Gazole":[1.7294,1.7382,1.7469,1.7515,1.7519,1.7542,1.758,1.7553,1.7533,1.7449,1.7412,1.7412,1.7386,1.7315,1.7259,1.7207,1.7182,1.7173,1.7173,1.7175,1.7197,1.7209,1.7207,1.7159,1.7152,1.7152,1.715,1.7181,1.7228,1.7262,1.7234,1.7227,1.7227,1.7215,1.7189,1.719,1.7196,1.7068,1.7129,1.716,1.7181,1.7156,1.714,1.7081,1.7006,1.6983,1.6983,1.6973,1.6953,1.6892,1.683,1.6703,1.6648,1.6638,1.6589,1.6545,1.6515,1.6483,1.6458,1.6441,1.6441,1.643,1.6404,1.6387,1.6375,1.6357,1.6357,1.6357,1.6365,1.6385,1.6416,1.6434,1.6462,1.6484,1.6488,1.6525,1.6534,1.655,1.6554,1.6485,1.6402,1.64,1.6359,1.6281,1.617,1.6027,1.5914,1.5858,1.5858,1.5842,1.575,1.5718,1.5705,1.5507,1.5658,1.5662,1.5685,1.5686,1.5677,1.5705,1.5701,1.5701,1.5702,1.5699,1.5712,1.5693,1.5684,1.5675,1.5667,1.5669,1.5644,1.5593,1.5555,1.5544,1.5545,1.5572,1.5572,1.5574,1.5605,1.5655,1.5707,1.5747,1.5773,1.5774,1.5773,1.5783,1.5775,1.5761,1.5712,1.5696,1.5696,1.5672,1.5645,1.5641,1.5638,1.5626,1.5626,1.5626,1.5619,1.5598,1.5593,1.5614,1.5619,1.5627,1.5629,1.5628,1.5636,1.568,1.5724,1.5781,1.5861,1.5874,1.5907,1.6031,1.6133,1.6297,1.6682,1.6758,1.6768,1.688,1.6933,1.6788,1.6683,1.659,1.6522,1.6517,1.6474,1.6407,1.6341,1.6326,1.6148,1.6296,1.6317,1.6359,1.6379,1.6456,1.6519,1.6564,1.6621,1.6621,1.6621,1.6622,1.6638,1.6633,1.6626,1.6656,1.6656,1.6672,1.6703,1.6692,1.6663,1.6604,1.6584,1.6584,1.6561,1.6547,1.6539,1.6534,1.6464,1.6493,1.652,1.6522,1.6492,1.644,1.6414,1.6342,1.6324,1.6324,1.6297,1.6268,1.6248,1.6208,1.6178,1.6172,1.6172,1.6147,1.611,1.6084,1.6077,1.6095,1.6141,1.6141,1.6164,1.62,1.6205,1.6194,1.6162,1.6171,1.6191,1.6187,1.6197,1.6248,1.6294,1.6115,1.6226,1.6297,1.6312,1.6302,1.6315,1.6321,1.6316,1.6323,1.6323,1.6318,1.6327,1.6368,1.6397,1.6398,1.6402,1.6402,1.6395,1.6383,1.6381,1.6399,1.6423,1.6465,1.6466,1.6493,1.6518,1.6495,1.6466,1.6394,1.636,1.6357,1.6318,1.6284,1.6267,1.6278,1.6291,1.6266,1.6266,1.6256,1.6248,1.623,1.6192,1.5908,1.6042,1.6082,1.6052,1.601,1.5993,1.6023,1.6218,1.6283,1.6292,1.6351,1.6478,1.6581,1.6591,1.6605,1.6608,1.6608,1.6623,1.6661,1.6722,1.6791,1.6892,1.6982,1.6986,1.6998,1.7005,1.7033,1.7062,1.7035,1.7074,1.7074,1.7069,1.7114,1.7209,1.7262,1.7286,1.7216,1.7216,1.7222,1.7144,1.7082,1.6974,1.6852,1.6816,1.6818,1.6781,1.674,1.6686,1.6652,1.6555,1.6547,1.6546,1.6517,1.6498,1.6452,1.6411,1.63,1.6272,1.6268,1.6245,1.6174,1.6132,1.6092,1.5769,1.5921,1.5993,1.5979,1.5936,1.5907,1.5928,1.5934,1.5946,1.5947,1.5946,1.5954,1.5978,1.6043,1.6306,1.6378,1.6379,1.6377,1.6452,1.6608,1.6474,1.6454,1.6465,1.6465,1.6472,1.65,1.6552,1.662,1.6668,1.669,1.669,1.6703,1.6738,1.6761,1.6833,1.6817,1.6836,1.6836,1.6839,1.685,1.6841,1.686,1.6884,1.6943,1.6943,1.6972,1.6998,1.6977,1.6979,1.6978,1.6969,1.6969,1.6972,1.6973,1.6963,1.6966,1.696,1.6928,1.6931,1.6922,1.6892,1.6907,1.6929,1.6838,1.6981,1.7015,1.7072,1.7102,1.7146,1.7179,1.7194,1.7231,1.7236,1.7358,1.8119,1.9002,1.9412,1.9747,1.981,1.9823,2.0021,2.0184,2.0235,2.0144,2.035,2.0378,2.0388,2.0453,2.0919,2.0953,2.0915,2.1169,2.1263,2.1285,2.1516,2.1756,2.1812,2.1869,2.1797,2.1843,2.1838,2.1988,2.2197,2.2329,2.2391,2.2444,2.2554,2.2596,2.2611,2.2929,2.3495,2.3493,2.3162,2.3049,2.3035,2.3036,2.2952,2.2909,2.2771,2.2604,2.2419,2.2378,2.233,2.216,2.2037,2.2096,2.2146,2.2153,2.2155,2.2148,2.215,2.2116,2.2121,2.1658,2.1659,2.1659,2.2159,2.2116,2.2056,2.1696,2.1466,2.1436,2.1442,2.1451,2.1492,2.1512,2.1264,2.1245,2.1213,2.1295,2.1355,2.1623,2.1598,2.1435,2.1336,2.1165,2.1148,2.114,2.1171,2.0973,2.0782,2.0576,2.0736,2.074,2.0482,2.0359,2.0273,2.039,2.0355,2.0327,2.0321,2.028,2.0291,2.0171,2.0178,2.0136,1.9995,1.9995,1.9939,1.9728,1.9468,1.9338,1.9066,1.9135,1.9138,1.9067,1.8945,1.8881,1.8852,1.8897,1.8818,1.8818,1.8853,1.8931,1.9004,1.9046,1.8914,1.9006,1.9033,1.9083,1.9178,1.9235,1.9436,1.9688,1.9822,1.9834,1.9932,2.0026,2.023,2.0646,2.1072,2.1253,2.1258,2.1348,2.1543,2.159,2.1675,2.184,2.1931,2.1934,2.2058,2.2092,2.2103,2.2176,2.2367,2.2456,2.246,2.2512,2.2527,2.2317,2.2131,2.1886,2.1839,2.1835,2.1787,2.1896,2.209,2.2184,2.2285,2.2275,2.2275,2.2365,2.2418,2.2453,2.2486,2.2534,2.2553,2.2553,2.255,2.2569,2.2534,2.2449,2.228,2.2233,2.2232,2.2226,2.2265,2.2373,2.2526,2.2627,2.2668,2.2671,2.2704,2.276,2.2795,2.2837,2.2927,2.296,2.2962,2.3142,2.3302,2.3561,2.3711,2.3778,2.3792,2.3792,2.3793,2.3832,2.3795,2.371,2.3659,2.3671,2.3671],"E10":[1.7866,1.7912,1.7961,1.7996,1.7996,1.8005,1.8032,1.8026,1.8019,1.7978,1.7969,1.7969,1.7959,1.7918,1.7886,1.7835,1.7813,1.7813,1.7813,1.7819,1.7829,1.7836,1.7846,1.7812,1.7817,1.7817,1.7821,1.7845,1.7893,1.7919,1.787,1.7858,1.7858,1.7852,1.7829,1.7821,1.7815,1.7671,1.7722,1.7751,1.7765,1.7737,1.7719,1.7684,1.7608,1.7584,1.7584,1.7568,1.7548,1.7514,1.7451,1.7324,1.7275,1.7267,1.7203,1.7126,1.7099,1.7091,1.7109,1.7121,1.7121,1.7124,1.7141,1.7152,1.7155,1.7169,1.7193,1.7193,1.7202,1.7238,1.7282,1.7316,1.7339,1.7371,1.7374,1.7383,1.7395,1.7417,1.7449,1.74,1.7337,1.7337,1.7313,1.7228,1.7123,1.6986,1.6838,1.6781,1.6781,1.6769,1.6728,1.6703,1.6689,1.6489,1.6647,1.6652,1.6676,1.6678,1.6654,1.6677,1.6668,1.6677,1.6678,1.6675,1.6691,1.6683,1.6674,1.6673,1.6663,1.6663,1.6654,1.6631,1.6615,1.6613,1.6618,1.6646,1.6646,1.6651,1.67,1.6762,1.6794,1.683,1.6847,1.6847,1.6848,1.6865,1.6861,1.6862,1.6847,1.6846,1.6846,1.6841,1.684,1.6843,1.6839,1.6819,1.6824,1.6824,1.6817,1.6793,1.6779,1.6789,1.6777,1.6771,1.6772,1.6771,1.6769,1.6789,1.6816,1.6837,1.6902,1.6906,1.6921,1.6974,1.6993,1.7036,1.7127,1.716,1.7167,1.7219,1.7277,1.723,1.7201,1.7114,1.7083,1.7076,1.7045,1.6986,1.6923,1.6886,1.6654,1.6784,1.6808,1.6804,1.6777,1.6805,1.6852,1.6897,1.692,1.692,1.692,1.6915,1.6936,1.6942,1.6932,1.6937,1.6938,1.6954,1.6961,1.6935,1.691,1.6868,1.6869,1.6869,1.6854,1.6847,1.6852,1.6872,1.6863,1.6886,1.6908,1.6925,1.6927,1.6927,1.6926,1.6912,1.6908,1.6908,1.6896,1.6896,1.6874,1.6836,1.682,1.6817,1.6817,1.6802,1.6794,1.6793,1.6791,1.6813,1.6866,1.6868,1.688,1.692,1.6932,1.6922,1.6881,1.6885,1.6908,1.6906,1.6912,1.6963,1.7002,1.683,1.695,1.7019,1.7044,1.7054,1.7065,1.7079,1.7078,1.7077,1.7077,1.7087,1.7092,1.7113,1.7117,1.7097,1.7098,1.7096,1.7076,1.7056,1.7039,1.705,1.7066,1.7096,1.7096,1.7096,1.7117,1.7113,1.7086,1.701,1.6976,1.6971,1.6938,1.6889,1.6866,1.6876,1.6871,1.6864,1.6864,1.685,1.6837,1.6829,1.6787,1.6541,1.6668,1.6706,1.6722,1.669,1.6691,1.6699,1.6804,1.6844,1.6849,1.6874,1.694,1.6961,1.6958,1.6977,1.7001,1.7001,1.6997,1.7011,1.7034,1.7048,1.7089,1.7107,1.7109,1.7115,1.7112,1.7125,1.7176,1.7204,1.7278,1.7278,1.728,1.728,1.7278,1.7259,1.7258,1.7235,1.7235,1.7234,1.7221,1.7217,1.7196,1.7188,1.7192,1.7194,1.7208,1.7256,1.7271,1.7288,1.7259,1.7228,1.7233,1.7217,1.719,1.7164,1.7137,1.7075,1.7036,1.7033,1.7012,1.6935,1.6891,1.6835,1.6437,1.6588,1.6654,1.6639,1.6601,1.6588,1.6601,1.6614,1.6618,1.6621,1.6615,1.663,1.6661,1.666,1.6794,1.6846,1.6846,1.6867,1.6914,1.6928,1.6941,1.6946,1.6954,1.6954,1.6965,1.6992,1.7029,1.7075,1.7109,1.7113,1.7113,1.712,1.71,1.7098,1.7119,1.7119,1.7127,1.7127,1.7089,1.7112,1.7098,1.7103,1.7113,1.7143,1.7143,1.7151,1.7169,1.7154,1.7156,1.7152,1.7161,1.7161,1.717,1.718,1.7203,1.722,1.7222,1.7194,1.7199,1.7176,1.7142,1.7143,1.7136,1.6937,1.7093,1.7135,1.7187,1.7216,1.7259,1.7293,1.728,1.7327,1.7328,1.7388,1.7721,1.7904,1.808,1.8275,1.84,1.8407,1.847,1.8695,1.8776,1.8878,1.902,1.8984,1.8987,1.9059,1.9409,1.9493,1.9523,1.9735,1.9805,1.9816,1.9939,1.9937,2.0012,1.9824,1.9902,1.9935,1.9929,1.9995,2.0101,2.0173,2.0178,2.015,2.018,2.0188,2.0184,2.0213,2.0269,2.0177,2.0024,2.0025,2.0027,2.0025,2.0008,2.0006,1.9976,1.989,1.979,1.9778,1.9757,1.9772,1.9816,1.9871,1.995,1.9988,1.9988,2.0023,2.0077,2.0097,2.0104,2.0113,2.0116,2.0118,2.017,2.024,2.0268,2.0294,2.0267,2.0279,2.0281,2.024,2.0252,2.0308,2.033,2.0399,2.0429,2.0429,2.045,2.0493,2.0549,2.0571,2.0548,2.0548,2.0548,2.053,2.0507,2.045,2.0365,2.0196,2.0125,2.0133,2.0014,1.9883,1.9803,1.9731,1.9637,1.9655,1.9652,1.96,1.9607,1.957,1.9575,1.9552,1.9543,1.9537,1.9531,1.9415,1.9246,1.9151,1.9018,1.8938,1.8934,1.889,1.8833,1.8806,1.873,1.8815,1.8772,1.8772,1.8806,1.8954,1.8933,1.9006,1.8812,1.8898,1.893,1.8946,1.8998,1.9007,1.9167,1.9212,1.92,1.9197,1.9213,1.9271,1.9342,1.9472,1.9675,1.9842,1.9843,1.9874,1.9947,1.9964,1.99,2.0047,2.0103,2.0108,2.0145,2.0174,2.0167,2.0143,2.0155,2.0164,2.0164,2.0124,2.0089,2.0038,1.995,1.9851,1.9818,1.9811,1.9786,1.9848,1.9956,1.999,2.0042,2.0061,2.0058,2.0084,2.0098,2.0083,2.0086,2.0128,2.0152,2.0151,2.0154,2.0195,2.02,2.0201,2.0205,2.0244,2.0244,2.0296,2.0407,2.0474,2.0531,2.0563,2.0579,2.0577,2.0645,2.0729,2.075,2.0812,2.086,2.0897,2.0897,2.099,2.1107,2.1235,2.1271,2.1227,2.1244,2.1244,2.1266,2.1289,2.127,2.1297,2.1337,2.1375,2.1375],"SP98":[1.8847,1.8914,1.8972,1.9013,1.9013,1.9024,1.9058,1.9059,1.905,1.8996,1.8989,1.8989,1.8985,1.8953,1.8924,1.8879,1.8856,1.8853,1.8853,1.8852,1.8859,1.8877,1.8886,1.8856,1.8867,1.8867,1.8875,1.8895,1.8935,1.8951,1.8895,1.8891,1.8891,1.8879,1.8862,1.886,1.8854,1.8705,1.8765,1.879,1.88,1.8766,1.875,1.8704,1.8635,1.8598,1.8598,1.8572,1.8553,1.8522,1.8467,1.8332,1.8281,1.8276,1.8224,1.8145,1.8129,1.8109,1.8124,1.8128,1.8128,1.8129,1.8141,1.8166,1.8171,1.8172,1.8196,1.8196,1.8204,1.8237,1.8269,1.8298,1.8344,1.8379,1.8384,1.8387,1.8407,1.8434,1.8484,1.842,1.8354,1.8356,1.8332,1.8266,1.8175,1.8048,1.7917,1.7881,1.7881,1.7858,1.7813,1.7797,1.7786,1.7523,1.766,1.7665,1.7691,1.7674,1.7637,1.7649,1.7633,1.7639,1.764,1.765,1.7662,1.7689,1.768,1.7669,1.7662,1.7662,1.7649,1.762,1.7602,1.7602,1.7608,1.7639,1.7639,1.765,1.7715,1.7777,1.7817,1.7849,1.7868,1.7868,1.7868,1.7882,1.7877,1.7878,1.787,1.7872,1.7872,1.7872,1.787,1.7863,1.786,1.7827,1.7836,1.7836,1.7815,1.7791,1.7789,1.7806,1.7785,1.7783,1.7783,1.7781,1.778,1.7803,1.7815,1.7837,1.7901,1.7901,1.792,1.7955,1.798,1.8041,1.8096,1.8162,1.8169,1.8226,1.8274,1.8238,1.8196,1.8134,1.8109,1.8103,1.8082,1.8013,1.7953,1.7905,1.7657,1.7798,1.7825,1.7822,1.7804,1.7813,1.7862,1.7888,1.7918,1.7918,1.7918,1.7921,1.7928,1.7928,1.7931,1.7941,1.7941,1.7948,1.7951,1.7914,1.7895,1.785,1.7851,1.7851,1.7828,1.7818,1.7831,1.7851,1.7816,1.7848,1.7883,1.7895,1.7886,1.7879,1.7883,1.7865,1.7864,1.7864,1.7853,1.7854,1.7838,1.7803,1.779,1.7783,1.7783,1.7764,1.7756,1.7754,1.7757,1.7782,1.7808,1.7809,1.7844,1.7872,1.7883,1.7874,1.7834,1.7843,1.7871,1.7873,1.7879,1.7933,1.7968,1.7799,1.7926,1.7976,1.8,1.7998,1.8017,1.8037,1.8001,1.8034,1.8034,1.803,1.8038,1.8054,1.8049,1.804,1.8051,1.8051,1.8032,1.8015,1.8012,1.8025,1.8041,1.8059,1.8059,1.8069,1.8102,1.8084,1.8056,1.7972,1.7942,1.7937,1.7896,1.7863,1.7848,1.7856,1.7847,1.784,1.784,1.7834,1.7822,1.7813,1.7775,1.7532,1.7651,1.7703,1.771,1.766,1.7649,1.7637,1.7731,1.7779,1.7784,1.7816,1.7892,1.7907,1.7907,1.7916,1.7946,1.7946,1.7952,1.7954,1.7989,1.8009,1.8051,1.8081,1.8083,1.808,1.8085,1.8098,1.815,1.8186,1.8256,1.8256,1.8261,1.8268,1.8242,1.8209,1.8206,1.818,1.818,1.8181,1.8171,1.8164,1.8136,1.8137,1.8153,1.8159,1.8183,1.8223,1.8239,1.8246,1.8205,1.8181,1.8188,1.8182,1.816,1.8132,1.8105,1.8042,1.8004,1.8001,1.7976,1.7906,1.7862,1.781,1.7439,1.76,1.7646,1.7599,1.7537,1.7503,1.7518,1.7526,1.7524,1.7525,1.7542,1.7555,1.7571,1.7581,1.7775,1.7812,1.7817,1.7799,1.7848,1.7864,1.7883,1.789,1.7905,1.7905,1.7908,1.7946,1.7979,1.8003,1.8055,1.8082,1.8082,1.8098,1.8118,1.8119,1.8139,1.8136,1.8155,1.8155,1.816,1.8147,1.8148,1.8155,1.8164,1.8198,1.8198,1.8213,1.8232,1.8223,1.822,1.8226,1.8236,1.8236,1.8246,1.8255,1.8272,1.8292,1.829,1.8267,1.8271,1.825,1.8216,1.8231,1.8242,1.8061,1.8225,1.8271,1.8298,1.8331,1.8367,1.8385,1.839,1.8421,1.8424,1.8495,1.8844,1.9031,1.9145,1.9293,1.9368,1.9374,1.9475,1.9635,1.9691,1.9752,1.9851,1.9867,1.9868,1.9999,2.022,2.028,2.0288,2.0435,2.0465,2.0476,2.0605,2.0746,2.0743,2.075,2.0697,2.0706,2.0703,2.0747,2.087,2.0944,2.094,2.093,2.0944,2.0949,2.0946,2.1025,2.1015,2.099,2.0789,2.0785,2.0787,2.0808,2.0755,2.0776,2.0751,2.0678,2.0667,2.067,2.0651,2.0602,2.0613,2.0633,2.0699,2.0728,2.0728,2.0757,2.0792,2.0808,2.0821,2.0831,2.0838,2.084,2.0894,2.096,2.0986,2.102,2.1006,2.0994,2.0994,2.0977,2.1003,2.106,2.1099,2.1142,2.1165,2.1169,2.1183,2.1234,2.1282,2.1292,2.1291,2.1293,2.1293,2.1276,2.1265,2.1204,2.1149,2.0966,2.0917,2.0917,2.0797,2.071,2.0657,2.0606,2.0594,2.0592,2.0592,2.0538,2.0522,2.0511,2.0473,2.043,2.0442,2.0442,2.0439,2.0397,2.029,2.0195,2.005,2.0012,2.001,1.9943,1.9912,1.9893,1.9837,1.985,1.9839,1.9842,1.9855,1.9914,1.9896,1.9936,1.9756,1.9849,1.9886,1.9906,1.994,1.994,1.9998,2.0032,2.0028,2.0027,2.0042,2.0063,2.0121,2.0236,2.0628,2.0829,2.0834,2.0865,2.097,2.0986,2.0697,2.073,2.0787,2.079,2.0857,2.0856,2.0857,2.0841,2.0852,2.088,2.088,2.0821,2.0792,2.0777,2.076,2.0649,2.0637,2.0634,2.0615,2.062,2.0703,2.0732,2.077,2.0807,2.0803,2.0831,2.0837,2.083,2.0832,2.0877,2.0901,2.09,2.0893,2.0944,2.0951,2.0947,2.0942,2.0979,2.0979,2.1021,2.1124,2.119,2.1235,2.1277,2.1331,2.133,2.1385,2.1457,2.1508,2.1582,2.1612,2.1652,2.1657,2.174,2.1835,2.198,2.2027,2.199,2.1993,2.1993,2.2007,2.2032,2.2012,2.2047,2.2101,2.2139,2.2139],"SP95":[1.8492,1.8604,1.8686,1.8711,1.8711,1.8734,1.8754,1.8746,1.8746,1.8691,1.871,1.871,1.8675,1.8646,1.8606,1.8488,1.8435,1.8476,1.8476,1.8482,1.8504,1.8509,1.8498,1.8416,1.8468,1.8468,1.8475,1.8558,1.8594,1.8596,1.8501,1.8564,1.8564,1.8551,1.8539,1.8535,1.8533,1.8397,1.8488,1.8488,1.8512,1.8455,1.8432,1.8392,1.8302,1.8319,1.8319,1.8335,1.8328,1.8311,1.8238,1.7974,1.7999,1.7999,1.7924,1.7876,1.7869,1.7849,1.7847,1.7856,1.7856,1.7858,1.7855,1.7845,1.7862,1.7855,1.7898,1.7898,1.7905,1.7924,1.7957,1.8012,1.8029,1.8048,1.8069,1.8075,1.8082,1.8105,1.8121,1.8032,1.8056,1.8039,1.8031,1.7956,1.7875,1.7805,1.7534,1.7599,1.7599,1.7594,1.7565,1.7575,1.7486,1.7238,1.7349,1.7388,1.7478,1.7416,1.7415,1.7428,1.7315,1.7393,1.7393,1.7372,1.7351,1.7348,1.7348,1.728,1.7363,1.7363,1.7298,1.7276,1.7272,1.7272,1.7275,1.7324,1.7324,1.7343,1.7351,1.7436,1.7482,1.7453,1.7512,1.7512,1.7521,1.7535,1.7524,1.7535,1.7496,1.7545,1.7545,1.7525,1.7526,1.7511,1.7505,1.7461,1.7494,1.7494,1.7499,1.7472,1.7463,1.7458,1.7407,1.7452,1.7452,1.744,1.7449,1.7422,1.747,1.7484,1.7541,1.7553,1.7586,1.7645,1.7652,1.7686,1.7684,1.7766,1.7766,1.7777,1.7836,1.7807,1.7818,1.7664,1.7762,1.7762,1.7717,1.766,1.7605,1.7584,1.7293,1.7428,1.7474,1.7468,1.7471,1.7489,1.7552,1.7465,1.7536,1.7536,1.7536,1.7529,1.7528,1.7526,1.7415,1.7453,1.7453,1.7495,1.7494,1.7486,1.7451,1.7373,1.7438,1.7438,1.7422,1.7415,1.7404,1.7441,1.7265,1.7329,1.7441,1.7466,1.7449,1.7426,1.7413,1.7367,1.7422,1.7422,1.7408,1.74,1.7394,1.7326,1.7378,1.734,1.734,1.7339,1.7325,1.7321,1.733,1.7317,1.7366,1.7366,1.738,1.7426,1.7422,1.7417,1.731,1.7356,1.7412,1.7407,1.7449,1.7466,1.7509,1.7363,1.7434,1.7523,1.7526,1.7533,1.7539,1.7549,1.7558,1.7587,1.7587,1.7591,1.7597,1.7601,1.7613,1.7642,1.7689,1.7689,1.7645,1.7642,1.7612,1.7625,1.7625,1.7656,1.7656,1.7647,1.7672,1.7669,1.7668,1.7558,1.7614,1.7614,1.7542,1.7533,1.7525,1.7526,1.7482,1.7531,1.7531,1.751,1.7472,1.7466,1.7441,1.7149,1.7084,1.7241,1.7199,1.7176,1.7176,1.7199,1.73,1.7373,1.7373,1.7422,1.7492,1.7507,1.7502,1.7464,1.7512,1.7512,1.7476,1.7507,1.7531,1.7588,1.7569,1.7615,1.7615,1.7594,1.7613,1.7638,1.7704,1.7711,1.7756,1.7756,1.7746,1.7776,1.7794,1.7823,1.7769,1.78,1.78,1.7766,1.7739,1.7757,1.7751,1.7696,1.7737,1.7754,1.7762,1.7826,1.7833,1.7834,1.7742,1.774,1.7784,1.7757,1.7785,1.7729,1.7715,1.7617,1.7641,1.7641,1.7616,1.7578,1.7514,1.7495,1.6852,1.7065,1.7285,1.7264,1.7234,1.7239,1.7239,1.7177,1.7251,1.7257,1.7208,1.7218,1.7234,1.7234,1.7303,1.737,1.7376,1.7398,1.7392,1.7414,1.7428,1.7416,1.7487,1.7487,1.7521,1.7549,1.7568,1.7626,1.7601,1.765,1.765,1.7648,1.7648,1.7653,1.7682,1.7642,1.7683,1.7683,1.7701,1.7744,1.7741,1.7744,1.7694,1.7779,1.7779,1.7792,1.7808,1.7774,1.7816,1.7731,1.7773,1.7773,1.7792,1.7806,1.7849,1.7864,1.7871,1.7797,1.7837,1.7809,1.7745,1.7775,1.783,1.7653,1.7722,1.7854,1.7903,1.7911,1.7962,1.7971,1.7961,1.8041,1.8041,1.812,1.8407,1.8778,1.9118,1.913,1.9134,1.9134,1.9236,1.9408,1.9511,1.9487,1.9482,1.9521,1.9521,1.9549,1.9694,1.9705,1.9707,1.9939,2.0,2.0015,2.0196,2.0246,2.0223,2.0192,2.0176,2.0157,2.0175,2.0272,2.0352,2.0381,2.0346,2.0249,2.0321,2.0321,2.0321,2.0352,2.0402,2.0326,2.0012,2.0094,2.0094,2.0211,2.0167,2.0178,2.0164,2.0094,2.0148,2.0154,2.017,2.0079,2.0061,2.0135,2.0122,2.0202,2.0202,2.0286,2.0345,2.0325,2.0362,2.0362,2.0393,2.0393,2.0517,2.054,2.0547,2.0546,2.0506,2.0479,2.0479,2.0416,2.0467,2.0563,2.0563,2.0601,2.0617,2.0636,2.0589,2.0638,2.0715,2.0709,2.0618,2.0666,2.0666,2.0616,2.0639,2.0603,2.0522,2.0211,2.0163,2.0163,2.0093,2.0009,2.0057,1.9997,1.9863,1.9887,1.9887,1.9829,1.9846,1.9846,1.9822,1.9803,1.9852,1.9852,1.9859,1.9767,1.9726,1.9537,1.9339,1.9426,1.9426,1.9393,1.9328,1.9317,1.9319,1.9237,1.9294,1.9311,1.9422,1.9428,1.9467,1.9497,1.9349,1.9341,1.9449,1.9448,1.9507,1.9571,1.9585,1.9572,1.9559,1.9608,1.9667,1.9661,1.9676,1.9805,2.0191,2.0283,2.03,2.0403,2.0574,2.0476,2.0168,2.0152,2.0254,2.0259,2.0288,2.0309,2.0301,2.0289,2.0252,2.0308,2.0308,2.0229,2.0224,2.0177,2.0083,1.9983,1.9952,1.993,1.9942,1.9995,2.0094,2.0097,2.0069,2.0172,2.0172,2.0205,2.0208,2.024,2.0285,2.0284,2.0339,2.0339,2.0333,2.0372,2.0369,2.0321,2.031,2.0387,2.0387,2.0454,2.0554,2.0617,2.0649,2.0624,2.0744,2.0744,2.0757,2.0851,2.0891,2.0906,2.0856,2.0938,2.0954,2.1096,2.1236,2.1449,2.1442,2.1349,2.1404,2.1404,2.1364,2.1378,2.1347,2.1347,2.1341,2.1411,2.1411],"E85":[0.8046,0.8055,0.8011,0.8003,0.803,0.802,0.8025,0.803,0.8029,0.8033,0.8036,0.8036,0.8033,0.8033,0.8034,0.8017,0.8039,0.8034,0.8034,0.802,0.802,0.8015,0.8025,0.7988,0.799,0.799,0.798,0.7978,0.7978,0.7991,0.7981,0.798,0.798,0.7929,0.7858,0.7844,0.7828,0.7755,0.7779,0.7811,0.7804,0.775,0.7718,0.7705,0.768,0.7666,0.7666,0.7665,0.7667,0.7647,0.7647,0.7634,0.7604,0.7604,0.76,0.7581,0.7569,0.7551,0.7516,0.7511,0.7511,0.75,0.7484,0.7484,0.7463,0.7467,0.7465,0.7465,0.7463,0.746,0.7473,0.7475,0.748,0.7467,0.7467,0.7466,0.7466,0.7472,0.7482,0.7484,0.747,0.747,0.7464,0.745,0.7432,0.7422,0.74,0.7385,0.7385,0.7379,0.7371,0.7365,0.7368,0.7358,0.7354,0.7354,0.7362,0.7357,0.7337,0.7334,0.7333,0.7344,0.7344,0.7344,0.7348,0.7345,0.7345,0.7343,0.734,0.734,0.7335,0.7327,0.7325,0.7324,0.7322,0.7322,0.7322,0.733,0.7334,0.7352,0.7353,0.7354,0.7354,0.7368,0.7373,0.7382,0.7377,0.7381,0.7375,0.7366,0.7366,0.7372,0.7371,0.737,0.7371,0.7371,0.7361,0.7361,0.7361,0.7356,0.7356,0.7349,0.7345,0.7349,0.7349,0.7344,0.7342,0.7347,0.7343,0.7345,0.7346,0.7346,0.7357,0.7381,0.7385,0.7389,0.74,0.741,0.7415,0.7418,0.7432,0.743,0.7414,0.7404,0.7409,0.7409,0.7401,0.7391,0.7377,0.7376,0.7389,0.7388,0.7401,0.7384,0.738,0.7384,0.7404,0.7402,0.7404,0.7404,0.7404,0.7402,0.7412,0.7413,0.7406,0.7408,0.7408,0.7408,0.7402,0.7402,0.7397,0.7396,0.7401,0.7401,0.7396,0.7396,0.7394,0.7397,0.7384,0.7387,0.74,0.7385,0.7367,0.7345,0.7344,0.7343,0.7339,0.7339,0.7323,0.7333,0.7334,0.733,0.7327,0.7327,0.7327,0.7327,0.7325,0.7321,0.7319,0.7329,0.734,0.734,0.734,0.7331,0.7336,0.7336,0.7311,0.7316,0.733,0.733,0.7326,0.733,0.7335,0.7344,0.7331,0.7344,0.7344,0.734,0.734,0.7345,0.7354,0.7359,0.7359,0.7354,0.7358,0.7363,0.7381,0.7385,0.7389,0.7389,0.7376,0.7376,0.7377,0.7377,0.7378,0.7387,0.7387,0.7382,0.7392,0.7387,0.7385,0.7358,0.7345,0.7345,0.734,0.7333,0.7323,0.7341,0.7341,0.7343,0.7343,0.7324,0.7311,0.7344,0.7342,0.7331,0.7335,0.7346,0.734,0.7324,0.7319,0.732,0.7327,0.7331,0.7331,0.7322,0.7338,0.7339,0.7338,0.7342,0.7346,0.7346,0.7343,0.734,0.7345,0.7351,0.7398,0.7435,0.7435,0.7434,0.7434,0.7453,0.7461,0.7472,0.7474,0.7474,0.7475,0.7482,0.7488,0.7488,0.7482,0.7482,0.7482,0.7476,0.7479,0.7479,0.7478,0.7478,0.7472,0.7472,0.7472,0.7475,0.7469,0.7467,0.7464,0.7464,0.7464,0.7464,0.7464,0.747,0.7468,0.7466,0.7465,0.7465,0.7464,0.7463,0.7458,0.7441,0.7421,0.7421,0.7435,0.7434,0.7422,0.7418,0.7418,0.7412,0.7401,0.7401,0.7393,0.739,0.7417,0.7417,0.7554,0.7604,0.7604,0.764,0.7653,0.7665,0.7682,0.7708,0.7714,0.7714,0.7715,0.7742,0.775,0.7762,0.7757,0.7748,0.7748,0.773,0.7732,0.7758,0.7762,0.7766,0.7757,0.7757,0.7757,0.7756,0.7756,0.776,0.7761,0.7761,0.7761,0.7762,0.7732,0.773,0.7729,0.7723,0.7723,0.7723,0.7723,0.7722,0.7721,0.7721,0.7729,0.7721,0.7721,0.772,0.772,0.7711,0.7707,0.7689,0.7692,0.7709,0.7709,0.7707,0.7722,0.7721,0.7721,0.7721,0.7721,0.7749,0.7766,0.7799,0.7817,0.7822,0.7907,0.7907,0.7931,0.7944,0.7988,0.797,0.7986,0.7986,0.7986,0.7988,0.8046,0.8055,0.8067,0.8184,0.8184,0.8184,0.8182,0.8213,0.8211,0.8218,0.8239,0.8234,0.8234,0.8234,0.8235,0.827,0.8292,0.8307,0.8309,0.8315,0.8315,0.8315,0.8323,0.8375,0.8427,0.8424,0.8424,0.845,0.8487,0.8505,0.8532,0.8622,0.8669,0.8669,0.868,0.8693,0.8708,0.8717,0.8725,0.8725,0.8725,0.8725,0.8705,0.8697,0.865,0.8653,0.8653,0.8652,0.8661,0.8678,0.8687,0.8702,0.8697,0.8694,0.8694,0.8689,0.8692,0.8698,0.8707,0.8704,0.8704,0.8706,0.8708,0.8711,0.8711,0.8689,0.8678,0.8672,0.8672,0.8672,0.8669,0.8658,0.8656,0.8642,0.8628,0.8628,0.8626,0.8619,0.8609,0.8594,0.8587,0.8584,0.8584,0.8581,0.8571,0.855,0.8558,0.8559,0.8558,0.8558,0.8572,0.857,0.8566,0.8567,0.8559,0.8545,0.8545,0.854,0.8542,0.8502,0.8505,0.8505,0.8505,0.8505,0.8496,0.8494,0.8485,0.8486,0.8472,0.847,0.8481,0.8487,0.8483,0.8487,0.8503,0.8489,0.8489,0.8489,0.8497,0.8497,0.8538,0.854,0.8555,0.8556,0.8558,0.8567,0.857,0.8584,0.86,0.8656,0.8657,0.8657,0.8664,0.8676,0.8679,0.8685,0.872,0.872,0.8724,0.8704,0.8705,0.8705,0.8701,0.8696,0.8696,0.8696,0.8702,0.8706,0.872,0.8731,0.8742,0.8745,0.8745,0.8753,0.8763,0.8766,0.8768,0.8769,0.8764,0.8764,0.8769,0.8772,0.8825,0.8822,0.8827,0.8827,0.8827,0.8836,0.8851,0.8865,0.8867,0.8873,0.8871,0.8871,0.8878,0.889,0.8884,0.8905,0.891,0.892,0.892,0.8927,0.8948,0.8999,0.9019,0.9039,0.9052,0.9052,0.9064,0.9087,0.9085,0.9109,0.9138,0.914,0.914],"GPLc":[0.999,0.9992,0.9992,0.9992,0.9992,0.9992,0.9991,0.9991,1.0,0.9995,0.9995,0.9995,0.9995,0.9993,0.9993,0.9943,0.9943,0.9943,0.9943,0.9943,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9945,0.9928,0.9928,0.9928,0.9928,0.9928,0.9927,0.9927,0.9927,0.9927,0.9927,0.9927,0.9927,0.9929,0.9929,0.9929,0.9929,0.9929,0.9929,0.9929,0.9931,0.9872,0.9872,0.9839,0.9839,0.9839,0.9839,0.9834,0.9834,0.9834,0.9834,0.9834,0.9834,0.9834,0.9832,0.9832,0.9832,0.9816,0.9803,0.9803,0.9803,0.9802,0.9802,0.9802,0.9802,0.9802,0.9802,0.9802,0.9801,0.9801,0.9801,0.9801,0.9801,0.9801,0.9801,0.9799,0.9799,0.9799,0.9799,0.9799,0.9799,0.9799,0.9799,0.9801,0.9801,0.9801,0.9801,0.9801,0.9801,0.9802,0.9802,0.9802,0.9802,0.9802,0.9802,0.9802,0.9802,0.9802,0.9797,0.9797,0.979,0.979,0.979,0.9786,0.9786,0.9777,0.9777,0.9777,0.9777,0.9777,0.9772,0.9772,0.9772,0.9772,0.9756,0.9756,0.9756,0.9755,0.9755,0.9755,0.9755,0.9767,0.9767,0.9767,0.9767,0.9767,0.9767,0.9767,0.9767,0.9767,0.9767,0.9767,0.9766,0.9766,0.9766,0.9766,0.9766,0.9766,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9765,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9764,0.9764,0.9764,0.9764,0.9764,0.9764,0.9764,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9762,0.9759,0.9759,0.9759,0.9759,0.9759,0.9759,0.9759,0.9755,0.9755,0.9755,0.9755,0.9755,0.9755,0.9755,0.9752,0.9752,0.9752,0.9752,0.9752,0.9752,0.9752,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9753,0.9751,0.9751,0.9751,0.9751,0.9755,0.9755,0.9755,0.9757,0.9757,0.9757,0.9757,0.9757,0.9757,0.9757,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9756,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9725,0.9725,0.9725,0.9725,0.9725,0.9725,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9731,0.9728,0.9728,0.9728,0.9728,0.9728,0.9728,0.9728,0.9728,0.9727,0.9727,0.9727,0.9727,0.9727,0.9727,0.9727,0.9727,0.9727,0.9735,0.9735,0.9735,0.9735,0.9735,0.9682,0.9682,0.9682,0.9682,0.9682,0.9682,0.9702,0.9702,0.9702,0.9702,0.9702,0.9702,0.9702,0.9704,0.9702,0.9704,0.9704,0.9704,0.9704,0.9704,0.9703,0.9703,0.9703,0.9703,0.9703,0.9703,0.9703,0.9709,0.9703,0.9703,0.9703,0.9703,0.9703,0.9703,0.9703,0.9703,0.9703,0.9703,0.9704,0.9704,0.9704,0.9738,0.9738,0.9738,0.9724,0.9724,0.9724,0.9724,0.9724,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9733,0.9736,0.9761,0.9761,0.9761,0.9797,0.9797,0.9797,0.9801,0.9801,0.9801,0.9802,0.9801,0.9801,0.9801,0.9804,0.9804,0.9813,0.9813,0.9813,0.9813,0.9813,0.9819,0.9827,0.9827,1.0005,1.0005,1.0005,1.0005,1.0067,1.0121,1.0231,1.0231,1.0231,1.0231,1.0231,1.0275,1.0354,1.0363,1.0363,1.0448,1.0448,1.0448,1.0484,1.0534,1.0609,1.0659,1.0659,1.0659,1.0692,1.0702,1.0709,1.0709,1.0709,1.0734,1.0734,1.0734,1.0739,1.0739,1.0739,1.0739,1.0739,1.0731,1.0731,1.0734,1.0709,1.0708,1.0733,1.0733,1.0733,1.0734,1.0726,1.0726,1.0726,1.0726,1.0726,1.0726,1.0742,1.0748,1.0747,1.0747,1.0747,1.0747,1.0747,1.0747,1.0747,1.0741,1.0741,1.0741,1.0741,1.0741,1.0741,1.0708,1.0708,1.0683,1.0667,1.0667,1.0667,1.0667,1.0656,1.0656,1.0647,1.0647,1.0647,1.0647,1.0647,1.0645,1.0645,1.0645,1.0645,1.0595,1.0595,1.0595,1.0591,1.0591,1.0622,1.0622,1.0622,1.0622,1.0622,1.0616,1.0616,1.0616,1.0616,1.06,1.06,1.06,1.0592,1.0568,1.0568,1.0562,1.0538,1.0538,1.0538,1.0538,1.0478,1.0478,1.0478,1.0478,1.0478,1.0478,1.0481,1.0481,1.0481,1.0496,1.0496,1.0496,1.0496,1.0481,1.0481,1.0481,1.0481,1.0481,1.0481,1.0481,1.0488,1.0488,1.0488,1.0488,1.0488,1.0488,1.0504,1.0505,1.0505,1.0505,1.0505,1.0497,1.0497,1.0497,1.0498,1.0498,1.0498,1.0498,1.0474,1.0474,1.0474,1.0476,1.0452,1.0452,1.0452,1.0452,1.0452,1.0452,1.0448,1.0448,1.0448,1.0448,1.0448,1.0448,1.0478,1.0477,1.0477,1.0469,1.047,1.0477,1.0477,1.0477,1.0475,1.0475,1.0507,1.0468,1.0468,1.0468,1.0468,1.0468,1.0468,1.0468,1.0468,1.0468,1.0468]},"nat":{"Gazole":[1.7244,1.7326,1.7423,1.7453,1.7456,1.7493,1.7525,1.7519,1.7503,1.7463,1.7436,1.7436,1.7403,1.7358,1.7318,1.728,1.7242,1.7227,1.7226,1.7215,1.7223,1.7224,1.722,1.7191,1.7182,1.7182,1.7175,1.7188,1.7222,1.7247,1.7245,1.7244,1.7244,1.7233,1.7215,1.7211,1.7211,1.7104,1.717,1.7186,1.7211,1.7203,1.7189,1.7154,1.7108,1.7085,1.7084,1.7063,1.7042,1.7002,1.695,1.6863,1.681,1.6807,1.6756,1.669,1.6644,1.6608,1.6575,1.6559,1.6558,1.6536,1.6508,1.649,1.647,1.6456,1.6451,1.6451,1.6451,1.646,1.6473,1.6487,1.6512,1.6522,1.6523,1.6528,1.6532,1.6548,1.6556,1.6522,1.6478,1.6477,1.6424,1.6335,1.6253,1.6133,1.6031,1.5979,1.5977,1.5922,1.5863,1.5832,1.5806,1.5605,1.5665,1.568,1.5714,1.5764,1.5771,1.5781,1.5779,1.5775,1.5775,1.5772,1.5772,1.5763,1.5758,1.5745,1.573,1.5729,1.5704,1.5659,1.562,1.561,1.5601,1.5603,1.5603,1.5603,1.5635,1.5673,1.5717,1.5752,1.5764,1.5765,1.5774,1.578,1.5778,1.5772,1.575,1.5737,1.5737,1.5725,1.5715,1.5705,1.5706,1.57,1.5698,1.5698,1.5692,1.5686,1.5686,1.5693,1.5696,1.5698,1.5698,1.5699,1.5703,1.5739,1.5766,1.5808,1.5855,1.5857,1.5913,1.6031,1.6152,1.6302,1.6596,1.6659,1.6668,1.6794,1.6863,1.6798,1.6734,1.6652,1.6597,1.6596,1.6539,1.6466,1.6412,1.6379,1.6204,1.6284,1.6322,1.6378,1.6437,1.6503,1.6567,1.6619,1.6649,1.6651,1.6651,1.6658,1.6641,1.6631,1.6629,1.6643,1.6643,1.6662,1.6676,1.6679,1.6661,1.6627,1.661,1.661,1.6593,1.6583,1.6579,1.6572,1.6466,1.6502,1.6537,1.655,1.6515,1.6478,1.6442,1.6387,1.6362,1.6361,1.633,1.6298,1.6269,1.6231,1.6209,1.6202,1.6202,1.6171,1.6133,1.6107,1.6105,1.6124,1.614,1.6141,1.6151,1.6168,1.617,1.616,1.6105,1.6115,1.6139,1.6151,1.6158,1.6193,1.6223,1.6074,1.616,1.6202,1.6254,1.628,1.6302,1.6322,1.6335,1.634,1.6341,1.6338,1.6346,1.636,1.6377,1.6385,1.6387,1.6387,1.6386,1.638,1.6378,1.6393,1.6424,1.6444,1.6446,1.6478,1.6505,1.6497,1.6476,1.6436,1.6411,1.641,1.6377,1.6339,1.6309,1.6296,1.6299,1.6283,1.6283,1.6274,1.6263,1.624,1.6205,1.5927,1.6019,1.6072,1.6056,1.6029,1.6013,1.6029,1.6153,1.6185,1.6189,1.6269,1.6371,1.644,1.6478,1.6515,1.6525,1.6527,1.6557,1.6595,1.6637,1.669,1.6777,1.6827,1.683,1.6886,1.6893,1.6923,1.6949,1.6934,1.6956,1.6956,1.6959,1.6979,1.7043,1.7094,1.7167,1.7153,1.7154,1.7151,1.7112,1.7062,1.6978,1.6885,1.6842,1.684,1.6794,1.6741,1.6697,1.6646,1.6565,1.6547,1.6545,1.6512,1.6479,1.6441,1.6401,1.6315,1.6287,1.6284,1.6246,1.6186,1.6125,1.6072,1.5735,1.5833,1.5901,1.5908,1.5886,1.5867,1.5877,1.5889,1.5899,1.5899,1.5904,1.5913,1.5933,1.5995,1.6188,1.6241,1.6245,1.6296,1.6349,1.6376,1.639,1.6396,1.6399,1.6399,1.641,1.6438,1.6484,1.6542,1.6581,1.6598,1.6599,1.6615,1.6642,1.6663,1.6714,1.674,1.6751,1.6752,1.6761,1.677,1.6768,1.6788,1.6816,1.6849,1.6851,1.6883,1.6915,1.6919,1.6922,1.6925,1.6926,1.6927,1.693,1.693,1.6929,1.6934,1.693,1.6922,1.6922,1.691,1.6898,1.6895,1.6899,1.6798,1.6896,1.6941,1.7024,1.7083,1.7127,1.7158,1.7193,1.721,1.7213,1.7321,1.8043,1.8802,1.9304,1.9696,1.9797,1.9807,2.0012,2.0262,2.0307,2.0282,2.0395,2.0411,2.0416,2.0498,2.072,2.0781,2.0888,2.1242,2.1389,2.1409,2.1755,2.2067,2.2156,2.216,2.2108,2.2111,2.2115,2.2207,2.2336,2.2435,2.2492,2.266,2.2747,2.2764,2.2779,2.3163,2.3638,2.3547,2.3318,2.3207,2.3205,2.3135,2.3112,2.2965,2.2793,2.2589,2.2355,2.2346,2.2212,2.2062,2.1945,2.1964,2.1962,2.1984,2.1985,2.2017,2.2085,2.2102,2.2163,2.1932,2.1921,2.1928,2.2219,2.2252,2.2243,2.2022,2.1852,2.1834,2.1837,2.1785,2.1723,2.166,2.1517,2.1454,2.1439,2.1445,2.1596,2.1652,2.1636,2.156,2.1468,2.1337,2.1333,2.1328,2.1333,2.1204,2.1027,2.0797,2.0823,2.0821,2.0573,2.0472,2.0381,2.0461,2.0436,2.0419,2.0417,2.0386,2.0385,2.03,2.0291,2.0252,2.0147,2.0145,2.0069,1.9903,1.9684,1.9557,1.9323,1.9317,1.9313,1.9232,1.9121,1.9059,1.9018,1.9022,1.8949,1.8947,1.8941,1.8989,1.9018,1.9035,1.8922,1.8989,1.9019,1.9066,1.9147,1.9211,1.9351,1.9662,1.9784,1.9792,1.9876,1.9942,2.0088,2.04,2.0785,2.0926,2.0938,2.1106,2.1315,2.1414,2.156,2.1772,2.1847,2.1855,2.1971,2.2022,2.2037,2.2114,2.2253,2.2278,2.2281,2.2347,2.2343,2.2234,2.2081,2.19,2.1834,2.1829,2.1758,2.1774,2.1896,2.2011,2.2114,2.2096,2.21,2.2175,2.2236,2.2304,2.2364,2.2415,2.2433,2.2435,2.2448,2.2457,2.2425,2.2354,2.2252,2.2187,2.2184,2.2159,2.2186,2.2257,2.2446,2.2669,2.2737,2.2743,2.2819,2.2889,2.2939,2.2982,2.3063,2.3106,2.3112,2.3284,2.3481,2.3638,2.3811,2.3939,2.3961,2.3964,2.3969,2.3978,2.3936,2.3907,2.3882,2.3874,2.3875],"E10":[1.7771,1.7815,1.7878,1.7893,1.7894,1.7905,1.7917,1.7916,1.7911,1.7894,1.7878,1.7878,1.7864,1.7837,1.7811,1.7784,1.7764,1.7761,1.7761,1.7758,1.7772,1.7778,1.7782,1.7771,1.7769,1.7769,1.777,1.7785,1.7815,1.7828,1.7804,1.7794,1.7795,1.7778,1.7753,1.7742,1.7732,1.7575,1.765,1.7669,1.768,1.7652,1.7629,1.7592,1.7543,1.7519,1.7517,1.7492,1.7467,1.7435,1.7379,1.7266,1.7202,1.7198,1.7138,1.7057,1.7004,1.6978,1.6988,1.6997,1.6998,1.7001,1.7006,1.7017,1.7027,1.7045,1.7059,1.7059,1.7074,1.7111,1.7154,1.72,1.7265,1.7295,1.7297,1.7319,1.7353,1.7397,1.7438,1.7417,1.7379,1.7377,1.7324,1.7236,1.7156,1.7048,1.6942,1.6893,1.6891,1.6839,1.6783,1.6761,1.6737,1.6515,1.6594,1.6612,1.665,1.6699,1.6708,1.6726,1.6734,1.6738,1.6738,1.6741,1.6747,1.6734,1.6727,1.6715,1.67,1.6699,1.6679,1.6641,1.661,1.6607,1.6613,1.6627,1.6627,1.6639,1.6694,1.6744,1.6793,1.6821,1.6828,1.6828,1.683,1.6832,1.6825,1.6824,1.6816,1.681,1.681,1.6805,1.6807,1.6804,1.6802,1.6796,1.6795,1.6795,1.6789,1.6784,1.678,1.6781,1.6776,1.6773,1.6773,1.6773,1.6772,1.6794,1.6815,1.6845,1.6891,1.6893,1.6928,1.6978,1.7014,1.7054,1.7142,1.7174,1.7178,1.7232,1.7268,1.7239,1.7197,1.7137,1.7092,1.7091,1.7039,1.6974,1.692,1.6878,1.6639,1.673,1.6778,1.6804,1.6811,1.6827,1.6864,1.6907,1.6916,1.6917,1.6914,1.6914,1.6906,1.6904,1.6902,1.6905,1.6905,1.6912,1.6914,1.6904,1.6882,1.6859,1.6853,1.6853,1.6843,1.6842,1.6854,1.6873,1.6827,1.6872,1.6908,1.6949,1.6954,1.6951,1.6946,1.6935,1.6926,1.6926,1.6912,1.6905,1.6893,1.6869,1.6862,1.6861,1.6861,1.6847,1.6836,1.683,1.6834,1.6856,1.6875,1.6876,1.6891,1.6908,1.691,1.6899,1.6827,1.6835,1.6867,1.6879,1.6886,1.6924,1.6937,1.6757,1.6861,1.6911,1.6971,1.6988,1.7004,1.7028,1.7046,1.7051,1.7052,1.7053,1.7064,1.7078,1.7085,1.7089,1.7093,1.7094,1.7088,1.7075,1.7061,1.7066,1.7072,1.7079,1.7079,1.7086,1.7107,1.7111,1.7096,1.7055,1.7027,1.7027,1.6995,1.6961,1.6939,1.694,1.6942,1.6942,1.6942,1.6937,1.6925,1.691,1.6881,1.6628,1.6733,1.6792,1.6811,1.6779,1.6752,1.6757,1.6801,1.6813,1.6815,1.6844,1.6886,1.6904,1.6916,1.6934,1.6941,1.6941,1.6944,1.6951,1.6959,1.6968,1.7004,1.7015,1.7016,1.7023,1.7026,1.7042,1.7083,1.7124,1.7174,1.7175,1.7199,1.7222,1.7235,1.7222,1.7222,1.7201,1.7201,1.7182,1.715,1.7112,1.7069,1.7046,1.7041,1.7041,1.7041,1.7055,1.7052,1.7038,1.702,1.7006,1.7005,1.6991,1.6968,1.6949,1.6922,1.6874,1.6848,1.6846,1.6817,1.6767,1.6709,1.6649,1.6257,1.6381,1.6465,1.6484,1.6473,1.6459,1.6467,1.6479,1.6486,1.6487,1.649,1.6509,1.6525,1.6554,1.6682,1.6715,1.6718,1.6753,1.6793,1.6809,1.682,1.6826,1.6829,1.6829,1.6837,1.6861,1.6892,1.6926,1.6942,1.6942,1.6942,1.6935,1.6918,1.6915,1.6929,1.6939,1.6943,1.6943,1.6944,1.6937,1.6929,1.6936,1.6946,1.6955,1.6956,1.6966,1.6979,1.6979,1.6982,1.6988,1.6999,1.7,1.7011,1.703,1.7052,1.7074,1.7072,1.7065,1.7065,1.7056,1.7043,1.7039,1.7028,1.6812,1.6937,1.7001,1.707,1.7114,1.715,1.7179,1.7192,1.721,1.7212,1.7268,1.7631,1.7846,1.7975,1.8145,1.8229,1.8234,1.8341,1.8548,1.863,1.8723,1.8847,1.8839,1.8843,1.8918,1.9124,1.9221,1.9313,1.9571,1.967,1.9681,1.9824,1.9864,1.9912,1.9779,1.9811,1.9817,1.9818,1.9849,1.9933,1.9999,2.0034,2.0069,2.0081,2.0084,2.0087,2.0124,2.0171,2.0069,1.9996,1.998,1.9979,1.9958,1.9972,1.993,1.9906,1.985,1.9764,1.9761,1.9732,1.9753,1.9769,1.9807,1.9868,1.989,1.9893,1.9959,2.0031,2.0068,2.0132,2.0145,2.0173,2.0176,2.0266,2.0324,2.0356,2.036,2.0345,2.0359,2.0359,2.0313,2.0294,2.0323,2.0331,2.0395,2.0413,2.0414,2.0448,2.0506,2.0555,2.0584,2.0595,2.0595,2.0596,2.0592,2.0573,2.0524,2.0423,2.0252,2.0209,2.0205,2.0057,1.9909,1.9831,1.9782,1.9713,1.9706,1.9704,1.9664,1.967,1.9613,1.9609,1.9618,1.9592,1.9592,1.957,1.9463,1.933,1.9255,1.9146,1.9111,1.9108,1.9065,1.9034,1.9008,1.8955,1.8992,1.8943,1.8941,1.8948,1.9016,1.9007,1.9046,1.8879,1.8965,1.9007,1.9044,1.9117,1.915,1.9256,1.9336,1.935,1.9352,1.9371,1.9407,1.9453,1.9611,1.985,1.9969,1.9976,2.0083,2.0205,2.0273,2.0193,2.025,2.0264,2.0265,2.0281,2.0274,2.0254,2.026,2.0285,2.0293,2.0293,2.0274,2.0231,2.0149,2.0015,1.9874,1.9816,1.9811,1.9767,1.9796,1.99,1.998,2.0055,2.0071,2.0075,2.0112,2.0154,2.018,2.0208,2.0247,2.0258,2.026,2.0277,2.0304,2.0312,2.0318,2.0327,2.0339,2.0341,2.039,2.0525,2.0651,2.0769,2.0921,2.0969,2.0974,2.106,2.1134,2.117,2.1204,2.12,2.1208,2.1212,2.1272,2.1386,2.1503,2.1569,2.1563,2.1559,2.156,2.1546,2.1528,2.1504,2.1504,2.1519,2.1525,2.1526],"SP98":[1.8735,1.8774,1.8836,1.8852,1.8853,1.8869,1.8884,1.8887,1.8884,1.8875,1.8864,1.8864,1.8852,1.8832,1.8813,1.8791,1.8776,1.8772,1.8772,1.8767,1.8776,1.878,1.8783,1.8776,1.8774,1.8774,1.8775,1.8786,1.881,1.8818,1.88,1.8792,1.8792,1.8778,1.8756,1.8746,1.8738,1.8611,1.8675,1.8689,1.8695,1.8671,1.8651,1.8618,1.8575,1.8554,1.8552,1.8529,1.8504,1.8473,1.8423,1.8324,1.8269,1.8267,1.821,1.8123,1.8068,1.8035,1.803,1.8033,1.8034,1.8029,1.8026,1.8033,1.8036,1.8048,1.8058,1.8058,1.8068,1.8098,1.8135,1.8177,1.8243,1.827,1.8272,1.8297,1.8332,1.8373,1.8411,1.8398,1.8369,1.8368,1.8327,1.825,1.818,1.8084,1.7995,1.7947,1.7945,1.7894,1.7836,1.7807,1.7784,1.7586,1.7657,1.7671,1.7699,1.7729,1.7728,1.7736,1.7739,1.774,1.774,1.7739,1.7743,1.7731,1.7725,1.7715,1.7701,1.77,1.7683,1.7649,1.7618,1.7614,1.7618,1.7629,1.7629,1.7639,1.7687,1.7734,1.7776,1.7805,1.7812,1.7812,1.7814,1.7819,1.7814,1.7814,1.7809,1.7806,1.7806,1.7801,1.7803,1.78,1.7798,1.7795,1.7794,1.7794,1.7787,1.7782,1.7778,1.7777,1.7772,1.777,1.777,1.7769,1.7767,1.7785,1.7798,1.7823,1.7864,1.7866,1.7892,1.7934,1.7967,1.8004,1.8087,1.8118,1.8122,1.8169,1.8209,1.8184,1.8152,1.8106,1.807,1.8068,1.8027,1.7963,1.7911,1.7868,1.7657,1.7739,1.7776,1.7792,1.7791,1.7803,1.7834,1.7874,1.7883,1.7884,1.7881,1.788,1.7874,1.7872,1.7868,1.7869,1.7869,1.7874,1.7875,1.7865,1.7847,1.7829,1.7824,1.7824,1.7813,1.7813,1.7821,1.7834,1.7782,1.7827,1.7861,1.7895,1.79,1.7899,1.7894,1.7881,1.7874,1.7873,1.7861,1.7853,1.7842,1.7819,1.7812,1.7811,1.7811,1.7797,1.7785,1.7779,1.7782,1.7801,1.7818,1.7818,1.783,1.7845,1.7847,1.7839,1.7782,1.7788,1.7814,1.7823,1.7828,1.786,1.7872,1.7737,1.7824,1.7861,1.7905,1.792,1.7932,1.7951,1.7968,1.7973,1.7973,1.7976,1.7986,1.7998,1.8005,1.801,1.8014,1.8014,1.801,1.7999,1.799,1.7991,1.7999,1.8005,1.8006,1.8011,1.8032,1.8036,1.8025,1.7995,1.7974,1.7973,1.7949,1.7923,1.7907,1.7908,1.7908,1.7909,1.7909,1.7904,1.7893,1.7879,1.7855,1.7652,1.7735,1.7783,1.7794,1.776,1.7734,1.7735,1.777,1.7778,1.7779,1.7799,1.7833,1.7847,1.7856,1.7871,1.7877,1.7877,1.7881,1.7888,1.7896,1.7907,1.7941,1.7953,1.7954,1.7961,1.7965,1.798,1.8019,1.8063,1.8109,1.811,1.8135,1.8157,1.817,1.8161,1.8166,1.8146,1.8147,1.8133,1.811,1.8082,1.8048,1.803,1.8024,1.8024,1.802,1.8028,1.8025,1.8011,1.7995,1.798,1.7979,1.7965,1.7945,1.7928,1.7904,1.786,1.7837,1.7836,1.7811,1.7765,1.7715,1.7662,1.7322,1.7428,1.7496,1.75,1.7478,1.7462,1.7469,1.7475,1.7477,1.7477,1.7476,1.7487,1.75,1.7528,1.7652,1.7685,1.7688,1.772,1.7764,1.7785,1.78,1.781,1.7814,1.7815,1.7824,1.7851,1.7881,1.7912,1.7933,1.7939,1.7939,1.7939,1.7933,1.7935,1.7946,1.7955,1.7958,1.7958,1.7958,1.7953,1.7951,1.7959,1.7971,1.7975,1.7976,1.7986,1.8,1.8002,1.8005,1.8013,1.8024,1.8024,1.8036,1.8054,1.8076,1.8099,1.8106,1.8102,1.8103,1.8099,1.8093,1.8092,1.8088,1.794,1.8036,1.8085,1.8141,1.818,1.8211,1.8238,1.8253,1.827,1.8273,1.8334,1.8683,1.8905,1.9036,1.9194,1.9262,1.9267,1.9365,1.9522,1.9593,1.9656,1.9745,1.9762,1.9766,1.9838,1.9951,2.0027,2.011,2.0313,2.0395,2.0404,2.0552,2.067,2.0683,2.0663,2.0638,2.0638,2.0639,2.0674,2.0742,2.081,2.0859,2.0901,2.0911,2.0914,2.0917,2.0961,2.1013,2.0977,2.0904,2.088,2.0879,2.0853,2.0849,2.0828,2.0801,2.0758,2.0736,2.0735,2.0709,2.0683,2.0665,2.0674,2.071,2.0724,2.0727,2.0778,2.0829,2.0863,2.0926,2.0939,2.0964,2.0967,2.1048,2.1102,2.1137,2.1161,2.116,2.116,2.116,2.1128,2.112,2.1145,2.1154,2.1203,2.1221,2.1222,2.1252,2.1307,2.1353,2.1385,2.1406,2.1409,2.141,2.1406,2.1394,2.1354,2.1281,2.1138,2.1083,2.108,2.0976,2.0851,2.0774,2.0736,2.0693,2.0676,2.0674,2.0633,2.0607,2.0574,2.0545,2.0531,2.0525,2.0526,2.0509,2.0451,2.0361,2.0297,2.0201,2.0169,2.0166,2.0124,2.0092,2.0066,2.0022,2.0022,1.998,1.9979,1.9973,1.9994,1.9985,2.0,1.9853,1.9927,1.9966,1.9992,2.0029,2.005,2.0087,2.0146,2.016,2.0162,2.0175,2.0189,2.0225,2.0344,2.0666,2.0794,2.0802,2.092,2.1078,2.1151,2.0935,2.1005,2.1018,2.102,2.1041,2.1037,2.103,2.1038,2.1061,2.1067,2.1067,2.1056,2.1025,2.0963,2.0878,2.0754,2.0717,2.0714,2.0666,2.0663,2.0713,2.0766,2.0826,2.0839,2.0841,2.0877,2.091,2.0938,2.0976,2.1019,2.1034,2.1037,2.1058,2.1091,2.1104,2.1109,2.1126,2.1136,2.1138,2.1178,2.1286,2.139,2.1505,2.1669,2.1722,2.1729,2.1827,2.192,2.1969,2.2011,2.2019,2.2028,2.203,2.2088,2.2202,2.2312,2.238,2.2386,2.2387,2.2386,2.2379,2.2369,2.2354,2.2355,2.2372,2.2378,2.2379],"SP95":[1.8161,1.8206,1.8269,1.8286,1.8287,1.8313,1.8333,1.834,1.8341,1.8331,1.8328,1.8328,1.8318,1.8305,1.829,1.8274,1.8255,1.8252,1.8252,1.8251,1.8254,1.8259,1.8259,1.8247,1.8247,1.8247,1.8252,1.826,1.8275,1.8281,1.8273,1.8269,1.8269,1.8259,1.8248,1.8241,1.823,1.8097,1.8162,1.8179,1.8187,1.8175,1.8157,1.8134,1.8093,1.8078,1.8078,1.806,1.8035,1.8008,1.7962,1.7867,1.7838,1.7835,1.776,1.7668,1.7614,1.7571,1.7555,1.7551,1.755,1.7543,1.7536,1.7536,1.7537,1.7541,1.7542,1.7543,1.7556,1.7571,1.7598,1.7627,1.7682,1.77,1.7702,1.7734,1.7766,1.7804,1.7838,1.7843,1.7839,1.7837,1.7803,1.7733,1.7677,1.7613,1.7503,1.7458,1.7457,1.7399,1.7345,1.7314,1.7287,1.7076,1.7128,1.7145,1.719,1.7225,1.7223,1.723,1.7227,1.723,1.723,1.7231,1.7233,1.7226,1.7223,1.7205,1.7198,1.7196,1.7181,1.7146,1.7117,1.7115,1.7113,1.7113,1.7113,1.7124,1.7157,1.7189,1.7224,1.7254,1.7264,1.7264,1.727,1.7276,1.7277,1.7279,1.7276,1.7279,1.7279,1.7279,1.728,1.7276,1.7274,1.7268,1.7268,1.727,1.7266,1.726,1.7258,1.7256,1.7246,1.7245,1.7245,1.7245,1.7245,1.7253,1.7264,1.7288,1.73,1.7301,1.7336,1.7386,1.7416,1.7454,1.753,1.7553,1.7557,1.7619,1.7656,1.7658,1.7638,1.758,1.7559,1.7558,1.7515,1.746,1.7417,1.7376,1.7161,1.723,1.7277,1.7296,1.7293,1.7299,1.732,1.7353,1.7361,1.7362,1.7362,1.7361,1.7363,1.7362,1.7358,1.7359,1.736,1.7369,1.737,1.7361,1.735,1.7333,1.7329,1.7329,1.7319,1.7313,1.7315,1.7322,1.7244,1.7303,1.7344,1.7386,1.7393,1.739,1.7385,1.7366,1.7362,1.7362,1.7349,1.7338,1.7332,1.7316,1.7312,1.731,1.7309,1.7299,1.7287,1.7279,1.7276,1.7278,1.7281,1.7282,1.7298,1.7306,1.731,1.7303,1.7219,1.724,1.7277,1.7295,1.7299,1.7316,1.7324,1.7221,1.7289,1.733,1.7381,1.7391,1.7402,1.742,1.7436,1.7442,1.7442,1.7448,1.7456,1.7465,1.747,1.7474,1.7475,1.7475,1.7474,1.747,1.7463,1.7463,1.7466,1.7467,1.7468,1.7473,1.7492,1.7497,1.7493,1.7473,1.7465,1.7464,1.7445,1.7422,1.7406,1.7396,1.7389,1.7386,1.7387,1.7385,1.7373,1.7363,1.7341,1.7135,1.7205,1.7259,1.7278,1.7266,1.7249,1.7244,1.7259,1.7264,1.7266,1.7293,1.732,1.7334,1.7342,1.7355,1.7357,1.7357,1.7363,1.7371,1.7379,1.7393,1.7411,1.7416,1.7417,1.7429,1.7432,1.7446,1.7479,1.7513,1.7528,1.7529,1.7557,1.7579,1.7598,1.7614,1.7623,1.7626,1.7626,1.7616,1.7602,1.7585,1.7563,1.7538,1.7531,1.7532,1.753,1.7531,1.7527,1.7518,1.7498,1.7494,1.7493,1.7482,1.7468,1.7452,1.7433,1.7395,1.7382,1.7379,1.7354,1.7319,1.7283,1.722,1.6879,1.6962,1.7042,1.7048,1.7025,1.7016,1.7017,1.7013,1.7015,1.7016,1.7016,1.7019,1.7027,1.7048,1.7144,1.7179,1.7182,1.7226,1.725,1.7267,1.7279,1.7284,1.7288,1.7289,1.7302,1.7319,1.7339,1.7363,1.7385,1.7391,1.7393,1.7395,1.7395,1.7397,1.7404,1.7417,1.7421,1.7422,1.7427,1.7433,1.7434,1.7438,1.7443,1.7454,1.7455,1.7469,1.748,1.7481,1.7488,1.7498,1.7506,1.7507,1.7522,1.7535,1.7551,1.7566,1.7582,1.7585,1.7586,1.7585,1.758,1.758,1.7569,1.74,1.7477,1.7531,1.7599,1.7635,1.7666,1.7691,1.7709,1.7722,1.7725,1.7803,1.813,1.8368,1.8568,1.8712,1.8749,1.8757,1.8855,1.9,1.9085,1.9114,1.9171,1.9193,1.9199,1.9267,1.9362,1.9439,1.9541,1.9748,1.9842,1.9852,2.0011,2.0154,2.019,2.0187,2.0173,2.0172,2.0178,2.021,2.0278,2.0342,2.0382,2.045,2.0475,2.0481,2.0489,2.0547,2.062,2.0581,2.0507,2.0479,2.0478,2.0466,2.0448,2.0403,2.0368,2.0327,2.031,2.0311,2.0293,2.0259,2.0238,2.0238,2.0261,2.0277,2.0276,2.0325,2.0373,2.0408,2.0464,2.0469,2.0501,2.0505,2.0583,2.0632,2.0668,2.0705,2.0708,2.0709,2.0711,2.0684,2.0678,2.0695,2.0701,2.075,2.0765,2.0766,2.0796,2.0847,2.0898,2.0937,2.0971,2.0976,2.0977,2.0976,2.0968,2.0935,2.0862,2.0721,2.0668,2.0667,2.0558,2.0441,2.0347,2.0308,2.0268,2.0254,2.025,2.0212,2.0195,2.0167,2.0131,2.0104,2.0097,2.0098,2.008,2.0027,1.9963,1.9889,1.9792,1.9766,1.9764,1.9716,1.9679,1.9652,1.9613,1.9573,1.9538,1.9536,1.9532,1.9526,1.9524,1.9518,1.9379,1.9437,1.9485,1.9515,1.9555,1.959,1.9624,1.9692,1.9714,1.9715,1.9742,1.9747,1.9785,1.9878,2.0082,2.0134,2.0142,2.0256,2.039,2.0466,2.0516,2.0593,2.0612,2.0618,2.0646,2.0647,2.0639,2.0653,2.0688,2.0697,2.0698,2.0682,2.0654,2.0593,2.0514,2.0396,2.0357,2.0354,2.031,2.0305,2.0353,2.0402,2.0455,2.0469,2.0471,2.0511,2.0545,2.0566,2.0601,2.0638,2.0651,2.0653,2.068,2.0708,2.0721,2.0733,2.0744,2.0751,2.0755,2.0796,2.0894,2.1004,2.1129,2.1307,2.1376,2.1386,2.1487,2.1595,2.1634,2.1669,2.1667,2.1672,2.1681,2.1744,2.187,2.1997,2.2065,2.2081,2.2082,2.2083,2.2083,2.2075,2.2064,2.207,2.2088,2.2102,2.2103],"E85":[0.8043,0.8044,0.8035,0.8033,0.8033,0.8033,0.8037,0.8034,0.8035,0.8037,0.8041,0.8038,0.8034,0.8032,0.803,0.8025,0.8026,0.8026,0.8025,0.8024,0.8021,0.8028,0.8025,0.8023,0.8022,0.8023,0.8025,0.8018,0.8019,0.8018,0.8011,0.8009,0.8008,0.7974,0.7952,0.7943,0.7924,0.786,0.7868,0.7875,0.7879,0.7867,0.786,0.7849,0.7811,0.7812,0.7808,0.7804,0.78,0.7796,0.7786,0.7775,0.7746,0.7745,0.7738,0.7733,0.7723,0.7711,0.7693,0.769,0.769,0.7681,0.7672,0.7661,0.7648,0.7639,0.7636,0.7636,0.7634,0.7632,0.7626,0.7623,0.7625,0.7625,0.7625,0.7622,0.7621,0.7622,0.7627,0.762,0.7609,0.7609,0.7606,0.7585,0.7579,0.7562,0.7542,0.7533,0.7532,0.7526,0.752,0.7515,0.7511,0.7434,0.7431,0.7442,0.748,0.7499,0.7494,0.7496,0.7486,0.7487,0.7487,0.7485,0.7487,0.7482,0.748,0.748,0.7476,0.7476,0.7475,0.7464,0.7466,0.7468,0.746,0.7459,0.7459,0.7457,0.7459,0.7459,0.7464,0.7464,0.7465,0.7461,0.7462,0.746,0.7457,0.7456,0.7453,0.7451,0.745,0.7451,0.7447,0.7447,0.7442,0.7445,0.7442,0.7442,0.7443,0.7438,0.7435,0.7437,0.7428,0.7425,0.7426,0.7426,0.7421,0.7424,0.7429,0.7426,0.7427,0.7427,0.7434,0.7443,0.7446,0.7449,0.7459,0.7465,0.7465,0.7468,0.7471,0.7465,0.7452,0.7447,0.7445,0.7445,0.7444,0.7438,0.7436,0.7432,0.735,0.7366,0.7405,0.7424,0.7426,0.7428,0.7442,0.7445,0.744,0.7441,0.744,0.7443,0.7446,0.744,0.7438,0.7435,0.7435,0.7436,0.7434,0.7437,0.743,0.7427,0.7424,0.7424,0.7429,0.7424,0.7424,0.7424,0.7296,0.7346,0.7397,0.7419,0.7408,0.7399,0.7399,0.7392,0.7386,0.7386,0.738,0.7379,0.7376,0.737,0.7365,0.7368,0.7365,0.7367,0.7365,0.7362,0.7361,0.736,0.7362,0.7363,0.736,0.7359,0.7359,0.7355,0.7279,0.7298,0.7337,0.7351,0.735,0.7355,0.735,0.7283,0.73,0.7337,0.7349,0.7348,0.735,0.7349,0.7352,0.7352,0.7353,0.7357,0.7357,0.7356,0.7357,0.7359,0.736,0.736,0.7357,0.7355,0.7356,0.7358,0.7361,0.7361,0.7362,0.7363,0.7368,0.7363,0.7352,0.7344,0.734,0.734,0.7338,0.7334,0.733,0.733,0.7325,0.7325,0.7324,0.7322,0.7319,0.7325,0.7316,0.7248,0.7266,0.7302,0.7311,0.7312,0.7308,0.7308,0.7307,0.7306,0.7309,0.731,0.7312,0.7313,0.7313,0.7313,0.7314,0.7314,0.7318,0.7316,0.7314,0.7316,0.7346,0.7372,0.7372,0.7375,0.7374,0.7383,0.7386,0.7385,0.7383,0.7384,0.7383,0.7385,0.739,0.7391,0.7389,0.7391,0.7392,0.7389,0.7387,0.7385,0.7383,0.7383,0.738,0.738,0.7382,0.7387,0.7384,0.7379,0.7377,0.7374,0.7374,0.737,0.7366,0.7368,0.7364,0.736,0.7358,0.7358,0.7358,0.7352,0.7348,0.734,0.7254,0.7268,0.7319,0.734,0.7336,0.7332,0.7332,0.7329,0.733,0.733,0.7328,0.7329,0.7339,0.7349,0.7452,0.7472,0.7474,0.7498,0.7528,0.7556,0.7578,0.7604,0.7613,0.7616,0.7635,0.7651,0.7674,0.7685,0.7682,0.7685,0.7685,0.7682,0.7684,0.7685,0.7683,0.7681,0.7682,0.7682,0.7684,0.768,0.7679,0.7679,0.7676,0.767,0.767,0.767,0.7665,0.7666,0.7662,0.7652,0.7652,0.7652,0.7654,0.7656,0.7653,0.7646,0.7645,0.7644,0.7644,0.7644,0.7642,0.7644,0.764,0.7546,0.7569,0.7619,0.765,0.7655,0.7661,0.7662,0.7662,0.7665,0.7666,0.7683,0.7723,0.7791,0.7817,0.7844,0.7889,0.7891,0.7908,0.793,0.7957,0.793,0.7944,0.7942,0.7943,0.7951,0.798,0.7986,0.8003,0.8068,0.8072,0.8073,0.8083,0.8095,0.8097,0.8092,0.8088,0.809,0.809,0.8101,0.8106,0.8119,0.8143,0.8149,0.8148,0.8149,0.8146,0.8161,0.8163,0.8256,0.8343,0.8367,0.837,0.8389,0.8416,0.8419,0.8455,0.8482,0.8486,0.8487,0.8483,0.8481,0.8485,0.8491,0.8492,0.8491,0.8491,0.8495,0.8499,0.8505,0.8512,0.8513,0.8507,0.8507,0.8513,0.8512,0.8512,0.8507,0.8504,0.85,0.8497,0.8497,0.8503,0.8509,0.8512,0.8506,0.8506,0.8503,0.8506,0.8509,0.8512,0.8509,0.8507,0.8504,0.8504,0.8501,0.8502,0.8491,0.8483,0.8475,0.8468,0.8467,0.8459,0.8457,0.8458,0.8454,0.8438,0.8437,0.8437,0.844,0.8436,0.843,0.8441,0.8449,0.8448,0.8446,0.8446,0.8442,0.8435,0.8432,0.8418,0.8415,0.8415,0.8415,0.841,0.8407,0.8399,0.8395,0.8397,0.8393,0.8388,0.8385,0.8393,0.8392,0.8329,0.834,0.837,0.8379,0.8383,0.8384,0.8388,0.8397,0.8398,0.8398,0.8399,0.8401,0.8412,0.8422,0.8438,0.8445,0.8445,0.8461,0.847,0.8491,0.8511,0.8532,0.8533,0.8531,0.8537,0.8542,0.8554,0.8572,0.8582,0.8585,0.8586,0.8592,0.8601,0.8595,0.859,0.8587,0.8591,0.8591,0.8593,0.8604,0.8613,0.862,0.8628,0.8632,0.8632,0.864,0.8642,0.8645,0.8649,0.8653,0.8652,0.865,0.8651,0.8657,0.8684,0.869,0.8698,0.87,0.8699,0.8702,0.8716,0.8728,0.8734,0.8752,0.8756,0.8753,0.876,0.8767,0.8775,0.8792,0.8798,0.8805,0.8806,0.8823,0.8844,0.8883,0.8905,0.8923,0.8925,0.8926,0.8934,0.8935,0.8936,0.8947,0.8955,0.8963,0.8963],"GPLc":[1.0133,1.0121,1.0109,1.0109,1.0108,1.0105,1.01,1.01,1.0098,1.0089,1.0089,1.0088,1.0087,1.0086,1.0085,1.0089,1.0088,1.0088,1.0088,1.0087,1.0086,1.009,1.009,1.0088,1.0089,1.0092,1.0091,1.0099,1.0085,1.0085,1.0089,1.0088,1.0088,1.0082,1.0083,1.0085,1.0083,1.0056,1.0064,1.0068,1.0069,1.0068,1.0068,1.0068,1.0067,1.0066,1.0066,1.0065,1.0068,1.0066,1.0063,1.006,1.0061,1.0061,1.0066,1.0063,1.0014,1.0001,1.0002,0.9999,0.9999,1.0001,1.0005,1.0002,1.0001,0.9997,0.9994,0.9994,0.9993,0.9998,0.9992,0.999,0.9981,0.9978,0.9978,0.9979,0.9975,0.9979,0.9979,0.9973,0.9973,0.9973,0.9968,0.9964,0.9962,0.9967,0.9958,0.9958,0.9958,0.9964,0.9968,0.9971,0.9961,0.9928,0.9938,0.9942,0.9951,0.9957,0.9956,0.9955,0.9951,0.995,0.995,0.995,0.9949,0.995,0.995,0.9948,0.9947,0.9947,0.9948,0.9945,0.9946,0.9939,0.9936,0.993,0.9929,0.9933,0.9927,0.9921,0.9923,0.9923,0.9928,0.9928,0.9932,0.9925,0.993,0.992,0.9931,0.9929,0.9929,0.9921,0.9916,0.9914,0.9912,0.9907,0.9906,0.9907,0.9903,0.9906,0.9905,0.9903,0.9901,0.9888,0.9889,0.9888,0.9887,0.9887,0.9883,0.9884,0.9877,0.9878,0.9876,0.988,0.9879,0.9873,0.9873,0.9872,0.9873,0.9877,0.9877,0.9871,0.9868,0.9886,0.9883,0.9883,0.9882,0.9884,0.9876,0.9879,0.9856,0.9865,0.9868,0.9877,0.9876,0.9873,0.9872,0.9872,0.9871,0.9871,0.9871,0.9871,0.9868,0.9867,0.9868,0.9869,0.9869,0.9868,0.9868,0.9877,0.9872,0.9871,0.9872,0.9872,0.9876,0.9874,0.9874,0.987,0.9851,0.9854,0.9859,0.9863,0.9856,0.9855,0.9849,0.9848,0.9848,0.9847,0.9843,0.9841,0.9839,0.9838,0.9838,0.9837,0.9837,0.9837,0.9837,0.9837,0.9835,0.9834,0.9834,0.9834,0.9833,0.9833,0.983,0.9825,0.9808,0.9812,0.9818,0.982,0.9818,0.9822,0.9813,0.9795,0.9804,0.9806,0.9814,0.9814,0.9814,0.9813,0.9812,0.9812,0.9813,0.9817,0.9815,0.9814,0.9813,0.9813,0.9813,0.9812,0.9813,0.9816,0.9817,0.9815,0.9817,0.9817,0.9817,0.9814,0.9817,0.9815,0.9816,0.9816,0.9816,0.9817,0.9818,0.982,0.9821,0.9822,0.9824,0.9824,0.9824,0.9823,0.9823,0.9828,0.9826,0.9811,0.9819,0.9822,0.9827,0.9817,0.9817,0.9817,0.9812,0.9812,0.9812,0.9807,0.9803,0.9804,0.9804,0.9802,0.9801,0.9801,0.98,0.9803,0.9782,0.9782,0.9783,0.9782,0.9782,0.9782,0.9776,0.9775,0.9772,0.9778,0.9777,0.9777,0.9775,0.9774,0.9767,0.9764,0.9763,0.9763,0.9763,0.9763,0.9761,0.976,0.9746,0.9743,0.9742,0.9741,0.9741,0.9742,0.9741,0.9723,0.9729,0.9728,0.9729,0.9738,0.9733,0.9732,0.9728,0.9729,0.9721,0.972,0.972,0.9716,0.9714,0.9714,0.9702,0.9708,0.9714,0.9719,0.9713,0.9711,0.9712,0.9711,0.9711,0.9711,0.971,0.9713,0.9713,0.9714,0.9713,0.9714,0.9714,0.9712,0.9714,0.9715,0.9717,0.9718,0.9718,0.9717,0.9718,0.9721,0.9722,0.9723,0.9724,0.9732,0.9725,0.9727,0.9728,0.9729,0.9729,0.9728,0.9727,0.9727,0.9726,0.9719,0.9719,0.972,0.9716,0.9704,0.9704,0.9704,0.9712,0.9709,0.9711,0.9709,0.971,0.971,0.9718,0.972,0.9718,0.9712,0.971,0.971,0.9711,0.9714,0.9714,0.9719,0.972,0.9705,0.9714,0.9717,0.9721,0.9715,0.9718,0.9719,0.9719,0.9721,0.9721,0.9722,0.9738,0.9754,0.9753,0.9754,0.9771,0.9772,0.9774,0.9776,0.9777,0.9781,0.9788,0.9795,0.9795,0.9796,0.9804,0.9807,0.9813,0.9832,0.9833,0.9834,0.9838,0.9843,0.9846,0.9849,0.9881,0.9884,0.9884,0.9892,0.9926,0.9991,1.0081,1.0106,1.0145,1.0147,1.0149,1.0205,1.0306,1.0369,1.0434,1.0458,1.046,1.0496,1.0529,1.0592,1.0625,1.0647,1.0663,1.0663,1.0679,1.0688,1.0702,1.0717,1.0732,1.0734,1.0733,1.0743,1.0753,1.0762,1.0769,1.0764,1.0766,1.0758,1.0769,1.0775,1.0771,1.0766,1.0767,1.0761,1.0762,1.0759,1.0762,1.0764,1.0756,1.076,1.0758,1.0759,1.0769,1.0768,1.0769,1.0767,1.0768,1.0767,1.0767,1.0767,1.0766,1.0768,1.0769,1.0772,1.0771,1.0771,1.0773,1.0774,1.076,1.0742,1.0707,1.0697,1.0697,1.0695,1.0696,1.0679,1.0677,1.0668,1.0669,1.067,1.0671,1.0663,1.0638,1.0627,1.0626,1.0621,1.0621,1.0619,1.062,1.0607,1.0602,1.0605,1.0607,1.0606,1.0598,1.0593,1.0578,1.0574,1.0533,1.054,1.0548,1.0545,1.0513,1.05,1.0492,1.0479,1.0477,1.0478,1.0472,1.0469,1.0467,1.0462,1.0459,1.0455,1.0455,1.0447,1.0446,1.0445,1.0448,1.0444,1.0449,1.0448,1.0445,1.0448,1.0453,1.0463,1.0483,1.048,1.048,1.0499,1.0497,1.0505,1.0512,1.0503,1.0501,1.0501,1.0493,1.0489,1.0493,1.0491,1.049,1.0489,1.0489,1.0491,1.0494,1.0495,1.0492,1.0501,1.0493,1.0494,1.0496,1.0501,1.0502,1.05,1.05,1.0498,1.0498,1.0505,1.0496,1.0493,1.0495,1.048,1.0481,1.0473,1.0469,1.0469,1.0468,1.0468,1.047,1.0473,1.0466,1.0452,1.0455,1.0456,1.0459,1.0438,1.0441,1.0441,1.043,1.0446,1.043,1.0429,1.0436,1.0438,1.0439]},"cards":[{"fuel":"Gazole","label":"Diesel (Gazole)","value":2.367,"nat":2.388,"d30":0.139,"d365":0.721,"n":71,"spark":[1.8931,1.9004,1.9046,1.8914,1.9006,1.9033,1.9083,1.9178,1.9235,1.9436,1.9688,1.9822,1.9834,1.9932,2.0026,2.023,2.0646,2.1072,2.1253,2.1258,2.1348,2.1543,2.159,2.1675,2.184,2.1931,2.1934,2.2058,2.2092,2.2103,2.2176,2.2367,2.2456,2.246,2.2512,2.2527,2.2317,2.2131,2.1886,2.1839,2.1835,2.1787,2.1896,2.209,2.2184,2.2285,2.2275,2.2275,2.2365,2.2418,2.2453,2.2486,2.2534,2.2553,2.2553,2.255,2.2569,2.2534,2.2449,2.228,2.2233,2.2232,2.2226,2.2265,2.2373,2.2526,2.2627,2.2668,2.2671,2.2704,2.276,2.2795,2.2837,2.2927,2.296,2.2962,2.3142,2.3302,2.3561,2.3711,2.3778,2.3792,2.3792,2.3793,2.3832,2.3795,2.371,2.3659,2.3671,2.3671]},{"fuel":"E10","label":"Petrol E10 (SP95-E10)","value":2.138,"nat":2.153,"d30":0.117,"d365":0.428,"n":66,"spark":[1.8954,1.8933,1.9006,1.8812,1.8898,1.893,1.8946,1.8998,1.9007,1.9167,1.9212,1.92,1.9197,1.9213,1.9271,1.9342,1.9472,1.9675,1.9842,1.9843,1.9874,1.9947,1.9964,1.99,2.0047,2.0103,2.0108,2.0145,2.0174,2.0167,2.0143,2.0155,2.0164,2.0164,2.0124,2.0089,2.0038,1.995,1.9851,1.9818,1.9811,1.9786,1.9848,1.9956,1.999,2.0042,2.0061,2.0058,2.0084,2.0098,2.0083,2.0086,2.0128,2.0152,2.0151,2.0154,2.0195,2.02,2.0201,2.0205,2.0244,2.0244,2.0296,2.0407,2.0474,2.0531,2.0563,2.0579,2.0577,2.0645,2.0729,2.075,2.0812,2.086,2.0897,2.0897,2.099,2.1107,2.1235,2.1271,2.1227,2.1244,2.1244,2.1266,2.1289,2.127,2.1297,2.1337,2.1375,2.1375]},{"fuel":"SP98","label":"Petrol SP98","value":2.214,"nat":2.238,"d30":0.12,"d365":0.408,"n":64,"spark":[1.9914,1.9896,1.9936,1.9756,1.9849,1.9886,1.9906,1.994,1.994,1.9998,2.0032,2.0028,2.0027,2.0042,2.0063,2.0121,2.0236,2.0628,2.0829,2.0834,2.0865,2.097,2.0986,2.0697,2.073,2.0787,2.079,2.0857,2.0856,2.0857,2.0841,2.0852,2.088,2.088,2.0821,2.0792,2.0777,2.076,2.0649,2.0637,2.0634,2.0615,2.062,2.0703,2.0732,2.077,2.0807,2.0803,2.0831,2.0837,2.083,2.0832,2.0877,2.0901,2.09,2.0893,2.0944,2.0951,2.0947,2.0942,2.0979,2.0979,2.1021,2.1124,2.119,2.1235,2.1277,2.1331,2.133,2.1385,2.1457,2.1508,2.1582,2.1612,2.1652,2.1657,2.174,2.1835,2.198,2.2027,2.199,2.1993,2.1993,2.2007,2.2032,2.2012,2.2047,2.2101,2.2139,2.2139]},{"fuel":"E85","label":"Superethanol E85","value":0.914,"nat":0.896,"d30":0.031,"d365":0.175,"n":45,"spark":[0.8494,0.8485,0.8486,0.8472,0.847,0.8481,0.8487,0.8483,0.8487,0.8503,0.8489,0.8489,0.8489,0.8497,0.8497,0.8538,0.854,0.8555,0.8556,0.8558,0.8567,0.857,0.8584,0.86,0.8656,0.8657,0.8657,0.8664,0.8676,0.8679,0.8685,0.872,0.872,0.8724,0.8704,0.8705,0.8705,0.8701,0.8696,0.8696,0.8696,0.8702,0.8706,0.872,0.8731,0.8742,0.8745,0.8745,0.8753,0.8763,0.8766,0.8768,0.8769,0.8764,0.8764,0.8769,0.8772,0.8825,0.8822,0.8827,0.8827,0.8827,0.8836,0.8851,0.8865,0.8867,0.8873,0.8871,0.8871,0.8878,0.889,0.8884,0.8905,0.891,0.892,0.892,0.8927,0.8948,0.8999,0.9019,0.9039,0.9052,0.9052,0.9064,0.9087,0.9085,0.9109,0.9138,0.914,0.914]}],"stations":[{"id":"31320001","ville":"Castanet-Tolosan","adresse":"Route de Lab\u00e8ge","cp":"31320","dist":1.11,"prices":{"Gazole":2.379,"E10":2.159,"SP98":2.299,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-25 08:54","brand":"Intermarch\u00e9","brand_shared":false,"dir":"NE","dry":{}},{"id":"31450006","ville":"Pompertuzat","adresse":"Avenue de Lauragais - Lieu dit Condamine","cp":"31450","dist":2.57,"prices":{"Gazole":2.379,"E10":2.159,"SP98":2.292,"SP95":null,"E85":0.859,"GPLc":null},"maj":"2026-09-24 08:47","brand":"Intermarch\u00e9","brand_shared":false,"dir":"SE","dry":{}},{"id":"31520003","ville":"Ramonville-Saint-Agne","adresse":"1 Rue Louis Braille","cp":"31520","dist":2.8,"prices":{"Gazole":2.379,"E10":2.159,"SP98":2.299,"SP95":null,"E85":0.859,"GPLc":1.029},"maj":"2026-09-25 09:03","brand":"Intermarch\u00e9","brand_shared":false,"dir":"NW","dry":{}},{"id":"31520005","ville":"Ramonville Saint Agne","adresse":"98 AVENUE TOLOSANE","cp":"31520","dist":3.17,"prices":{"Gazole":2.25,"E10":null,"SP98":null,"SP95":null,"E85":0.873,"GPLc":null},"maj":"2026-09-27 00:01","brand":"TotalEnergies","brand_shared":false,"dir":"NW","dry":{"E10":"2026-09-24","SP98":"2026-09-10"}},{"id":"31670001","ville":"Labege","adresse":"CENTRE COMMERCIAL DE L'AUTAN","cp":"31670","dist":3.27,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"TotalEnergies","brand_shared":false,"dir":"NE","dry":{"E10":"2026-09-17","Gazole":"2026-09-18","SP95":"2026-09-16"}},{"id":"31673001","ville":"Lab\u00e8ge","adresse":"Centre Commercial LABEGE 2","cp":"31670","dist":3.89,"prices":{"Gazole":2.389,"E10":2.181,"SP98":2.308,"SP95":2.24,"E85":0.906,"GPLc":null},"maj":"2026-09-26 00:40","brand":"Carrefour","brand_shared":false,"dir":"N","dry":{}},{"id":"31520007","ville":"Ramonville-Saint-Agne","adresse":"53 Av. Tolosane","cp":"31520","dist":4.17,"prices":{"Gazole":2.459,"E10":2.259,"SP98":2.359,"SP95":null,"E85":1.015,"GPLc":null},"maj":"2026-09-25 23:50","brand":"Avia","brand_shared":false,"dir":"NW","dry":{}},{"id":"31450004","ville":"Belberaud","adresse":"ZA DE LA BALME","cp":"31450","dist":4.63,"prices":{"Gazole":2.368,"E10":2.148,"SP98":2.258,"SP95":null,"E85":0.857,"GPLc":1.028},"maj":"2026-09-26 08:55","brand":"Super U","brand_shared":false,"dir":"E","dry":{}},{"id":"31650003","ville":"Saint-Orens-De-Gameville","adresse":"5 AV DE GAMEVILLE","cp":"31650","dist":5.09,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"TotalEnergies","brand_shared":false,"dir":"NE","dry":{"E10":"2026-09-24","E85":"2026-09-25","Gazole":"2026-09-25","SP98":"2026-09-25"}},{"id":"31450008","ville":"Deyme","adresse":"AUTOROUTE A61AIRE DE TOULOUSE SUD NORD","cp":"31450","dist":5.34,"prices":{"Gazole":2.523,"E10":2.291,"SP98":2.35,"SP95":null,"E85":1.015,"GPLc":1.152},"maj":"2026-09-25 14:00","brand":"Dyneff","brand_shared":true,"dir":"SE","dry":{}},{"id":"31450009","ville":"Deyme","adresse":"AUTOROUTE A61AIRE DE TOULOUSE SUD SUD","cp":"31450","dist":5.35,"prices":{"Gazole":2.493,"E10":2.261,"SP98":2.32,"SP95":null,"E85":1.015,"GPLc":1.153},"maj":"2026-09-25 14:00","brand":"Dyneff","brand_shared":false,"dir":"SE","dry":{}},{"id":"31650002","ville":"Saint-Orens-De-Gameville","adresse":"All\u00e9e des Champs Pinsons","cp":"31650","dist":5.65,"prices":{"Gazole":2.389,"E10":2.181,"SP98":2.269,"SP95":2.235,"E85":null,"GPLc":null},"maj":"2026-09-27 01:18","brand":"E.Leclerc","brand_shared":false,"dir":"N","dry":{}},{"id":"31400005","ville":"Toulouse","adresse":"105 Route de Narbonne","cp":"31400","dist":6.46,"prices":{"Gazole":2.427,"E10":2.239,"SP98":2.33,"SP95":null,"E85":0.975,"GPLc":null},"maj":"2026-09-26 07:31","brand":"Esso Express","brand_shared":false,"dir":"NW","dry":{}},{"id":"31400002","ville":"Toulouse","adresse":"68 Route de Revel","cp":"31400","dist":6.6,"prices":{"Gazole":2.449,"E10":2.219,"SP98":2.319,"SP95":null,"E85":1.025,"GPLc":1.039},"maj":"2026-09-25 23:59","brand":"Esso","brand_shared":false,"dir":"N","dry":{}},{"id":"31400006","ville":"Toulouse","adresse":"90 Route de Revel","cp":"31400","dist":6.6,"prices":{"Gazole":2.445,"E10":2.222,"SP98":2.332,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-25 07:31","brand":"Esso","brand_shared":true,"dir":"N","dry":{}},{"id":"31120003","ville":"Portet-Sur-Garonne","adresse":"RTE DE LA CROIX FALGARDE","cp":"31120","dist":6.62,"prices":{"Gazole":2.25,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-25 12:06","brand":"TotalEnergies","brand_shared":false,"dir":"W","dry":{"E10":"2026-09-25","SP98":"2026-09-18"}},{"id":"31400008","ville":"Toulouse","adresse":"170 Avenue de Lespinet","cp":"31400","dist":6.79,"prices":{"Gazole":2.469,"E10":2.209,"SP98":2.339,"SP95":null,"E85":0.959,"GPLc":null},"maj":"2026-09-25 14:00","brand":"Dyneff","brand_shared":false,"dir":"N","dry":{}},{"id":"31400007","ville":"Toulouse","adresse":"58 Route de Narbonne","cp":"31400","dist":6.87,"prices":{"Gazole":2.449,"E10":2.219,"SP98":2.319,"SP95":null,"E85":1.025,"GPLc":null},"maj":"2026-09-25 23:59","brand":"Avia","brand_shared":false,"dir":"NW","dry":{}},{"id":"31120005","ville":"Portet-Sur-Garonne","adresse":"50 Route d'Espagne","cp":"31120","dist":7.4,"prices":{"Gazole":2.419,"E10":2.219,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-24 07:31","brand":"Esso Express","brand_shared":false,"dir":"NW","dry":{}},{"id":"31400013","ville":"Toulouse","adresse":"56 AVENUE DE RANGUEIL","cp":"31400","dist":7.45,"prices":{"Gazole":2.459,"E10":2.259,"SP98":2.359,"SP95":null,"E85":1.065,"GPLc":null},"maj":"2026-09-25 00:01","brand":"Avia","brand_shared":false,"dir":"NW","dry":{}},{"id":"31120010","ville":"Portet Sur Garonne","adresse":"43 ROUTE D ESPAGNE","cp":"31120","dist":8.14,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":0.866,"GPLc":null},"maj":"2026-09-27 00:01","brand":"Total Access","brand_shared":true,"dir":"W","dry":{"E10":"2026-09-26","Gazole":"2026-09-26","SP98":"2026-09-26"}},{"id":"31120009","ville":"Portet-Sur-Garonne","adresse":"106 ROUTE D'ESPAGNE","cp":"31120","dist":8.2,"prices":{"Gazole":2.25,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":0.999},"maj":"2026-09-27 00:01","brand":"Total Access","brand_shared":false,"dir":"W","dry":{"E10":"2026-09-25","E85":"2026-09-23","SP98":"2026-09-11"}},{"id":"31120001","ville":"Portet-Sur-Garonne","adresse":"Boulevard de l'Europe","cp":"31120","dist":8.26,"prices":{"Gazole":2.369,"E10":2.179,"SP98":2.288,"SP95":2.219,"E85":0.887,"GPLc":0.997},"maj":"2026-09-26 20:01","brand":"Carrefour","brand_shared":false,"dir":"W","dry":{}},{"id":"31500015","ville":"Toulouse","adresse":"228 AVENUE DE CASTRES","cp":"31500","dist":8.75,"prices":{"Gazole":2.499,"E10":2.199,"SP98":2.319,"SP95":null,"E85":1.025,"GPLc":null},"maj":"2026-09-24 08:07","brand":"Avia","brand_shared":false,"dir":"N","dry":{}},{"id":"31084001","ville":"Toulouse","adresse":"10 Boulevard de Thibaud","cp":"31084","dist":8.76,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":1.99,"E85":null,"GPLc":null},"maj":"2026-09-25 19:39","brand":"TotalEnergies","brand_shared":false,"dir":"NW","dry":{"Gazole":"2026-09-26"}},{"id":"31100011","ville":"Toulouse","adresse":"80 ROUTE D ESPAGNE","cp":"31100","dist":8.89,"prices":{"Gazole":2.25,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-27 00:01","brand":"Total Access","brand_shared":false,"dir":"NW","dry":{"E10":"2026-09-26","SP98":"2026-09-26"}},{"id":"31120007","ville":"Pinsaguel","adresse":"99 Rue d'Andorre","cp":"31120","dist":8.89,"prices":{"Gazole":2.395,"E10":2.146,"SP98":2.268,"SP95":null,"E85":0.859,"GPLc":null},"maj":"2026-09-24 10:50","brand":"","brand_shared":false,"dir":"W","dry":{}},{"id":"31400010","ville":"Toulouse","adresse":"36 ALLEE DES DEMOISELLES","cp":"31400","dist":8.98,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":0.899,"GPLc":null},"maj":"2026-09-27 00:01","brand":"TotalEnergies","brand_shared":false,"dir":"NW","dry":{"E10":"2026-09-24","SP98":"2026-09-11"}},{"id":"31100004","ville":"Toulouse","adresse":"138 bis Route de Seysses","cp":"31100","dist":9.1,"prices":{"Gazole":2.369,"E10":null,"SP98":2.289,"SP95":2.269,"E85":0.899,"GPLc":null},"maj":"2026-09-26 18:11","brand":"Carrefour Market","brand_shared":false,"dir":"NW","dry":{}},{"id":"31500013","ville":"Toulouse","adresse":"6 rue claudius Rougenet","cp":"31500","dist":9.18,"prices":{"Gazole":2.499,"E10":2.229,"SP98":2.359,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-23 08:12","brand":"Carrefour","brand_shared":false,"dir":"N","dry":{}},{"id":"31860001","ville":"Labarthe-Sur-L\u00e8ze","adresse":"CHEZ MANON - 496 RN20","cp":"31860","dist":9.52,"prices":{"Gazole":2.25,"E10":1.99,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-24 19:31","brand":"TotalEnergies","brand_shared":false,"dir":"SW","dry":{"SP98":"2026-09-20"}},{"id":"31450003","ville":"Montgiscard","adresse":"Route D\u00e9part. 813 Lieu dit en Rouzaut","cp":"31450","dist":9.73,"prices":{"Gazole":2.379,"E10":2.159,"SP98":2.299,"SP95":null,"E85":0.858,"GPLc":1.079},"maj":"2026-09-26 08:00","brand":"Intermarch\u00e9","brand_shared":false,"dir":"SE","dry":{}},{"id":"31860006","ville":"Pins Justaret","adresse":"21 CHEMIN DE LA CROISETTE","cp":"31860","dist":10.03,"prices":{"Gazole":2.439,"E10":null,"SP98":null,"SP95":2.259,"E85":null,"GPLc":null},"maj":"2026-09-21 09:08","brand":"Carrefour","brand_shared":false,"dir":"SW","dry":{}},{"id":"31500012","ville":"Toulouse","adresse":"144 Avenue Jean Chaubet","cp":"31500","dist":10.03,"prices":{"Gazole":2.479,"E10":2.279,"SP98":2.379,"SP95":null,"E85":1.035,"GPLc":null},"maj":"2026-09-23 07:17","brand":"Avia","brand_shared":false,"dir":"N","dry":{}},{"id":"31500008","ville":"Toulouse","adresse":"151 AVENUE JEAN CHAUBET","cp":"31500","dist":10.11,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"TotalEnergies","brand_shared":false,"dir":"N","dry":{"E10":"2026-09-18","Gazole":"2026-09-18","SP95":"2026-09-15"}},{"id":"31130007","ville":"Flourens","adresse":"Lieu dit MOUSSARD  Route de Castres","cp":"31130","dist":10.21,"prices":{"Gazole":2.399,"E10":2.199,"SP98":2.269,"SP95":2.235,"E85":0.879,"GPLc":null},"maj":"2026-09-26 20:00","brand":"Super U","brand_shared":false,"dir":"NE","dry":{}},{"id":"31130003","ville":"Balma","adresse":"23 Avenue des A\u00e9rostiers","cp":"31130","dist":10.37,"prices":{"Gazole":2.441,"E10":2.235,"SP98":2.341,"SP95":null,"E85":1.011,"GPLc":null},"maj":"2026-09-26 07:31","brand":"Esso Express","brand_shared":false,"dir":"N","dry":{}},{"id":"31130008","ville":"Balma","adresse":"43 AVENUE DES AEROSTIERS","cp":"31130","dist":10.38,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":0.879,"GPLc":0.999},"maj":"2026-09-27 00:01","brand":"Esso Express","brand_shared":true,"dir":"N","dry":{"E10":"2026-09-24","Gazole":"2026-09-25","SP95":"2026-09-21","SP98":"2026-09-23"}},{"id":"31810003","ville":"Vernet","adresse":"AVENUE DE TOULOUSE","cp":"31810","dist":10.54,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"TotalEnergies","brand_shared":false,"dir":"SW","dry":{"Gazole":"2026-09-18","SP95":"2026-09-18","SP98":"2026-09-18"}},{"id":"31120006","ville":"Roques","adresse":"1 All\u00e9e de Fra\u00efxinet","cp":"31120","dist":10.57,"prices":{"Gazole":2.369,"E10":2.179,"SP98":2.269,"SP95":null,"E85":0.864,"GPLc":null},"maj":"2026-09-27 01:18","brand":"E.Leclerc","brand_shared":false,"dir":"W","dry":{}},{"id":"31810002","ville":"Venerque","adresse":"Route de Narbonne Rd19","cp":"31810","dist":10.6,"prices":{"Gazole":2.375,"E10":2.152,"SP98":2.299,"SP95":null,"E85":0.858,"GPLc":1.079},"maj":"2026-09-24 08:49","brand":"","brand_shared":false,"dir":"S","dry":{}},{"id":"31000001","ville":"Toulouse","adresse":"328 Route de Saint-Simon","cp":"31100","dist":10.79,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"TotalEnergies","brand_shared":false,"dir":"NW","dry":{"Gazole":"2026-09-24","SP95":"2026-09-24","SP98":"2026-09-17"}},{"id":"31130004","ville":"Balma","adresse":"Chemin des Ar\u00e8nes","cp":"31130","dist":10.82,"prices":{"Gazole":2.499,"E10":2.229,"SP98":2.359,"SP95":null,"E85":0.859,"GPLc":null},"maj":"2026-09-22 13:20","brand":"Intermarch\u00e9","brand_shared":false,"dir":"N","dry":{}},{"id":"31100010","ville":"Toulouse","adresse":"222 ROUTE DE SAINT SIMON","cp":"31100","dist":11.05,"prices":{"Gazole":null,"E10":1.99,"SP98":null,"SP95":null,"E85":null,"GPLc":0.999},"maj":"2026-09-27 00:01","brand":"Total Access","brand_shared":false,"dir":"NW","dry":{"Gazole":"2026-09-26","SP95":"2026-09-17","SP98":"2026-09-26"}},{"id":"31300007","ville":"Toulouse","adresse":"104 AV GDE BRETAGNE","cp":"31300","dist":11.39,"prices":{"Gazole":2.25,"E10":1.99,"SP98":null,"SP95":null,"E85":0.874,"GPLc":null},"maj":"2026-09-27 00:01","brand":"TotalEnergies","brand_shared":false,"dir":"NW","dry":{"SP98":"2026-09-24"}},{"id":"31860005","ville":"Labarthe-Sur-L\u00e8ze","adresse":"2111 route du Plantaurel","cp":"31860","dist":11.52,"prices":{"Gazole":2.389,"E10":2.169,"SP98":2.299,"SP95":null,"E85":0.859,"GPLc":null},"maj":"2026-09-25 23:59","brand":"","brand_shared":false,"dir":"SW","dry":{}},{"id":"31500006","ville":"Toulouse","adresse":"AVENUE YVES BRUNAUD","cp":"31500","dist":11.73,"prices":{"Gazole":2.422,"E10":2.226,"SP98":2.321,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-25 07:31","brand":"Esso","brand_shared":false,"dir":"N","dry":{}},{"id":"31270004","ville":"Cugnaux","adresse":"34 Rue de la Vimona","cp":"31270","dist":12.18,"prices":{"Gazole":2.369,"E10":2.159,"SP98":2.289,"SP95":2.219,"E85":0.858,"GPLc":null},"maj":"2026-09-25 09:00","brand":"Intermarch\u00e9","brand_shared":false,"dir":"W","dry":{}},{"id":"31270005","ville":"Cugnaux","adresse":"Rue Henry Gladi","cp":"31270","dist":12.31,"prices":{"Gazole":2.369,"E10":2.159,"SP98":2.289,"SP95":null,"E85":0.858,"GPLc":null},"maj":"2026-09-25 09:39","brand":"Carrefour","brand_shared":false,"dir":"W","dry":{}},{"id":"31300008","ville":"Toulouse","adresse":"6 AVENUE DU GOUPE MORHANGE","cp":"31300","dist":12.46,"prices":{"Gazole":2.25,"E10":1.99,"SP98":null,"SP95":null,"E85":0.874,"GPLc":1.039},"maj":"2026-09-26 09:00","brand":"TotalEnergies","brand_shared":false,"dir":"NW","dry":{}},{"id":"31000004","ville":"Toulouse","adresse":"65 ROUTE D AGDE","cp":"31000","dist":12.55,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"","brand_shared":false,"dir":"N","dry":{"E10":"2026-09-26","E85":"2026-09-26","Gazole":"2026-09-26","SP98":"2026-09-17"}},{"id":"31500007","ville":"Toulouse","adresse":"231 FAUBOURG BONNEFOY","cp":"31000","dist":12.66,"prices":{"Gazole":2.449,"E10":2.234,"SP98":2.314,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-26 07:31","brand":"Esso","brand_shared":false,"dir":"N","dry":{}},{"id":"31270007","ville":"Villeneuve-Tolosane","adresse":"8 AVENUE DE FRANCAZAL","cp":"31270","dist":12.69,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"Total Access","brand_shared":false,"dir":"W","dry":{"E10":"2026-09-24","E85":"2026-09-25","Gazole":"2026-09-25","SP98":"2026-09-19"}},{"id":"31100003","ville":"Toulouse","adresse":"30 Chemin de Ferro-L\u00e9br\u00e8s","cp":"31100","dist":12.78,"prices":{"Gazole":2.408,"E10":2.18,"SP98":2.299,"SP95":null,"E85":0.859,"GPLc":null},"maj":"2026-09-26 09:01","brand":"Intermarch\u00e9","brand_shared":false,"dir":"NW","dry":{}},{"id":"31200022","ville":"Toulouse","adresse":"55 BOULEVARD DE SUISSE","cp":"31200","dist":12.8,"prices":{"Gazole":2.25,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-27 00:01","brand":"Total Access","brand_shared":false,"dir":"NW","dry":{"E10":"2026-09-26","SP98":"2026-09-25"}},{"id":"31075001","ville":"Toulouse","adresse":"92 Chemin de Gabardie","cp":"31075","dist":12.96,"prices":{"Gazole":2.499,"E10":2.229,"SP98":2.359,"SP95":null,"E85":null,"GPLc":1.037},"maj":"2026-09-25 10:12","brand":"Auchan","brand_shared":false,"dir":"N","dry":{}},{"id":"31200020","ville":"Toulouse","adresse":"103 BOULEVARD DE SUISSE","cp":"31200","dist":13.02,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":0.869,"GPLc":null},"maj":"2026-09-27 00:01","brand":"TotalEnergies","brand_shared":false,"dir":"NW","dry":{"E10":"2026-09-25","Gazole":"2026-09-26","SP98":"2026-09-22"}},{"id":"31600007","ville":"Muret","adresse":"RN 117 - LIEU DIT GUERIN","cp":"31600","dist":13.24,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"","brand_shared":false,"dir":"W","dry":{"E10":"2026-09-25","Gazole":"2026-09-25","SP98":"2026-09-25"}},{"id":"31076001","ville":"Toulouse","adresse":"36 route de bayonne","cp":"31076","dist":13.25,"prices":{"Gazole":2.409,"E10":2.199,"SP98":2.356,"SP95":2.301,"E85":0.882,"GPLc":1.009},"maj":"2026-09-26 00:40","brand":"Carrefour","brand_shared":false,"dir":"NW","dry":{}},{"id":"31570002","ville":"Lanta","adresse":"8 route de Caraman","cp":"31570","dist":13.45,"prices":{"Gazole":2.465,"E10":2.249,"SP98":null,"SP95":2.299,"E85":null,"GPLc":null},"maj":"2026-09-14 14:54","brand":"Carrefour Contact","brand_shared":false,"dir":"E","dry":{}},{"id":"31270003","ville":"Frouzins","adresse":"CHEMIN MAILHEAUX","cp":"31270","dist":14.31,"prices":{"Gazole":2.437,"E10":2.223,"SP98":2.324,"SP95":null,"E85":0.917,"GPLc":null},"maj":"2026-09-25 10:03","brand":"Carrefour Market","brand_shared":false,"dir":"W","dry":{}},{"id":"31200002","ville":"Toulouse","adresse":"211 Route d'Albi","cp":"31200","dist":14.36,"prices":{"Gazole":2.25,"E10":1.99,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-24 16:51","brand":"TotalEnergies","brand_shared":false,"dir":"N","dry":{"SP98":"2026-09-22"}},{"id":"31000003","ville":"Toulouse","adresse":"138 Avenue de Fronton","cp":"31200","dist":14.38,"prices":{"Gazole":2.419,"E10":2.178,"SP98":2.298,"SP95":null,"E85":0.859,"GPLc":null},"maj":"2026-09-25 08:07","brand":"Intermarch\u00e9","brand_shared":false,"dir":"N","dry":{}},{"id":"31170008","ville":"Tournefeuille","adresse":"20 boulevard Vincent Auriol","cp":"31170","dist":14.53,"prices":{"Gazole":2.459,"E10":2.259,"SP98":2.359,"SP95":null,"E85":1.065,"GPLc":null},"maj":"2026-09-25 23:50","brand":"Avia","brand_shared":false,"dir":"NW","dry":{}},{"id":"31170002","ville":"Tournefeuille","adresse":"5 Rue Bertrand Panouse","cp":"31170","dist":14.55,"prices":{"Gazole":2.449,"E10":2.199,"SP98":2.299,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-26 09:14","brand":"Auchan","brand_shared":false,"dir":"NW","dry":{"SP95":"2026-09-21"}},{"id":"31700004","ville":"Blagnac","adresse":"9 Avenue du G\u00e9n\u00e9ral Compans","cp":"31700","dist":14.73,"prices":{"Gazole":2.418,"E10":2.208,"SP98":2.288,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-26 07:40","brand":"Esso","brand_shared":false,"dir":"NW","dry":{}},{"id":"31600011","ville":"Muret","adresse":"68 avenue Jacques Douzans","cp":"31600","dist":14.75,"prices":{"Gazole":2.429,"E10":2.259,"SP98":2.359,"SP95":null,"E85":1.065,"GPLc":null},"maj":"2026-09-25 23:50","brand":"","brand_shared":false,"dir":"W","dry":{}},{"id":"31240003","ville":"Saint-Jean","adresse":"6 AVENUE DE DANCELLE","cp":"31240","dist":14.79,"prices":{"Gazole":2.499,"E10":2.199,"SP98":2.359,"SP95":null,"E85":0.859,"GPLc":null},"maj":"2026-09-18 14:50","brand":"Intermarch\u00e9","brand_shared":false,"dir":"N","dry":{}},{"id":"31600001","ville":"Eaunes","adresse":"2 Boulevard de la leze","cp":"31600","dist":14.81,"prices":{"Gazole":2.389,"E10":2.195,"SP98":2.299,"SP95":2.285,"E85":0.845,"GPLc":null},"maj":"2026-09-26 06:46","brand":"Super U","brand_shared":false,"dir":"SW","dry":{}},{"id":"31240002","ville":"L'Union","adresse":"AVENUE DE BAYONNE","cp":"31240","dist":14.83,"prices":{"Gazole":null,"E10":null,"SP98":null,"SP95":null,"E85":null,"GPLc":null},"maj":"","brand":"\u00c9lan (TotalEnergies)","brand_shared":false,"dir":"N","dry":{"E10":"2026-09-18","Gazole":"2026-09-18","SP95":"2026-09-15"}},{"id":"31200008","ville":"Toulouse","adresse":"168 Avenue des \u00c9tats-Unis","cp":"31200","dist":14.92,"prices":{"Gazole":2.399,"E10":2.189,"SP98":2.289,"SP95":null,"E85":null,"GPLc":null},"maj":"2026-09-26 07:40","brand":"Esso","brand_shared":false,"dir":"NW","dry":{}}],"monthly":{"2025-01":{"Gazole":[1.741,1.74],"E10":[1.795,1.786],"SP98":[1.897,1.884],"SP95":[1.866,1.829],"E85":[0.803,0.803],"GPLc":[0.999,1.01]},"2025-02":{"Gazole":[1.717,1.72],"E10":[1.78,1.773],"SP98":[1.884,1.874],"SP95":[1.849,1.823],"E85":[0.791,0.796],"GPLc":[0.994,1.008]},"2025-03":{"Gazole":[1.656,1.666],"E10":[1.728,1.718],"SP98":[1.829,1.82],"SP95":[1.8,1.771],"E85":[0.754,0.77],"GPLc":[0.987,1.002]},"2025-04":{"Gazole":[1.594,1.601],"E10":[1.689,1.693],"SP98":[1.792,1.795],"SP95":[1.763,1.744],"E85":[0.739,0.753],"GPLc":[0.98,0.996]},"2025-05":{"Gazole":[1.566,1.57],"E10":[1.676,1.675],"SP98":[1.777,1.774],"SP95":[1.743,1.722],"E85":[0.735,0.746],"GPLc":[0.978,0.993]},"2025-06":{"Gazole":[1.61,1.613],"E10":[1.696,1.696],"SP98":[1.796,1.793],"SP95":[1.76,1.74],"E85":[0.738,0.744],"GPLc":[0.977,0.988]},"2025-07":{"Gazole":[1.653,1.656],"E10":[1.688,1.687],"SP98":[1.788,1.784],"SP95":[1.748,1.734],"E85":[0.74,0.743],"GPLc":[0.976,0.987]},"2025-08":{"Gazole":[1.626,1.627],"E10":[1.687,1.689],"SP98":[1.783,1.783],"SP95":[1.738,1.731],"E85":[0.734,0.737],"GPLc":[0.976,0.984]},"2025-09":{"Gazole":[1.634,1.632],"E10":[1.705,1.702],"SP98":[1.801,1.795],"SP95":[1.757,1.742],"E85":[0.736,0.735],"GPLc":[0.975,0.981]},"2025-10":{"Gazole":[1.627,1.626],"E10":[1.686,1.69],"SP98":[1.782,1.786],"SP95":[1.743,1.735],"E85":[0.734,0.732],"GPLc":[0.975,0.982]},"2025-11":{"Gazole":[1.698,1.69],"E10":[1.717,1.708],"SP98":[1.813,1.803],"SP95":[1.768,1.75],"E85":[0.744,0.737],"GPLc":[0.973,0.977]},"2025-12":{"Gazole":[1.623,1.62],"E10":[1.691,1.673],"SP98":[1.786,1.772],"SP95":[1.749,1.725],"E85":[0.744,0.735],"GPLc":[0.972,0.972]},"2026-01":{"Gazole":[1.662,1.653],"E10":[1.702,1.687],"SP98":[1.8,1.786],"SP95":[1.756,1.734],"E85":[0.771,0.762],"GPLc":[0.97,0.972]},"2026-02":{"Gazole":[1.7,1.696],"E10":[1.718,1.704],"SP98":[1.826,1.808],"SP95":[1.783,1.756],"E85":[0.772,0.765],"GPLc":[0.973,0.971]},"2026-03":{"Gazole":[2.051,2.058],"E10":[1.909,1.895],"SP98":[1.996,1.985],"SP95":[1.957,1.932],"E85":[0.803,0.796],"GPLc":[0.983,0.981]},"2026-04":{"Gazole":[2.256,2.259],"E10":[2.002,1.996],"SP98":[2.08,2.083],"SP95":[2.022,2.04],"E85":[0.853,0.837],"GPLc":[1.052,1.05]},"2026-05":{"Gazole":[2.137,2.158],"E10":[2.034,2.039],"SP98":[2.108,2.12],"SP95":[2.052,2.076],"E85":[0.868,0.85],"GPLc":[1.074,1.077]},"2026-06":{"Gazole":[1.965,1.978],"E10":[1.93,1.94],"SP98":[2.027,2.039],"SP95":[1.966,1.997],"E85":[0.856,0.843],"GPLc":[1.064,1.066]},"2026-07":{"Gazole":[2.059,2.049],"E10":[1.954,1.968],"SP98":[2.039,2.051],"SP95":[1.991,2.003],"E85":[0.856,0.845],"GPLc":[1.053,1.048]},"2026-08":{"Gazole":[2.23,2.218],"E10":[2.007,2.014],"SP98":[2.082,2.094],"SP95":[2.021,2.057],"E85":[0.875,0.863],"GPLc":[1.048,1.05]},"2026-09":{"Gazole":[2.32,2.331],"E10":[2.097,2.126],"SP98":[2.172,2.207],"SP95":[2.108,2.174],"E85":[0.897,0.884],"GPLc":[1.047,1.046]}},"spread":[0.005,0.0056,0.0046,0.0062,0.0063,0.0049,0.0055,0.0034,0.003,-0.0014,-0.0024,-0.0024,-0.0017,-0.0043,-0.0059,-0.0073,-0.006,-0.0054,-0.0053,-0.004,-0.0026,-0.0015,-0.0013,-0.0032,-0.003,-0.003,-0.0025,-0.0007,0.0006,0.0015,-0.0011,-0.0017,-0.0017,-0.0018,-0.0026,-0.0021,-0.0015,-0.0036,-0.0041,-0.0026,-0.003,-0.0047,-0.0049,-0.0073,-0.0102,-0.0102,-0.0101,-0.009,-0.0089,-0.011,-0.012,-0.016,-0.0162,-0.0169,-0.0167,-0.0145,-0.0129,-0.0125,-0.0117,-0.0118,-0.0117,-0.0106,-0.0104,-0.0103,-0.0095,-0.0099,-0.0094,-0.0094,-0.0086,-0.0075,-0.0057,-0.0053,-0.005,-0.0038,-0.0035,-0.0003,0.0002,0.0002,-0.0002,-0.0037,-0.0076,-0.0077,-0.0065,-0.0054,-0.0083,-0.0106,-0.0117,-0.0121,-0.0119,-0.008,-0.0113,-0.0114,-0.0101,-0.0098,-0.0007,-0.0018,-0.0029,-0.0078,-0.0094,-0.0076,-0.0078,-0.0074,-0.0073,-0.0073,-0.006,-0.007,-0.0074,-0.007,-0.0063,-0.006,-0.006,-0.0066,-0.0065,-0.0066,-0.0056,-0.0031,-0.0031,-0.0029,-0.003,-0.0018,-0.001,-0.0005,0.0009,0.0009,-0.0001,0.0003,-0.0003,-0.0011,-0.0038,-0.0041,-0.0041,-0.0053,-0.007,-0.0064,-0.0068,-0.0074,-0.0072,-0.0072,-0.0073,-0.0088,-0.0093,-0.0079,-0.0077,-0.0071,-0.0069,-0.0071,-0.0067,-0.0059,-0.0042,-0.0027,0.0006,0.0017,-0.0006,0.0,-0.0019,-0.0005,0.0086,0.0099,0.01,0.0086,0.007,-0.001,-0.0051,-0.0062,-0.0075,-0.0079,-0.0065,-0.0059,-0.0071,-0.0053,-0.0056,0.0012,-0.0005,-0.0019,-0.0058,-0.0047,-0.0048,-0.0055,-0.0028,-0.003,-0.003,-0.0036,-0.0003,0.0002,-0.0003,0.0013,0.0013,0.001,0.0027,0.0013,0.0002,-0.0023,-0.0026,-0.0026,-0.0032,-0.0036,-0.004,-0.0038,-0.0002,-0.0009,-0.0017,-0.0028,-0.0023,-0.0038,-0.0028,-0.0045,-0.0038,-0.0037,-0.0033,-0.003,-0.0021,-0.0023,-0.0031,-0.003,-0.003,-0.0024,-0.0023,-0.0023,-0.0028,-0.0029,0.0001,0.0,0.0013,0.0032,0.0035,0.0034,0.0057,0.0056,0.0052,0.0036,0.0039,0.0055,0.0071,0.0041,0.0066,0.0095,0.0058,0.0022,0.0013,-0.0001,-0.0019,-0.0017,-0.0018,-0.002,-0.0019,0.0008,0.002,0.0013,0.0015,0.0015,0.0009,0.0003,0.0003,0.0006,-0.0001,0.0021,0.002,0.0015,0.0013,-0.0002,-0.001,-0.0042,-0.0051,-0.0053,-0.0059,-0.0055,-0.0042,-0.0018,-0.0008,-0.0017,-0.0017,-0.0018,-0.0015,-0.001,-0.0013,-0.0019,0.0023,0.001,-0.0004,-0.0019,-0.002,-0.0006,0.0065,0.0098,0.0103,0.0082,0.0107,0.0141,0.0113,0.009,0.0083,0.0081,0.0066,0.0066,0.0085,0.0101,0.0115,0.0155,0.0156,0.0112,0.0112,0.011,0.0113,0.0101,0.0118,0.0118,0.011,0.0135,0.0166,0.0168,0.0119,0.0063,0.0062,0.0071,0.0032,0.002,-0.0004,-0.0033,-0.0026,-0.0022,-0.0013,-0.0001,-0.0011,0.0006,-0.001,0.0,0.0001,0.0005,0.0019,0.0011,0.001,-0.0015,-0.0015,-0.0016,-0.0001,-0.0012,0.0007,0.002,0.0034,0.0088,0.0092,0.0071,0.005,0.004,0.0051,0.0045,0.0047,0.0048,0.0042,0.0041,0.0045,0.0048,0.0118,0.0137,0.0134,0.0081,0.0103,0.0232,0.0084,0.0058,0.0066,0.0066,0.0062,0.0062,0.0068,0.0078,0.0087,0.0092,0.0091,0.0088,0.0096,0.0098,0.0119,0.0077,0.0085,0.0084,0.0078,0.008,0.0073,0.0072,0.0068,0.0094,0.0092,0.0089,0.0083,0.0058,0.0057,0.0053,0.0043,0.0042,0.0042,0.0043,0.0034,0.0032,0.003,0.0006,0.0009,0.0012,-0.0006,0.0012,0.003,0.004,0.0085,0.0074,0.0048,0.0019,0.0019,0.0021,0.0001,0.0021,0.0023,0.0037,0.0076,0.02,0.0108,0.0051,0.0013,0.0016,0.0009,-0.0078,-0.0072,-0.0138,-0.0045,-0.0033,-0.0028,-0.0045,0.0199,0.0172,0.0027,-0.0073,-0.0126,-0.0124,-0.0239,-0.0311,-0.0344,-0.0291,-0.0311,-0.0268,-0.0277,-0.0219,-0.0139,-0.0106,-0.0101,-0.0216,-0.0193,-0.0168,-0.0168,-0.0234,-0.0143,-0.0054,-0.0156,-0.0158,-0.017,-0.0099,-0.016,-0.0056,-0.0022,0.0015,0.0064,0.0032,0.0118,0.0098,0.0092,0.0132,0.0184,0.0169,0.017,0.0131,0.0065,0.0014,-0.0042,-0.0274,-0.0262,-0.0269,-0.006,-0.0136,-0.0187,-0.0326,-0.0386,-0.0398,-0.0395,-0.0334,-0.0231,-0.0148,-0.0253,-0.0209,-0.0226,-0.015,-0.0241,-0.0029,-0.0038,-0.0125,-0.0132,-0.0172,-0.0185,-0.0188,-0.0162,-0.0231,-0.0245,-0.0221,-0.0087,-0.0081,-0.0091,-0.0113,-0.0108,-0.0071,-0.0081,-0.0092,-0.0096,-0.0106,-0.0094,-0.0129,-0.0113,-0.0116,-0.0152,-0.015,-0.013,-0.0175,-0.0216,-0.0219,-0.0257,-0.0182,-0.0175,-0.0165,-0.0176,-0.0178,-0.0166,-0.0125,-0.0131,-0.0129,-0.0088,-0.0058,-0.0014,0.0011,-0.0008,0.0017,0.0014,0.0017,0.0031,0.0024,0.0085,0.0026,0.0038,0.0042,0.0056,0.0084,0.0142,0.0246,0.0287,0.0327,0.032,0.0242,0.0228,0.0176,0.0115,0.0068,0.0084,0.0079,0.0087,0.007,0.0066,0.0062,0.0114,0.0178,0.0179,0.0165,0.0184,0.0083,0.005,-0.0014,0.0005,0.0006,0.0029,0.0122,0.0194,0.0173,0.0171,0.0179,0.0175,0.019,0.0182,0.0149,0.0122,0.0119,0.012,0.0118,0.0102,0.0112,0.0109,0.0095,0.0028,0.0046,0.0048,0.0067,0.0079,0.0116,0.008,-0.0042,-0.0069,-0.0072,-0.0115,-0.0129,-0.0144,-0.0145,-0.0136,-0.0146,-0.015,-0.0142,-0.0179,-0.0077,-0.01,-0.0161,-0.0169,-0.0172,-0.0176,-0.0146,-0.0141,-0.0197,-0.0223,-0.0203,-0.0204],"brands":[{"brand":"TotalEnergies","n":6,"min":2.25,"median":2.25,"max":2.25,"total":true,"known":true},{"brand":"Total Access","n":3,"min":2.25,"median":2.25,"max":2.25,"total":true,"known":true},{"brand":"Intermarch\u00e9","n":9,"min":2.369,"median":2.379,"max":2.499,"total":false,"known":true},{"brand":"E.Leclerc","n":2,"min":2.369,"median":2.379,"max":2.389,"total":false,"known":true},{"brand":"Super U","n":3,"min":2.368,"median":2.389,"max":2.399,"total":false,"known":true},{"brand":"Brand unknown","n":4,"min":2.375,"median":2.392,"max":2.429,"total":false,"known":false},{"brand":"Carrefour","n":6,"min":2.369,"median":2.399,"max":2.499,"total":false,"known":true},{"brand":"Carrefour Market","n":2,"min":2.369,"median":2.403,"max":2.437,"total":false,"known":true},{"brand":"Esso Express","n":3,"min":2.419,"median":2.427,"max":2.441,"total":false,"known":true},{"brand":"Esso","n":6,"min":2.399,"median":2.433,"max":2.449,"total":false,"known":true},{"brand":"Avia","n":6,"min":2.449,"median":2.459,"max":2.499,"total":false,"known":true},{"brand":"Carrefour Contact","n":1,"min":2.465,"median":2.465,"max":2.465,"total":false,"known":true},{"brand":"Auchan","n":2,"min":2.449,"median":2.474,"max":2.499,"total":false,"known":true},{"brand":"Dyneff","n":3,"min":2.469,"median":2.493,"max":2.523,"total":false,"known":true}],"ceilings":{"Gazole":{"ceiling":2.25,"n":8832,"at":1437,"below":78,"lowest":2.09,"pct_at":16.3,"pct_below":0.9,"archive_pct_at":22.5,"archive_pct_loc":33.8},"E10":{"ceiling":1.99,"n":6894,"at":979,"below":7,"lowest":1.88,"pct_at":14.2,"pct_below":0.1,"archive_pct_at":23.5,"archive_pct_loc":31.8},"SP98":{"ceiling":1.99,"n":6935,"at":665,"below":3,"lowest":1.98,"pct_at":9.6,"pct_below":0.0,"archive_pct_at":22.2,"archive_pct_loc":31.2},"SP95":{"ceiling":1.99,"n":2749,"at":209,"below":28,"lowest":1.549,"pct_at":7.6,"pct_below":1.0}},"cap_others":[],"petrol_cap":1.99,"churn":{"between":["2026-09-14","2026-09-15"],"Gazole":{"arrived":74,"at_ceiling":71,"base":9256},"E10":{"arrived":222,"at_ceiling":220,"base":6959},"SP98":{"arrived":194,"at_ceiling":191,"base":7068}},"example":{"id":"31300008","name":"Rocade Purpan","adresse":"6 avenue du Goupe Morhange, Toulouse","km":12.46,"reports":["diesel","E10","E85","LPG"],"dry":[],"sp98_silent":true,"sold_unreported":"SP98 at 1,990 \u20ac","observed":"2026-09-15"},"dry_hist":{"days":["2025-01-15","2025-01-16","2025-01-17","2025-01-18","2025-01-19","2025-01-20","2025-01-21","2025-01-22","2025-01-23","2025-01-24","2025-01-25","2025-01-26","2025-01-27","2025-01-28","2025-01-29","2025-01-30","2025-01-31","2025-02-01","2025-02-02","2025-02-03","2025-02-04","2025-02-05","2025-02-06","2025-02-07","2025-02-08","2025-02-09","2025-02-10","2025-02-11","2025-02-12","2025-02-13","2025-02-14","2025-02-15","2025-02-16","2025-02-17","2025-02-18","2025-02-19","2025-02-20","2025-02-21","2025-02-22","2025-02-23","2025-02-24","2025-02-25","2025-02-26","2025-02-27","2025-02-28","2025-03-01","2025-03-02","2025-03-03","2025-03-04","2025-03-05","2025-03-06","2025-03-07","2025-03-08","2025-03-09","2025-03-10","2025-03-11","2025-03-12","2025-03-13","2025-03-14","2025-03-15","2025-03-16","2025-03-17","2025-03-18","2025-03-19","2025-03-20","2025-03-21","2025-03-22","2025-03-23","2025-03-24","2025-03-25","2025-03-26","2025-03-27","2025-03-28","2025-03-29","2025-03-30","2025-03-31","2025-04-01","2025-04-02","2025-04-03","2025-04-04","2025-04-05","2025-04-06","2025-04-07","2025-04-08","2025-04-09","2025-04-10","2025-04-11","2025-04-12","2025-04-13","2025-04-14","2025-04-15","2025-04-16","2025-04-17","2025-04-18","2025-04-19","2025-04-20","2025-04-21","2025-04-22","2025-04-23","2025-04-24","2025-04-25","2025-04-26","2025-04-27","2025-04-28","2025-04-29","2025-04-30","2025-05-01","2025-05-02","2025-05-03","2025-05-04","2025-05-05","2025-05-06","2025-05-07","2025-05-08","2025-05-09","2025-05-10","2025-05-11","2025-05-12","2025-05-13","2025-05-14","2025-05-15","2025-05-16","2025-05-17","2025-05-18","2025-05-19","2025-05-20","2025-05-21","2025-05-22","2025-05-23","2025-05-24","2025-05-25","2025-05-26","2025-05-27","2025-05-28","2025-05-29","2025-05-30","2025-05-31","2025-06-01","2025-06-02","2025-06-03","2025-06-04","2025-06-05","2025-06-06","2025-06-07","2025-06-08","2025-06-09","2025-06-10","2025-06-11","2025-06-12","2025-06-13","2025-06-14","2025-06-15","2025-06-16","2025-06-17","2025-06-18","2025-06-19","2025-06-20","2025-06-21","2025-06-22","2025-06-23","2025-06-24","2025-06-25","2025-06-26","2025-06-27","2025-06-28","2025-06-29","2025-06-30","2025-07-01","2025-07-02","2025-07-03","2025-07-04","2025-07-05","2025-07-06","2025-07-07","2025-07-08","2025-07-09","2025-07-10","2025-07-11","2025-07-12","2025-07-13","2025-07-14","2025-07-15","2025-07-16","2025-07-17","2025-07-18","2025-07-19","2025-07-20","2025-07-21","2025-07-22","2025-07-23","2025-07-24","2025-07-25","2025-07-26","2025-07-27","2025-07-28","2025-07-29","2025-07-30","2025-07-31","2025-08-01","2025-08-02","2025-08-03","2025-08-04","2025-08-05","2025-08-06","2025-08-07","2025-08-08","2025-08-09","2025-08-10","2025-08-11","2025-08-12","2025-08-13","2025-08-14","2025-08-15","2025-08-16","2025-08-17","2025-08-18","2025-08-19","2025-08-20","2025-08-21","2025-08-22","2025-08-23","2025-08-24","2025-08-25","2025-08-26","2025-08-27","2025-08-28","2025-08-29","2025-08-30","2025-08-31","2025-09-01","2025-09-02","2025-09-03","2025-09-04","2025-09-05","2025-09-06","2025-09-07","2025-09-08","2025-09-09","2025-09-10","2025-09-11","2025-09-12","2025-09-13","2025-09-14","2025-09-15","2025-09-16","2025-09-17","2025-09-18","2025-09-19","2025-09-20","2025-09-21","2025-09-22","2025-09-23","2025-09-24","2025-09-25","2025-09-26","2025-09-27","2025-09-28","2025-09-29","2025-09-30","2025-10-01","2025-10-02","2025-10-03","2025-10-04","2025-10-05","2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10","2025-10-11","2025-10-12","2025-10-13","2025-10-14","2025-10-15","2025-10-16","2025-10-17","2025-10-18","2025-10-19","2025-10-20","2025-10-21","2025-10-22","2025-10-23","2025-10-24","2025-10-25","2025-10-26","2025-10-27","2025-10-28","2025-10-29","2025-10-30","2025-10-31","2025-11-01","2025-11-02","2025-11-03","2025-11-04","2025-11-05","2025-11-06","2025-11-07","2025-11-08","2025-11-09","2025-11-10","2025-11-11","2025-11-12","2025-11-13","2025-11-14","2025-11-15","2025-11-16","2025-11-17","2025-11-18","2025-11-19","2025-11-20","2025-11-21","2025-11-22","2025-11-23","2025-11-24","2025-11-25","2025-11-26","2025-11-27","2025-11-28","2025-11-29","2025-11-30","2025-12-01","2025-12-02","2025-12-03","2025-12-04","2025-12-05","2025-12-06","2025-12-07","2025-12-08","2025-12-09","2025-12-10","2025-12-11","2025-12-12","2025-12-13","2025-12-14","2025-12-15","2025-12-16","2025-12-17","2025-12-18","2025-12-19","2025-12-20","2025-12-21","2025-12-22","2025-12-23","2025-12-24","2025-12-25","2025-12-26","2025-12-27","2025-12-28","2025-12-29","2025-12-30","2025-12-31","2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-25","2026-04-26","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-02","2026-05-03","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-09","2026-05-10","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-16","2026-05-17","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-23","2026-05-24","2026-05-25","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-05-30","2026-05-31","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-06","2026-06-07","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-13","2026-06-14","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-04","2026-07-05","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-11","2026-07-12","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-18","2026-07-19","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-01","2026-08-02","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-08","2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15","2026-08-16","2026-08-17","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-29","2026-08-30","2026-08-31","2026-09-01","2026-09-02","2026-09-03","2026-09-04","2026-09-05","2026-09-06","2026-09-07","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-12","2026-09-13","2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-19","2026-09-20","2026-09-21","2026-09-22","2026-09-23","2026-09-24","2026-09-25","2026-09-26","2026-09-27"],"table":[0,0,1,1,1,2,2,2,2,2,2,2,2,2,0,0,1,3,4,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,6,6,6,2,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,3,3,4,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,3,0,0,1,0,1,1,1,1,1,1,3,3,7,4,3,3,4,3,3,2,0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,0,0,2,0,0,0,0,0,0,0,2,0,0,1,1,1,7,7,7,7,6,6,7,6,8,6,8,7,7,7,7,8,6,6,6,6,6,6,6,6,6,6,6,8,6,6,6,3,3,2,4,7,6,1,0,0,1,3,3,1,1,1,1,1,3,3,5,3,2,1,1,1,3,1,0,0,0,0,1,0,0,0,0,0,0,4,2,2,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,2,2,0,0,1,0,0,2,2,0,1,1,1,1,3,3,2,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,2,0,0,0,0,0,2,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,2,2,2,2,2,2,3,1,1,1,1,1,1,1,1,2,2,1,1,1,2,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,2,2,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,2,1,2,5,1,8,6,2,6,5,6,3,4,3,4,3,3,4,1,0,1,1,2,3,4,5,3,10,10,42,42,47,61,40,42,48,48,54,59,69,49,53,44,59,56,57,47,33,33,39,36,30,41,32,32,23,17,17,18,24,10,6,3,7,12,9,14,15,18,22,21,28,27,39,31,20,25,31,26,28,34,40,34,23,20,22,19,30,35,32,23,35,38,33,46,35,33,13,11,14,11,22,11,5,7,10,14,13,18,17,22,16,7,5,10,13,8,6,6,8,9,13,20,11,7,10,3,2,2,5,8,4,2,1,8,12,17,0,4,5,3,2,4,11,4,6,7,6,4,7,18,7,2,9,7,12,18,22,16,13,11,15,19,17,20,20,12,12,11,11,14,17,22,20,20,9,13,15,23,27,25,15,13,12,15,21,14,17,12,11,17,19,24,16,11,16,13,38,41,48,38,49,40,46,56,51,62,52,48,46,44,48,49,49],"all":[0,0,1,1,1,2,2,3,2,2,2,2,2,2,0,0,1,3,4,3,0,0,0,0,0,0,0,0,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,6,6,6,2,1,1,2,1,2,2,1,1,1,1,2,2,1,1,1,3,4,4,3,3,3,3,3,5,4,2,2,2,2,2,2,2,2,2,4,1,1,2,1,2,2,2,2,2,2,4,4,8,6,4,4,5,3,4,3,0,1,1,1,4,4,4,3,3,3,3,0,0,0,0,0,0,2,0,0,0,0,0,0,1,2,0,0,1,1,1,11,8,8,7,6,6,7,6,8,6,8,7,7,7,7,9,7,7,6,6,6,6,6,6,6,6,6,8,6,6,6,3,3,3,5,8,8,3,2,0,1,3,3,1,2,1,1,1,3,3,5,3,2,1,1,1,3,1,0,0,0,0,1,0,0,0,2,2,3,7,4,4,2,2,2,2,3,3,2,2,2,3,3,3,4,2,1,1,1,3,3,1,1,2,1,1,3,3,1,2,3,3,1,3,3,2,1,1,1,1,1,2,2,2,2,2,2,1,2,1,1,2,1,2,1,1,3,2,3,2,2,2,2,3,2,1,1,1,2,2,3,1,1,1,1,1,3,0,0,0,0,0,0,0,1,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,1,1,1,1,0,0,0,1,2,2,2,2,2,2,2,2,2,4,3,1,1,1,1,1,1,1,1,2,2,1,2,2,2,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,2,2,1,1,0,1,0,0,5,1,1,2,1,0,0,0,1,1,3,2,2,2,4,1,3,6,6,8,8,2,6,5,6,3,4,4,5,4,4,5,2,1,2,2,3,4,5,7,4,13,15,49,47,54,72,45,49,55,55,59,66,79,54,60,51,67,66,67,54,40,40,48,38,32,46,35,34,26,21,18,21,27,12,7,4,11,18,15,20,22,22,27,25,38,33,48,40,24,30,36,29,32,39,47,39,26,21,24,22,35,40,38,27,40,44,41,56,40,37,18,13,17,15,29,17,10,9,13,19,17,24,22,28,24,8,8,11,19,14,7,7,9,11,15,24,13,9,12,4,2,2,6,8,7,3,2,10,13,20,0,4,5,3,2,6,14,12,9,8,7,5,8,20,11,4,12,9,13,21,29,19,16,15,18,21,19,22,22,16,15,14,12,16,22,24,22,22,12,18,19,28,30,26,17,17,15,19,26,15,23,13,14,20,22,29,18,13,19,16,45,47,55,46,57,47,55,66,61,73,63,56,56,51,59,61,61],"window":30},"total":{"n":21,"n_diesel":9,"n_at_cap":9,"ids":["31520005","31670001","31650003","31120003","31120010","31120009","31084001","31100011","31400010","31860001","31500008","31810003","31000001","31100010","31300007","31300008","31270007","31200022","31200020","31200002","31240002"]},"rivals":{"n":12,"brands":["Intermarch\u00e9","Super U"],"ids":["31320001","31450006","31520003","31450004","31450003","31130007","31130004","31270004","31100003","31000003","31240003","31600001"]},"cap":{"level":2.25,"nat":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.01,0.02,0.02,0.02,0.03,0.02,0.02,0.02,0.03,0.04,0.05,0.08,0.24,0.35,0.37,0.64,0.66,0.77,0.89,0.74,0.82,0.81,0.73,0.73,0.64,0.74,0.46,0.34,0.34,0.31,0.97,14.65,13.9,17.52,15.89,15.85,16.38,20.71,15.14,11.95,11.15,6.97,6.83,5.7,5.36,5.88,9.01,9.6,10.99,11.06,11.91,13.65,12.28,15.11,5.79,4.62,4.83,14.32,15.71,15.39,5.99,3.24,2.95,3.2,4.67,4.95,4.87,2.42,2.0,2.01,2.38,5.38,7.54,5.62,4.54,3.75,1.86,1.81,1.96,2.94,2.8,2.39,1.81,1.24,1.3,1.66,1.5,1.34,1.34,0.95,0.89,0.89,0.83,0.8,0.77,0.71,0.61,0.58,0.57,0.55,0.52,0.48,0.47,0.4,0.34,0.34,0.34,0.28,0.25,0.21,0.18,0.17,0.17,0.16,0.16,0.13,0.12,0.11,0.11,0.11,0.11,0.11,0.1,0.09,0.1,0.1,0.1,0.09,0.09,0.23,0.73,0.21,0.2,0.2,0.23,0.49,3.3,5.02,9.48,9.71,9.73,10.32,10.84,10.94,11.57,12.2,12.33,12.36,13.79,12.87,10.08,7.62,6.54,6.22,6.24,6.26,7.51,9.04,10.73,11.11,9.83,9.85,11.24,11.94,12.63,13.06,13.39,13.66,13.62,13.82,13.65,13.17,11.74,10.74,9.38,9.37,10.46,11.54,13.17,14.84,18.97,19.98,20.05,20.49,22.36,22.74,22.68,22.37,22.23,22.2,22.17,22.32,22.35,22.39,22.4,22.42,22.42,22.46,22.47,22.53,22.56,22.59,22.53,22.52],"loc":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.45,21.74,21.74,30.43,21.74,21.74,21.74,26.09,23.19,21.74,20.29,11.59,10.14,7.14,5.71,8.57,20.0,21.43,21.43,21.43,21.43,18.57,15.71,21.43,1.43,1.43,1.43,21.43,21.43,17.14,8.57,2.86,0.0,0.0,5.71,5.71,5.71,0.0,0.0,0.0,5.71,5.63,5.63,5.63,5.63,5.63,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,8.45,19.72,19.72,19.72,21.13,21.13,21.13,21.13,21.13,29.58,29.58,32.39,25.35,21.13,14.08,5.63,5.63,5.63,4.23,9.86,18.31,28.17,28.17,19.72,19.72,22.54,28.17,28.17,25.35,25.35,25.35,25.35,26.76,26.76,22.54,21.13,21.13,19.72,19.72,21.13,23.94,29.58,26.76,36.62,33.8,33.8,33.8,35.21,35.21,35.21,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8,33.8],"n_local":9,"n_local_diesel":56,"n_dry":0,"nearest":{"km":3.17,"ville":"Ramonville Saint Agne","adresse":"98 AVENUE TOLOSANE","maj":"2026-09-27 00:01"},"nearest_any":{"km":3.17,"ville":"Ramonville Saint Agne","adresse":"98 AVENUE TOLOSANE","dry":""},"castanet":{"km":1.11,"price":2.379,"ville":"Castanet-Tolosan","adresse":"Route de Lab\u00e8ge"},"save":0.129,"since":"2026-04-08"}}</script>
+<script>
+const D = JSON.parse(document.getElementById('report-data').textContent);
+const NS = 'http://www.w3.org/2000/svg';
+const tip = document.getElementById('tip');
+const eur = v => v == null ? '—' : v.toFixed(3).replace('.', ',') + ' €';
+const pct = v => v == null ? '—' : v.toFixed(1).replace('.', ',') + '%';
+const css = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+
+function el(tag, attrs, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+function txt(tag, attrs, str, parent) {
+  const n = el(tag, attrs, parent);
+  n.appendChild(document.createTextNode(str));
+  return n;
+}
+function ticks(lo, hi, want) {
+  const raw = (hi - lo) / want, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= raw) || 10 * mag;
+  const out = [];
+  for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(6));
+  return out;
+}
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function dayLabel(iso) {
+  const [y, m, d] = iso.split('-');
+  return `${+d} ${MON[+m - 1]} ${y}`;
+}
+function showTip(html, ev) {
+  tip.innerHTML = html;
+  const r = tip.getBoundingClientRect();
+  let x = ev.clientX + 16, y = ev.clientY - r.height / 2;
+  if (x + r.width > innerWidth - 8) x = ev.clientX - r.width - 16;
+  tip.style.left = Math.max(8, x) + 'px';
+  tip.style.top = Math.min(Math.max(8, y), innerHeight - r.height - 8) + 'px';
+  tip.style.opacity = 1;
+}
+const hideTip = () => { tip.style.opacity = 0; };
+
+/* ---------- line chart ---------- */
+function lineChart(host, opt) {
+  const W = opt.width || 980, H = opt.height || 330;
+  const fmt = opt.unit === '%' ? (v => v == null ? '—' : v.toFixed(1).replace('.', ',') + ' %')
+            : opt.unit === 'n' ? (v => v == null ? '—' : String(v)) : eur;
+  const M = { t: 14, r: opt.labelRoom || 96, b: 30, l: 46 };
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img',
+                          'aria-label': opt.aria || 'line chart' }, host);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const days = opt.days, n = days.length;
+  let lo = Infinity, hi = -Infinity;
+  for (const s of opt.series) for (const v of s.values) if (v != null) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  if (!(lo < hi)) { lo -= 0.05; hi += 0.05; }
+  const pad = (hi - lo) * 0.12;
+  lo -= pad; hi += pad;
+  const X = i => M.l + (n === 1 ? iw / 2 : i * iw / (n - 1));
+  const Y = v => M.t + ih - (v - lo) / (hi - lo) * ih;
+
+  for (const t of ticks(lo, hi, 5)) {
+    if (opt.unit === 'n' && t % 1) continue;
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(t), y2: Y(t), stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: M.l - 9, y: Y(t) + 4, 'text-anchor': 'end', fill: css('--muted'),
+                  'font-size': 11, style: 'font-variant-numeric:tabular-nums' },
+        opt.unit === '%' || opt.unit === 'n' ? t.toFixed(0) : t.toFixed(2).replace('.', ','), svg);
+  }
+  el('line', { x1: M.l, x2: M.l + iw, y1: M.t + ih, y2: M.t + ih, stroke: css('--axis'), 'stroke-width': 1 }, svg);
+
+  const span = n, everyMonth = span <= 200, marks = [];
+  days.forEach((iso, i) => {
+    const [y, m, d] = iso.split('-').map(Number);
+    if (d !== 1) return;
+    if (everyMonth || m % 3 === 1 || span > 400 && m % 3 === 1) marks.push([i, `${MON[m - 1]}${m === 1 || marks.length === 0 ? " '" + String(y).slice(2) : ''}`]);
+  });
+  if (marks.length < 2) days.forEach((iso, i) => { if (i % Math.ceil(n / 5) === 0) marks.push([i, dayLabel(iso).slice(0, 6)]); });
+  for (const [i, lab] of marks)
+    txt('text', { x: X(i), y: H - 9, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 }, lab, svg);
+
+  for (const s of opt.series) {
+    let dstr = '', open = false;
+    s.values.forEach((v, i) => {
+      if (v == null) { open = false; return; }
+      dstr += (open ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(v).toFixed(1) + ' ';
+      open = true;
+    });
+    el('path', { d: dstr, fill: 'none', stroke: css(s.color), 'stroke-width': 2,
+                 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+    if (s.label !== false) {
+      let li = -1;
+      for (let i = s.values.length - 1; i >= 0; i--) if (s.values[i] != null) { li = i; break; }
+      if (li >= 0) {
+        el('circle', { cx: X(li), cy: Y(s.values[li]), r: 4.5, fill: css(s.color),
+                       stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+        if (s.name) txt('text', { x: X(li) + 10, y: Y(s.values[li]) - 7, fill: css('--text-secondary'),
+                      'font-size': 11 }, s.name, svg);
+        txt('text', { x: X(li) + 10, y: Y(s.values[li]) + (s.name ? 7 : 4), fill: css('--text-primary'),
+                      'font-size': 12, 'font-weight': 600,
+                      style: 'font-variant-numeric:tabular-nums' }, fmt(s.values[li]), svg);
+      }
+    }
+  }
+
+  const cross = el('line', { y1: M.t, y2: M.t + ih, stroke: css('--axis'),
+                             'stroke-width': 1, opacity: 0 }, svg);
+  const dots = opt.series.map(s => el('circle', { r: 4.5, fill: css(s.color),
+                    stroke: css('--surface-1'), 'stroke-width': 2, opacity: 0 }, svg));
+  const hit = el('rect', { x: M.l, y: M.t, width: iw, height: ih, fill: 'transparent',
+                           style: 'cursor:crosshair' }, svg);
+  const move = ev => {
+    const b = svg.getBoundingClientRect();
+    const px = (ev.clientX - b.left) / b.width * W;
+    let i = Math.round((px - M.l) / iw * (n - 1));
+    i = Math.max(0, Math.min(n - 1, i));
+    cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('opacity', 1);
+    let rows = `<div class="when">${dayLabel(days[i])}</div>`;
+    opt.series.forEach((s, k) => {
+      const v = s.values[i];
+      if (v == null) { dots[k].setAttribute('opacity', 0); return; }
+      dots[k].setAttribute('cx', X(i)); dots[k].setAttribute('cy', Y(v)); dots[k].setAttribute('opacity', 1);
+      const nm = document.createElement('span'); nm.textContent = s.name;
+      rows += `<div class="row"><i style="background:${css(s.color)}"></i>${nm.innerHTML || (opt.aria || '').split(' ')[0]}<b>${fmt(v)}</b></div>`;
+    });
+    showTip(rows, ev);
+  };
+  hit.addEventListener('pointermove', move);
+  hit.addEventListener('pointerleave', () => {
+    hideTip(); cross.setAttribute('opacity', 0); dots.forEach(d => d.setAttribute('opacity', 0));
+  });
+}
+
+/* ---------- diverging area around zero ---------- */
+function divergingArea(host, opt) {
+  const W = 980, H = opt.height || 240, M = { t: 14, r: 96, b: 30, l: 52 };
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': opt.aria }, host);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const v = opt.values, n = v.length;
+  let m = 0;
+  for (const x of v) if (x != null) m = Math.max(m, Math.abs(x));
+  m = m * 1.15 || 1;
+  const X = i => M.l + (n === 1 ? iw / 2 : i * iw / (n - 1));
+  const Y = x => M.t + ih / 2 - x / m * (ih / 2);
+  const z = Y(0);
+
+  for (const t of ticks(-m, m, 4)) {
+    if (Math.abs(t) < 1e-9) continue;
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(t), y2: Y(t), stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: M.l - 9, y: Y(t) + 4, 'text-anchor': 'end', fill: css('--muted'), 'font-size': 11,
+                  style: 'font-variant-numeric:tabular-nums' }, (t > 0 ? '+' : '−') + Math.abs(t).toFixed(1), svg);
+  }
+  // area shape: line, then back along zero
+  let segs = [], run = [];
+  v.forEach((x, i) => { if (x == null) { if (run.length) segs.push(run); run = []; } else run.push(i); });
+  if (run.length) segs.push(run);
+  let area = '';
+  for (const s of segs) {
+    area += 'M' + X(s[0]) + ',' + z + ' ';
+    for (const i of s) area += 'L' + X(i).toFixed(1) + ',' + Y(v[i]).toFixed(1) + ' ';
+    area += 'L' + X(s[s.length - 1]) + ',' + z + ' Z ';
+  }
+  const defs = el('defs', {}, svg);
+  el('rect', { x: 0, y: 0, width: W, height: z }, el('clipPath', { id: host.id + '-pos' }, defs));
+  el('rect', { x: 0, y: z, width: W, height: H - z }, el('clipPath', { id: host.id + '-neg' }, defs));
+  for (const [side, colour] of [['pos', '--div-pos'], ['neg', '--div-neg']]) {
+    el('path', { d: area, fill: css(colour), 'fill-opacity': 0.14,
+                 'clip-path': `url(#${host.id}-${side})` }, svg);
+    let line = '';
+    for (const s of segs) {
+      line += 'M' + X(s[0]).toFixed(1) + ',' + Y(v[s[0]]).toFixed(1) + ' ';
+      for (const i of s) line += 'L' + X(i).toFixed(1) + ',' + Y(v[i]).toFixed(1) + ' ';
+    }
+    el('path', { d: line, fill: 'none', stroke: css(colour), 'stroke-width': 2, 'stroke-linecap': 'round',
+                 'clip-path': `url(#${host.id}-${side})` }, svg);
+  }
+  el('line', { x1: M.l, x2: M.l + iw, y1: z, y2: z, stroke: css('--axis'), 'stroke-width': 1 }, svg);
+  txt('text', { x: M.l + iw + 8, y: z + 4, fill: css('--muted'), 'font-size': 11 }, 'same as France', svg);
+
+  const marks = [];
+  opt.days.forEach((iso, i) => {
+    const [y, mo, d] = iso.split('-').map(Number);
+    if (d === 1 && (n <= 200 || mo % 3 === 1)) marks.push([i, MON[mo - 1] + (mo === 1 || !marks.length ? " '" + String(y).slice(2) : '')]);
+  });
+  for (const [i, lab] of marks)
+    txt('text', { x: X(i), y: H - 9, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 }, lab, svg);
+
+  let li = -1;
+  for (let i = n - 1; i >= 0; i--) if (v[i] != null) { li = i; break; }
+  if (li >= 0) {
+    const c = v[li] >= 0 ? '--div-pos' : '--div-neg';
+    el('circle', { cx: X(li), cy: Y(v[li]), r: 4.5, fill: css(c), stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+    txt('text', { x: X(li) + 10, y: Y(v[li]) - 6, fill: css('--text-primary'), 'font-size': 12, 'font-weight': 600 },
+        (v[li] >= 0 ? '+' : '−') + Math.abs(v[li]).toFixed(1) + ' c', svg);
+  }
+  const cross = el('line', { y1: M.t, y2: M.t + ih, stroke: css('--axis'), 'stroke-width': 1, opacity: 0 }, svg);
+  const hit = el('rect', { x: M.l, y: M.t, width: iw, height: ih, fill: 'transparent', style: 'cursor:crosshair' }, svg);
+  hit.addEventListener('pointermove', ev => {
+    const b = svg.getBoundingClientRect();
+    let i = Math.round(((ev.clientX - b.left) / b.width * W - M.l) / iw * (n - 1));
+    i = Math.max(0, Math.min(n - 1, i));
+    cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('opacity', 1);
+    const x = v[i];
+    const c = x == null ? '--axis' : x >= 0 ? '--div-pos' : '--div-neg';
+    showTip(`<div class="when">${dayLabel(opt.days[i])}</div><div class="row">` +
+            `<i style="background:${css(c)}"></i>${x == null ? 'no data' : x >= 0 ? 'local dearer' : 'local cheaper'}` +
+            `<b>${x == null ? '—' : Math.abs(x).toFixed(1) + ' c/L'}</b></div>`, ev);
+  });
+  hit.addEventListener('pointerleave', () => { hideTip(); cross.setAttribute('opacity', 0); });
+}
+
+/* ---------- scatter: price vs distance ---------- */
+function scatter(host, rows) {
+  const W = 980, H = 300, M = { t: 14, r: 118, b: 38, l: 46 };
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img',
+    'aria-label': 'Diesel price against distance from Castanet-Tolosan' }, host);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const ps = rows.map(r => r.p);
+  let lo = Math.min(...ps), hi = Math.max(...ps);
+  const pad = (hi - lo) * 0.15 || 0.05; lo -= pad; hi += pad;
+  const X = d => M.l + d / 15 * iw, Y = v => M.t + ih - (v - lo) / (hi - lo) * ih;
+
+  for (const t of ticks(lo, hi, 4)) {
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(t), y2: Y(t), stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: M.l - 9, y: Y(t) + 4, 'text-anchor': 'end', fill: css('--muted'), 'font-size': 11,
+                  style: 'font-variant-numeric:tabular-nums' }, t.toFixed(2).replace('.', ','), svg);
+  }
+  el('line', { x1: M.l, x2: M.l + iw, y1: M.t + ih, y2: M.t + ih, stroke: css('--axis'), 'stroke-width': 1 }, svg);
+  for (let d = 0; d <= 15; d += 3)
+    txt('text', { x: X(d), y: H - 16, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 }, d + ' km', svg);
+  txt('text', { x: M.l + iw / 2, y: H - 2, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 },
+      'Straight-line distance from Castanet-Tolosan centre', svg);
+  txt('text', { x: M.l - 9, y: M.t - 2, 'text-anchor': 'end', fill: css('--muted'), 'font-size': 11 }, '€/L', svg);
+
+  const CAPL = D.cap.level;
+  if (CAPL > lo && CAPL < hi) {
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(CAPL), y2: Y(CAPL), stroke: css('--deemph'), 'stroke-width': 2 }, svg);
+    txt('text', { x: M.l + iw + 8, y: Y(CAPL) - 2, fill: css('--text-secondary'), 'font-size': 11 },
+        '€2,250 ceiling', svg);
+    txt('text', { x: M.l + iw + 8, y: Y(CAPL) + 12, fill: css('--muted'), 'font-size': 11 },
+        D.cap.n_local + ' of ' + D.cap.n_local_diesel + ' stations', svg);
+  }
+
+  for (const r of rows) {
+    el('circle', { cx: X(r.d), cy: Y(r.p), r: 5, fill: css('--series-1'),
+                   stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+    const h = el('circle', { cx: X(r.d), cy: Y(r.p), r: 13, fill: 'transparent',
+                             tabindex: 0, style: 'cursor:pointer' }, svg);
+    const nm = document.createElement('span'); nm.textContent = r.name;
+    const ad = document.createElement('span'); ad.textContent = r.adr;
+    const body = `<div class="when">${nm.innerHTML} · ${r.d.toFixed(1)} km · updated ${r.maj}</div>` +
+      `<div class="row"><i style="background:${css('--series-1')}"></i>${ad.innerHTML}<b>${eur(r.p)}</b></div>`;
+    h.addEventListener('pointerenter', e => showTip(body, e));
+    h.addEventListener('pointermove', e => showTip(body, e));
+    h.addEventListener('pointerleave', hideTip);
+    h.addEventListener('focus', e => showTip(body, { clientX: X(r.d) / W * host.clientWidth + host.getBoundingClientRect().left, clientY: host.getBoundingClientRect().top + Y(r.p) / H * host.clientHeight }));
+    h.addEventListener('blur', hideTip);
+  }
+  const near = rows.reduce((a, b) => a.d < b.d ? a : b);
+  el('circle', { cx: X(near.d), cy: Y(near.p), r: 7.5, fill: 'none', stroke: css('--series-1'),
+                 'stroke-width': 1.5, opacity: 0.55 }, svg);
+  txt('text', { x: X(near.d) + 13, y: Y(near.p) - 8, fill: css('--text-secondary'), 'font-size': 11 },
+      'Castanet-Tolosan ' + eur(near.p), svg);
+}
+
+/* ---------- range plot: median + spread per category ---------- */
+function rangePlot(host, rows) {
+  const rowH = 26, M = { t: 16, r: 74, b: 34, l: 168 }, W = 980;
+  const H = M.t + rows.length * rowH + M.b;
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img',
+                          'aria-label': 'Median diesel price by brand' }, host);
+  const iw = W - M.l - M.r;
+  let lo = Math.min(...rows.map(r => r.min)), hi = Math.max(...rows.map(r => r.max));
+  const pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
+  const X = v => M.l + (v - lo) / (hi - lo) * iw;
+
+  for (const t of ticks(lo, hi, 5)) {
+    el('line', { x1: X(t), x2: X(t), y1: M.t - 6, y2: M.t + rows.length * rowH,
+                 stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: X(t), y: H - 16, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11,
+                  style: 'font-variant-numeric:tabular-nums' }, t.toFixed(2).replace('.', ','), svg);
+  }
+  txt('text', { x: M.l + iw / 2, y: H - 2, 'text-anchor': 'middle', fill: css('--muted'),
+                'font-size': 11 }, 'Diesel, € per litre', svg);
+
+  rows.forEach((r, i) => {
+    const y = M.t + i * rowH + rowH / 2;
+    const colour = r.total ? '--series-1' : '--deemph';
+    txt('text', { x: M.l - 12, y: y + 4, 'text-anchor': 'end',
+                  fill: css(r.total ? '--text-primary' : '--text-secondary'), 'font-size': 12,
+                  'font-weight': r.total ? 600 : 400 }, r.brand, svg);
+    if (r.max > r.min)
+      el('line', { x1: X(r.min), x2: X(r.max), y1: y, y2: y, stroke: css(colour),
+                   'stroke-width': 2, 'stroke-linecap': 'round', opacity: 0.4 }, svg);
+    el('circle', { cx: X(r.median), cy: y, r: 5, fill: css(colour),
+                   stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+    txt('text', { x: M.l + iw + 10, y: y + 4, fill: css('--text-primary'), 'font-size': 12,
+                  'font-weight': r.total ? 600 : 400,
+                  style: 'font-variant-numeric:tabular-nums' }, eur(r.median), svg);
+    const hit = el('rect', { x: M.l, y: y - rowH / 2, width: iw, height: rowH,
+                             fill: 'transparent', tabindex: 0, style: 'cursor:pointer' }, svg);
+    const nm = document.createElement('span'); nm.textContent = r.brand;
+    const body = `<div class="when">${nm.innerHTML} · ${r.n} station${r.n > 1 ? 's' : ''}</div>` +
+      `<div class="row"><i style="background:${css(colour)}"></i>median<b>${eur(r.median)}</b></div>` +
+      (r.max > r.min ? `<div class="row"><i style="background:${css(colour)};opacity:.4"></i>range` +
+        `<b>${eur(r.min)} – ${eur(r.max)}</b></div>` : '');
+    hit.addEventListener('pointerenter', e => showTip(body, e));
+    hit.addEventListener('pointermove', e => showTip(body, e));
+    hit.addEventListener('pointerleave', hideTip);
+    hit.addEventListener('blur', hideTip);
+  });
+}
+
+/* ---------- render ---------- */
+const FUEL3 = [['Gazole', '--series-1'], ['E10', '--series-2'], ['SP98', '--series-3']];
+let range = 607;
+
+function slice(arr) { return range >= arr.length ? arr : arr.slice(arr.length - range); }
+function roll(arr, w) {
+  return arr.map((_, i) => {
+    let s = 0, k = 0;
+    for (let j = Math.max(0, i - w + 1); j <= i; j++) if (arr[j] != null) { s += arr[j]; k++; }
+    return k ? +(s / k).toFixed(2) : null;
+  });
+}
+
+function legend(host, items) {
+  host.textContent = '';
+  for (const it of items) {
+    const k = document.createElement('span'); k.className = 'key';
+    const i = document.createElement('i'); i.style.background = css(it[1]);
+    k.appendChild(i); k.appendChild(document.createTextNode(it[0]));
+    host.appendChild(k);
+  }
+}
+
+function draw() {
+  const days = slice(D.days);
+  lineChart(document.getElementById('chart-main'), {
+    days, height: 360,
+    aria: 'Daily mean diesel, E10 and SP98 prices within 15 km of Castanet-Tolosan',
+    series: FUEL3.map(([f, c]) => ({ name: D.labels[f].replace(/ \(.*\)/, ''), color: c, values: slice(D.local[f]) }))
+  });
+  legend(document.getElementById('legend-main'),
+         FUEL3.map(([f, c]) => [D.labels[f], c]));
+
+  divergingArea(document.getElementById('chart-spread'), {
+    days, height: 250,
+    aria: 'Local diesel mean minus the French mean, centimes per litre',
+    values: slice(D.spread).map(v => v == null ? null : +(v * 100).toFixed(2))
+  });
+  legend(document.getElementById('legend-spread'),
+         [['Local dearer than France', '--div-pos'], ['Local cheaper than France', '--div-neg']]);
+
+  lineChart(document.getElementById('chart-cap'), {
+    days, height: 250, labelRoom: 116, unit: '%',
+    aria: 'Share of diesel-posting stations at exactly 2.250 euro',
+    series: [
+      { name: 'Within 15 km', color: '--series-1', values: roll(slice(D.cap.loc), 7) },
+      { name: 'France', color: '--deemph', values: roll(slice(D.cap.nat), 7) }
+    ]
+  });
+  legend(document.getElementById('legend-cap'),
+         [['Within 15 km of Castanet-Tolosan', '--series-1'], ['France', '--deemph']]);
+
+  for (const [id, fuel] of [['chart-e85', 'E85'], ['chart-gplc', 'GPLc']])
+    lineChart(document.getElementById(id), {
+      days, height: 250, labelRoom: 84, width: 620,
+      aria: D.labels[fuel] + ' daily mean within 15 km',
+      series: [{ name: '', color: '--series-1', values: slice(D.local[fuel]) }]
+    });
+}
+
+/* today */
+document.getElementById('vpill').textContent =
+  'v' + document.querySelector('meta[name="version"]').content + ' · ' +
+  document.querySelector('meta[name="last-updated"]').content;
+document.getElementById('subtitle').textContent =
+  `${D.meta.n_stations} stations within ${D.meta.radius} km, ${D.meta.n_diesel} posting diesel today, ` +
+  `against the French mean. Prices to ${dayLabel(D.meta.end)}; station snapshot ${D.meta.built}.`;
+document.getElementById('foot-counts').textContent =
+  `Latest day used: ${D.meta.end} — ${D.meta.loc_n} local stations and ${D.meta.nat_n.toLocaleString('en')} French stations reporting diesel. ` +
+  `The annual archive's own observations stop at ${D.meta.archive_end}, so the newest point of every price series is each ` +
+  `station's last posted price carried forward, not a day that was measured; that last day also misses whatever was posted ` +
+  `after the archive was published in the evening. The archive runs on a weekly cycle — roughly 12,000–18,000 price updates ` +
+  `on a weekday, 10,000 on a Saturday, 5,000 on a Sunday — so a thin day is not by itself an incomplete one. The station ` +
+  `table, the ceiling counts and the dry flags come from the ${D.meta.built} snapshot and the archive as it stood this morning.`;
+
+const g = D.cards[0];
+document.getElementById('heroval').innerHTML =
+  eur(g.value).replace(' €', '') + '<span class="unit"> €/L</span>';
+const sgn = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(3).replace('.', ',');
+const andList = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]
+                                  : (a[0] || 'nothing');
+document.getElementById('herodelta').innerHTML =
+  `<div><b class="${g.d365 >= 0 ? 'u' : 'd'}">${sgn(g.d365)}</b> vs 12 months ago</div>` +
+  `<div><b class="${g.d30 >= 0 ? 'u' : 'd'}">${sgn(g.d30)}</b> vs 30 days ago</div>` +
+  `<div>France today ${eur(g.nat)}</div>`;
+
+function spark(host, vals, w, hh) {
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const sv = el('svg', { viewBox: `0 0 ${w} ${hh}`, 'aria-hidden': 'true' }, host);
+  const px = i => i / (vals.length - 1) * (w - 6) + 3;
+  const py = v => hh - 4 - (v - lo) / ((hi - lo) || 1) * (hh - 8);
+  el('path', { d: vals.map((v, i) => (i ? 'L' : 'M') + px(i).toFixed(1) + ',' + py(v).toFixed(1)).join(' '),
+               style: 'fill:none;stroke:var(--deemph);stroke-width:2;stroke-linecap:round' }, sv);
+  el('circle', { cx: px(vals.length - 1), cy: py(vals[vals.length - 1]), r: 3.5,
+                 style: 'fill:var(--series-1);stroke:var(--surface-1);stroke-width:2' }, sv);
+  return sv;
+}
+const heroVals = D.local.Gazole.filter(v => v != null);
+spark(document.getElementById('herospark'), heroVals.slice(-365), 240, 44);
+document.getElementById('heronote').textContent =
+  `last 12 months · ${g.n} stations reporting`;
+
+const tiles = document.getElementById('tiles');
+for (const c of D.cards.slice(1)) {
+  const d = document.createElement('div'); d.className = 'card tile';
+  const lab = document.createElement('div'); lab.className = 'label'; lab.textContent = D.labels[c.fuel];
+  const val = document.createElement('div'); val.className = 'val';
+  val.innerHTML = eur(c.value).replace(' €', '') + '<span class="unit"> €/L</span>';
+  const del = document.createElement('div'); del.className = 'delta';
+  del.innerHTML = `<div><b class="${c.d365 >= 0 ? 'u' : 'd'}">${sgn(c.d365)}</b> vs 12 months</div>` +
+                  `<div><b class="${c.d30 >= 0 ? 'u' : 'd'}">${sgn(c.d30)}</b> vs 30 days</div>`;
+  d.append(lab, val, del);
+  const sw = document.createElement('div'); sw.style.marginTop = '8px'; d.appendChild(sw);
+  spark(sw, c.spark, 150, 32);
+  const cp = document.createElement('div'); cp.className = 'note';
+  cp.textContent = 'last 90 days · France ' + eur(c.nat);
+  d.appendChild(cp);
+  tiles.appendChild(d);
+}
+
+const lastSpread = [...D.spread].reverse().find(v => v != null) ?? 0;
+const lastOf = a => [...a].reverse().find(v => v != null) ?? 0;
+const capLocNow = lastOf(D.cap.loc), capNatNow = lastOf(D.cap.nat);
+const nextBrand = D.brands.find(b => !b.total && b.known);
+/* Where the nearest pump sits on price: it has been the dearest in the radius and
+   has also undercut the local median, so the finding states the rank, not an adjective. */
+const dieselAll = D.stations.filter(s => s.prices.Gazole != null).map(s => s.prices.Gazole);
+const castPrice = D.cap.castanet.price;
+const castDearer = dieselAll.filter(p => p > castPrice).length;
+const castMedian = (() => {
+  const a = [...dieselAll].sort((x, y) => x - y), h = a.length >> 1;
+  return a.length % 2 ? a[h] : (a[h - 1] + a[h]) / 2;
+})();
+const capOthers = (() => {
+  const named = D.cap_others.filter(o => o.brand).map(o => `${o.brand} in ${o.ville}`);
+  const anon = D.cap_others.length - named.length;
+  const parts = named.slice();
+  if (anon) parts.push(`${anon} whose brand OpenStreetMap does not record`);
+  return parts.length ? parts.join(' and ') : 'none';
+})();
+const F = [
+  [`Diesel has risen <b>${sgn(g.d365)} €/L in twelve months</b> — from ${eur(g.value - g.d365)} to ` +
+   `<b>${eur(g.value)}</b> within 15 km. Almost all of it came in a single month: the local mean went from ` +
+   `1,724 € on 1 March 2026 to 2,220 € on 31 March. It peaked at <b>2,349 €</b> on 8 April and has ` +
+   `moved in a 1,88–2,35 € band since.`],
+  [`A <b>€2,250 ceiling</b> appeared on ${dayLabel(D.cap.since)}: overnight, the share of French stations posting ` +
+   `<i>exactly</i> 2,250 € went from 1,5% to 25%, and the share below it fell to 1%. It only binds when the market ` +
+   `runs above it — it vanished in June, when diesel fell to 1,88 €, and is back today at ` +
+   `<b>${capNatNow.toFixed(0)}% of France</b> and ${capLocNow.toFixed(0)}% of local stations.`],
+  [`The ceiling is <b>TotalEnergies'</b>. All ${D.total.n_at_cap} Total-group stations here that post diesel ` +
+   `are at exactly 2,250 €, none below and none above. Every other brand's median is higher — the next ` +
+   `cheapest is ${nextBrand.brand} at ${eur(nextBrand.median)}. ` +
+   (D.cap_others.length
+     ? `Of the ${D.cap.n_local} local stations on the ceiling, ${D.total.n_at_cap} are Total-group; ` +
+       `the rest are ${capOthers}. `
+     : `All ${D.cap.n_local} local stations on the ceiling are Total-group. `) +
+   `The official feed carries no brand field, so the brands come from OpenStreetMap.`],
+  [`Petrol has its own ceiling, <b>€1,990</b>. ${pct(D.ceilings.E10.pct_at)} of French stations post E10 at ` +
+   `exactly that price in today's snapshot and ${pct(D.ceilings.E10.pct_below)} below it ` +
+   `(${pct(D.ceilings.SP98.pct_at)} and ${pct(D.ceilings.SP98.pct_below)} for SP98). The real reach is higher: ` +
+   `the archive puts it at <b>${pct(D.ceilings.E10.archive_pct_at)}</b>, because capped sites report ` +
+   `intermittently. Between the ${dayLabel(D.churn.between[0])} and ${dayLabel(D.churn.between[1])} ` +
+   `snapshots, ${D.churn.E10.arrived} stations started reporting E10 and ${D.churn.E10.at_ceiling} of ` +
+   `them were at exactly the ceiling.`],
+  [`So <b>a dash in the tables means “not reported”, not “not sold”</b>. The worked example: station ` +
+   `${D.example.id}, ${D.example.adresse} (${D.example.km} km — “${D.example.name}” in OSM), reports ` +
+   `only ${andList(D.example.reports)} in today's snapshot and flags ` +
+   `${D.example.dry.length ? `${andList(D.example.dry)} out of stock` : 'no stock outage'}, ` +
+   `yet it sold ${D.example.sold_unreported} on ${dayLabel(D.example.observed)}` +
+   (D.example.sp98_silent ? '' : ' — and posts SP98 again today, so read the example as history') +
+   `. Assume any Total site here sells petrol at the ceiling whether or not the feed says so.`],
+  [`Your nearest pump is the ${D.stations.find(s => s.cp === '31320' && s.prices.Gazole).brand} in ` +
+   `Castanet-Tolosan (${D.cap.castanet.km} km), posting <b>${eur(castPrice)}</b> — ` +
+   `${castDearer} of the ${dieselAll.length} stations posting diesel within 15 km are dearer, and it sits ` +
+   `${(Math.abs(castPrice - castMedian) * 100).toFixed(1).replace('.', ',')} centimes ` +
+   `${castPrice <= castMedian ? 'below' : 'above'} the local median of ${eur(castMedian)}. ` +
+   `${D.cap.n_local} of the ${D.cap.n_local_diesel} stations within 15 km sit on the ceiling at 2,250 €` +
+   (D.cap.n_dry
+     ? `, ${D.cap.n_dry} of them with diesel declared out of stock` +
+       (D.cap.nearest_any.dry
+         ? ` — including the nearest, ${D.cap.nearest_any.km} km away in ${D.cap.nearest_any.ville}, ` +
+           `dry since ${dayLabel(D.cap.nearest_any.dry)}`
+         : '')
+     : '') + `. ` +
+   (D.cap.nearest
+     ? `The nearest one posting the ceiling with no outage flag is <b>${D.cap.nearest.km} km</b> away in ` +
+       `${D.cap.nearest.ville} (${D.cap.nearest.adresse}, last update ${D.cap.nearest.maj}). Filling there costs ` +
+       `<b>${Math.abs(D.cap.save * 100).toFixed(1).replace('.', ',')} centimes a litre less</b> — about ` +
+       `${(D.cap.save * 60).toFixed(0)} € on a 60-litre tank. `
+     : `Every station on the ceiling has flagged its diesel out of stock, so there is nothing to drive to today. `) +
+   `The ceiling is also more common here than nationally: ` +
+   `${capLocNow.toFixed(0)}% of local stations against ${capNatNow.toFixed(0)}% of French ones.`],
+  [`Local prices sit <b>within a few centimes of the French mean</b>, and have all year — ` +
+   `<b>${(Math.abs(lastSpread) * 100).toFixed(1).replace('.', ',')} centimes` +
+   `${lastSpread <= 0 ? ' below' : ' above'}</b> it today.`]
+];
+const fnd = document.getElementById('findings');
+F.forEach((f, i) => {
+  const row = document.createElement('div');
+  const n = document.createElement('span'); n.className = 'n'; n.textContent = (i + 1) + '.';
+  const t = document.createElement('span'); t.innerHTML = f[0];
+  row.append(n, t); fnd.appendChild(row);
+});
+document.getElementById('capsub').textContent =
+  'Share of diesel-posting stations at exactly the ceiling price, 7-day mean. It binds only when the market runs above it.';
+
+const diesel = D.stations.filter(s => s.prices.Gazole != null)
+  .map(s => ({ d: s.dist, p: s.prices.Gazole, name: s.ville, adr: s.adresse, maj: s.maj }));
+document.getElementById('scattersub').textContent =
+  `${diesel.length} stations posting diesel, spread ${eur(Math.min(...diesel.map(r => r.p)))} to ` +
+  `${eur(Math.max(...diesel.map(r => r.p)))} — ${((Math.max(...diesel.map(r => r.p)) - Math.min(...diesel.map(r => r.p))) * 100).toFixed(0)} centimes a litre apart`;
+scatter(document.getElementById('scatter'), diesel);
+
+/* TotalEnergies stations, with the supermarket rivals for comparison */
+const TOT = new Set(D.total.ids);
+const RIV = new Set(D.rivals.ids);
+const totRows = D.stations.filter(s => TOT.has(s.id) || RIV.has(s.id)).sort((a, b) => a.dist - b.dist);
+const dryDiesel = totRows.filter(s => s.dry && s.dry.Gazole).length;
+document.getElementById('tot-title').textContent =
+  `${D.total.n} TotalEnergies and ${D.rivals.n} ${D.rivals.brands.join(' / ')} stations within ${D.meta.radius} km`;
+document.getElementById('tot-sub').textContent =
+  `All ${D.total.n_diesel} Total-group stations that post diesel are at exactly ${eur(D.cap.level)} — the ` +
+  `ceiling, and every petrol price any of them reports is ${eur(D.petrol_cap)}. ` +
+  `${D.rivals.brands.join(' and ')} are shown for comparison.` +
+  (dryDiesel ? ` ${dryDiesel} station${dryDiesel === 1 ? '' : 's'} in the table flag${dryDiesel === 1 ? 's' : ''} a diesel outage.` : '');
+document.getElementById('tot-note').textContent =
+  'A dash means the station does not report that fuel, not that it does not sell it — station ' +
+  D.example.id + ' below sold ' + D.example.sold_unreported + ' on ' + dayLabel(D.example.observed) +
+  ' while reporting only diesel, E85 and LPG. A red “dry” is a stock outage the station declared to the ' +
+  'feed, with its start date in the tooltip; outage flags exist only in the annual archive (the instant ' +
+  'feed carries none), and a flag older than 30 days means “no longer sells”, shown as a dash. ' +
+  'Brands come from OpenStreetMap, matched to the official ' +
+  'stations by position within 250 m; a “?” marks a brand inferred from an adjacent site mapped as one feature.';
+
+const FALL = ['Gazole', 'E10', 'SP98', 'SP95', 'E85', 'GPLc'];
+const HEAD = { Gazole: 'Diesel', GPLc: 'LPG' };
+const CEIL_OF = { Gazole: D.cap.level, E10: D.petrol_cap, SP98: D.petrol_cap, SP95: D.petrol_cap };
+function priceCells(tr, s) {
+  for (const f of FALL) {
+    const td = document.createElement('td');
+    const v = s.prices[f];
+    const dry = s.dry && s.dry[f];
+    if (dry) {
+      td.textContent = 'dry';
+      td.className = 'dry';
+      td.title = 'stock outage declared ' + dayLabel(dry) +
+                 (v != null ? '; last posted ' + eur(v) : '');
+    } else {
+      td.textContent = v == null ? '—' : v.toFixed(3).replace('.', ',');
+      if (v != null && CEIL_OF[f] === v) {
+        td.style.fontWeight = 600;
+        td.title = 'on the ' + eur(v) + ' ceiling';
+      }
+    }
+    tr.appendChild(td);
+  }
+}
+function totalTable() {
+  const t = document.createElement('table');
+  t.innerHTML = '<thead><tr><th>Station</th><th>km</th><th></th><th>Brand</th>' +
+    FALL.map(f => `<th>${HEAD[f] || f}</th>`).join('') + '<th>Updated</th></tr></thead>';
+  const tb = document.createElement('tbody');
+  for (const s of totRows) {
+    const tr = document.createElement('tr');
+    if (!Object.values(s.prices).some(v => v != null)) tr.className = 'silent';
+    const c0 = document.createElement('td'); c0.className = 'name';
+    c0.textContent = s.ville + ' — ' + s.adresse;
+    const c1 = document.createElement('td'); c1.textContent = s.dist.toFixed(2);
+    const c2 = document.createElement('td'); c2.className = 'q'; c2.textContent = s.dir;
+    const c3 = document.createElement('td'); c3.style.textAlign = 'left';
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (TOT.has(s.id) ? ' t' : '');
+    chip.textContent = s.brand + (s.brand_shared ? ' ?' : '');
+    c3.appendChild(chip);
+    tr.append(c0, c1, c2, c3);
+    priceCells(tr, s);
+    const cm = document.createElement('td');
+    cm.textContent = s.maj || 'no price posted';
+    tr.appendChild(cm);
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  return t;
+}
+document.getElementById('table-total').appendChild(totalTable());
+
+/* dry-pumps history: the table's dry count, reconstructed for every past day
+   from the archive's outage intervals under the same 30-day rule */
+const DH = D.dry_hist;
+const dNow = DH.table[DH.table.length - 1], dWeek = DH.table[DH.table.length - 8];
+document.getElementById('drysub').textContent =
+  `Station-fuel pairs marked “dry”, counted each day by the table's rule: an outage counts while ` +
+  `open and for at most ${DH.window} days after it began. Today ${dNow} cells across the ` +
+  `${totRows.length} stations above — ${dNow === dWeek ? 'unchanged from' :
+    (dNow > dWeek ? 'up from' : 'down from')} ${dWeek} a week ago.`;
+function drawDry() {
+  lineChart(document.getElementById('chart-dry'), {
+    days: DH.days, height: 260, labelRoom: 170, unit: 'n',
+    aria: 'Station-fuel pairs flagged out of stock, daily',
+    series: [
+      { name: 'Table above', color: '--series-1', values: DH.table },
+      { name: 'All ' + D.meta.n_stations + ' local stations', color: '--deemph',
+        values: DH.all, label: false }
+    ]
+  });
+  legend(document.getElementById('legend-dry'),
+         [['TotalEnergies, Intermarché and Super U (the table above)', '--series-1'],
+          ['All ' + D.meta.n_stations + ' stations within 15 km', '--deemph']]);
+}
+drawDry();
+
+rangePlot(document.getElementById('chart-brand'), D.brands);
+legend(document.getElementById('legend-brand'),
+       [['TotalEnergies group', '--series-1'], ['Other brands', '--deemph']]);
+
+/* tables */
+function stationTable() {
+  const t = document.createElement('table');
+  t.innerHTML = '<thead><tr><th>Station</th><th>km</th><th></th><th>Brand</th>' +
+    FALL.map(f => `<th>${HEAD[f] || f}</th>`).join('') + '<th>Updated</th></tr></thead>';
+  const tb = document.createElement('tbody');
+  for (const s of [...D.stations].sort((a, b) => (a.prices.Gazole ?? 9) - (b.prices.Gazole ?? 9))) {
+    const tr = document.createElement('tr');
+    if (s.cp === '31320') tr.className = 'hl';
+    const c0 = document.createElement('td'); c0.className = 'name';
+    c0.textContent = s.ville + ' — ' + s.adresse;
+    const c1 = document.createElement('td'); c1.textContent = s.dist.toFixed(2);
+    const c2 = document.createElement('td'); c2.className = 'q'; c2.textContent = s.dir;
+    const c3 = document.createElement('td'); c3.style.textAlign = 'left';
+    if (s.brand) {
+      const chip = document.createElement('span');
+      chip.className = 'chip' + (TOT.has(s.id) ? ' t' : '');
+      chip.textContent = s.brand + (s.brand_shared ? ' ?' : '');
+      c3.appendChild(chip);
+    } else { c3.className = 'q'; c3.textContent = 'unknown'; }
+    tr.append(c0, c1, c2, c3);
+    priceCells(tr, s);
+    const cm = document.createElement('td'); cm.textContent = s.maj || '—'; tr.appendChild(cm);
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  return t;
+}
+function monthTable() {
+  const t = document.createElement('table');
+  t.innerHTML = '<thead><tr><th>Month</th>' +
+    FALL.map(f => `<th>${f === 'Gazole' ? 'Diesel' : f}</th>`).join('') + '<th>Diesel, France</th></tr></thead>';
+  const tb = document.createElement('tbody');
+  for (const m of Object.keys(D.monthly).sort().reverse()) {
+    const tr = document.createElement('tr');
+    const c0 = document.createElement('td'); c0.textContent = m; tr.appendChild(c0);
+    for (const f of FALL) {
+      const td = document.createElement('td');
+      const v = D.monthly[m][f] && D.monthly[m][f][0];
+      td.textContent = v == null ? '—' : v.toFixed(3).replace('.', ',');
+      tr.appendChild(td);
+    }
+    const tn = document.createElement('td');
+    const nv = D.monthly[m].Gazole && D.monthly[m].Gazole[1];
+    tn.textContent = nv == null ? '—' : nv.toFixed(3).replace('.', ',');
+    tr.appendChild(tn);
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  return t;
+}
+function toggle(btn, host, build) {
+  let built = false;
+  btn.addEventListener('click', () => {
+    if (!built) { host.appendChild(build()); built = true; }
+    const open = host.classList.toggle('hidden');
+    btn.setAttribute('aria-pressed', String(!open));
+    btn.textContent = open ? 'Show table' : 'Hide table';
+  });
+}
+toggle(document.getElementById('tbtn-st'), document.getElementById('table-st'), stationTable);
+toggle(document.getElementById('tbtn-mo'), document.getElementById('table-mo'), monthTable);
+
+for (const b of document.querySelectorAll('[data-range]')) {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('[data-range]').forEach(o => o.setAttribute('aria-pressed', 'false'));
+    b.setAttribute('aria-pressed', 'true');
+    range = +b.dataset.range;
+    draw();
+  });
+}
+const tb = document.getElementById('theme');
+tb.addEventListener('click', () => {
+  const dark = document.documentElement.dataset.theme === 'dark';
+  document.documentElement.dataset.theme = dark ? 'light' : 'dark';
+  tb.textContent = dark ? 'Dark' : 'Light';
+  tb.setAttribute('aria-pressed', String(!dark));
+  draw();
+  document.getElementById('scatter').textContent = '';
+  scatter(document.getElementById('scatter'), diesel);
+  rangePlot(document.getElementById('chart-brand'), D.brands);
+  legend(document.getElementById('legend-brand'),
+         [['TotalEnergies group', '--series-1'], ['Other brands', '--deemph']]);
+  drawDry();
+  for (const k of ['legend-main', 'legend-spread', 'legend-cap']) void k;   // draw() rebuilt these
+});
+draw();
+</script>
+</body>
+</html>

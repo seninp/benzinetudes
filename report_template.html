@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="version" content="1.11">
+<meta name="last-updated" content="2026-09-27">
+<!-- Changelog
+  1.11 (2026-09-27) Restructured, and two new sections. Same data as v1.10, so no price in this
+      entry is new; what changed is that the report now answers questions in the order a driver
+      here asks them. Five numbered sections - 1 around Castanet-Tolosan today, 2 where to fill,
+      3 the trend, 4 which weekday is cheapest, 5 the national picture - with the seven findings
+      split among the sections they belong to instead of stacked in one block at the top. A new
+      "short answer" block above them gives the five one-line answers.
+      Section 3 is new and it exists because the old report had no direction statement at all. It
+      plotted a local mean and left the reader to eyeball the slope. Worse, that single mean cannot
+      carry the answer: scripts/trend.py now splits the 71 local stations into the 21 Total-group
+      sites and the 50 others, and they are doing different things. The uncapped stations are
+      climbing 6,44 +/- 0,37 centimes a week (R2 0,92, 28 observed days); the Total-group stations
+      have posted exactly 2,250 EUR every day since 4 September, 22 days, a slope of 0,38. The
+      pooled local figure, 4,65 c/week, is the average of a fast rise and a flat line and describes
+      no station in the radius. The gap is 16,6 c on diesel, 20,3 on E10, 30,5 on SP98, and on
+      1 March - before the ceiling - the Total group was 5,7 c *dearer*, so the cap inverted the
+      local ranking rather than deepening it.
+      Section 4 is new and its answer is "no day worth planning around", which is why it needed a
+      chart rather than a sentence. Pooled over every station-week, Monday comes out cheapest by
+      0,36 centimes with a 95% interval of +/- 0,58 - indistinguishable from zero. Publishing that
+      bar alone would have told a reader to fill on Mondays. scripts/weekday.py now decomposes the
+      measure by each week's own direction, and the two halves are near mirror images: in rising
+      weeks Monday sits 2,87 c below the week's mean and Sunday 1,89 above; in falling weeks Monday
+      is 1,94 above and Sunday 1,51 below; weeks that did not move span 0,40 c across all seven
+      days. Rising and falling weeks are equally common (2 485 and 2 483 station-weeks, 40% each),
+      but a rising week spans 4,76 c against a falling week's 3,47, and that 1,29 c asymmetry is
+      the entire pooled Monday discount. It is the net excess of rising weeks in a year when diesel
+      rose 72,5 c, not a weekly habit. The real signal is Tuesday, where 63,9% of posted changes
+      are increases. Choosing the station is worth about 13 c/L, some 25 times the whole weekday
+      effect, and the section says so.
+      Cap evidence, because "2,250 EUR is a ceiling" was asserted and never shown. scripts/trend.py
+      now carries each group's daily maximum. The Total-group diesel maximum has stayed at or below
+      2,250 EUR on 618 of 620 days (the two exceptions are real - the last is 2,259 on 21 July -
+      and the report says "618 of 620", not "never"); the other brands' maximum reached 2,523. In
+      today's snapshot 82,8% of French stations post diesel *above* the line, and on 1 July 99,6%
+      were below it with 0,1% on it. Every ceiling share on the page now prints at/below/above
+      rather than the at-share alone, which on its own reads like a national maximum.
+      One critic finding was tested and rejected, recorded here so it is not re-opened. The claim
+      was that the ceiling story runs backwards - that cheap stations raised their prices to 2,250
+      rather than dear ones being held down. It does not hold: the Total-group diesel maximum is
+      exactly 2,250 on every date from 7 April, their mean climbed 2,090 to 2,181 to 2,211 and then
+      stalled, they fell back below the cap on 15 April and again through June, and the
+      above-share rose gradually instead of stepping. The report's reading stands. The same
+      critic's other two points were right and are fixed: the above-share was missing everywhere,
+      and finding 2's numbers could not be reproduced.
+      Corrections to text that had gone stale or was never computed. The footer said the data was
+      "fetched 2026-09-14", thirteen days wrong, and now prints D.meta.built. The Ceilings footnote
+      hardcoded four percentages and drew a conclusion from them - "for diesel they nearly agree
+      (20,0% against 22,0%)" - when the current figures are 16,3% instant against 22,5% archive, a
+      6,2-point gap, and E10 is 14,2 against 23,5. The instant figure is the lower one for every
+      fuel, and the note now says that and templates every number, including the churn snapshot
+      dates so the reader can see how old that measurement is. The diesel-only justification for
+      the ceiling-share chart now gives the two churn rates (0,8% of the diesel base arriving
+      overnight against 3,2% of the E10 base) instead of asserting the churn is small.
+      The dry-pumps series ran to the build day and the archive holds no outages for it, so the
+      last point was a copy of the day before - a flat tail that read as "no new outages" when it
+      meant "no data". The series now ends at archive_end, the caption dates that day, and
+      build_report.py defines OBS_END once at the top with a note that every measurement ends
+      there. Where a forward-filled figure is still quoted (the hero note, the footer counts) the
+      prose now names it as carried forward.
+      "Diesel today" was never a reading and the report did not admit it. Only 7 of the 56 local
+      diesel prices in this snapshot were posted on the snapshot day; the median is 2 days old and
+      the oldest 13 (14 September). The subtitle and the price-against-distance panel now state
+      that span.
+      Structure and legibility. Section headings were 12px uppercase grey and chart titles 15px
+      near-black, so the label of a panel outranked the name of the section containing it; h2 is
+      now 20px primary and the chart titles are h3, which also gives the page a real heading
+      outline for a screen reader. Table headers were 11px uppercase with letter-spacing, the
+      hardest text on the page to read, and are now 13px sentence case; long tables get a sticky
+      header, a caption, scope= on every header cell, a row header on the station name and lang=fr
+      on the French cells. The reader's own town was marked in the station table by a pale wash
+      alone, which colour-blind and low-contrast readers cannot see; it now carries a blue rule
+      down the left edge. Contrast: light --muted was 3,50:1 and is now 5,4 at #6b6a65, with
+      --deemph split off for graphic marks at #7d7b75 (3,8:1, was 2,9); light --series-3 goes
+      #1baf7a to #12885f, light --down #0ca30c to #0b7d2a, dark --down to #3fca5a, and dark
+      --surface-1 #1a1a19 to #202020. The min-max bars in the brand plot were drawn at 0,4 opacity,
+      fainter than the gridlines behind them, and are now 0,6 at 3px.
+      Every chart is now fluid: the widths were fixed at 980px and clipped on a phone. chartW()
+      measures the container, and below 560px the margins shrink, end labels drop and the x-axis
+      thins to what fits. All chart hit areas take keyboard focus and show their read-out on focus,
+      the tooltip is a polite live region so that read-out is announced, and :focus-visible draws a
+      visible ring - the browser default was invisible on the dark surface. eur() now emits a
+      no-break space before the unit, which was wrapping and leaving a bare EUR sign alone on a
+      line in the narrow tiles; the three places that strip the unit go through one bare() helper,
+      because the first attempt at this left them looking for a plain space and printing
+      "2,367 EUR EUR/L". The station-table distance filter defaulted to 607 km, a number with no
+      meaning; it is now unbounded. The E85 tile in the hero row is replaced by the cheapest
+      in-stock diesel and its distance: at 0,914 EUR beside three prices in the 2,1-2,4 band it
+      compared with nothing, and E85 keeps its own panel further down. The series start is now
+      justified rather than asserted - the 2025 archive covers 1 876 stations on 1 January and
+      8 999 on the 15th, 94% of the year's steady state.
+      Town names were mis-cased in every panel that prints one. build_report.py ran the feed's
+      upper-case names through str.title(), which capitalises after each hyphen, so the report
+      said "Labarthe-Sur-Lèze" and "Saint-Orens-De-Gameville"; French keeps those particles lower
+      case. Fixed, first word excepted so "Le Vernet" keeps its article. Not fixed, because it is
+      the feed's own inconsistency and not a casing question: the same commune appears under two
+      spellings - "Labege" and "Labège", "Portet sur Garonne" and "Portet-sur-Garonne",
+      "Ramonville Saint Agne" and "Ramonville-Saint-Agne" - so any future grouping by town has to
+      normalise them first.
+      Four label collisions found by reading the rendered page at 1280 px in both colour schemes
+      and again at 420 px, rather than trusting the code. In section 4 the deepest bar's value sat
+      on the day name beneath it - on a shared scale the whisker reaches the plot floor, so the
+      label is now clamped inside the plot and the day names moved down. In the three-fuel chart
+      SP98 and E10 end 7,6 centimes apart, which is 11 px on a 20-month scale against a 26 px
+      two-line label, so "Petrol E10" printed across "2,214 EUR"; lineChart now places every end
+      label after the lines are drawn, separates the labels in one pass down the chart and draws a
+      leader wherever a label had to leave its dot. At 420 px the seven bands are 53 px wide and a
+      12 px "+1,82 c" is nearly as wide as its band, so neighbouring labels touched: narrow
+      layouts use 10 px and drop the unit, which the panel subtitle names anyway. Also at 420 px
+      there is no right-hand gutter, so "the station's own weekly average" was clipped mid-word;
+      it is now suppressed when the gutter is too small to hold it.
+      Currency and dates made consistent. Two chart titles wrote "EUR2,250" while every other
+      mention writes "2,250 EUR", the French order; all five sites now agree and use a no-break
+      space. The subtitle mixed "27 Sep 2026" with "2026-09-27" in one sentence and named the
+      snapshot day twice, once as the snapshot and once as the end of the series, which read as two
+      facts when it is one; it now states the snapshot and the observed end, which are genuinely
+      different days. The ceiling-share subtitle printed a raw ISO date in prose.
+  1.10 (2026-09-27) Data refreshed: the archive's observations run through 26 September, the series
+      is forward-filled to the 27th, and the station snapshot is this morning's, 03:50. Local
+      diesel eased to 2,367 EUR/L from 2,380, +13,9 c over 30 days and +72,1 c over the year,
+      2,04 c below the French mean of 2,388 - the widest the local discount has been in this
+      series' recent run (1,40 c on the 24th).
+      The local squeeze and the national one moved in opposite directions, which is the refresh's
+      one real finding. Locally, every open diesel outage on a ceiling station closed: v1.9 showed
+      11 local stations at 2,250 EUR with 2 dry, and this build shows 9 with none. The three
+      stations whose diesel a 24 September snapshot flagged dry - Portet Croix Falgarde,
+      Labarthe-sur-Leze and Toulouse Route d'Albi - are all back in stock and all three post the
+      ceiling. Nationally the instant feed thinned: stations posting diesel fell from 8,986 to
+      8,832, and the share at exactly 2,250 EUR fell with it, 17,7% to 16,3%, with E10 at 1,990 EUR
+      going 16,2% to 14,2% and SP98 12,0% to 9,6%. The archive shares, which do not depend on who
+      reported that day, are unmoved at 22,5% national and 33,8% local for diesel, so the national
+      fall is reporting, not pricing.
+      The ceiling roster rotates by silence, not by price. Six stations left the 2,250 EUR list
+      since the 24th and four joined; not one of the six raised its diesel above the ceiling -
+      every one of them stopped posting a diesel price at all. Both non-Total stations on the
+      24th's list (the Balma Esso Express and an unbranded Toulouse site) went silent the same way,
+      so cap_others is empty and finding 3 now reads "all 9 local stations on the ceiling are
+      Total-group". Total-group counts are unchanged: 9 of 21 post diesel, all 9 at the ceiling.
+      Petrol outages are spreading among those same stations even as diesel recovered - 5 of the 9
+      now flag E10 dry, all since the 24th - which is worth watching next refresh.
+      Fixed a stale hardcode in finding 5. The worked example asserted in the present tense that
+      station 31300008 "reports only diesel, E85 and LPG"; that list was frozen in build_report.py
+      from a 15 September observation, and this refresh falsified it - the station now posts E10 at
+      1,990 EUR as well. The reported-fuel list and the outage clause are now read from the live
+      snapshot, and the finding carries a guard that flags the example as history if the station
+      ever starts posting SP98 again, since the whole point of the example is that it sold SP98
+      without reporting it. The SP98 sale itself stays hardcoded: it is a dated observation, not a
+      fact about today's feed.
+      The nearest in-stock ceiling station is unchanged - Ramonville, 98 avenue Tolosane, 3,17 km,
+      updated 00:01 today - and the saving against the Castanet-Tolosan Intermarche is still
+      12,9 c/L, about 8 EUR a tank. The Intermarche's own rank moved: 36 of the 56 stations posting
+      diesel are dearer than its 2,379 EUR, against 37 of 58 on the 24th, and it now sits 3,0 c
+      below the local median rather than 4,9 c, because the median itself fell from 2,428 to 2,409.
+      v1.9's forward-fill caveat held again: it warned that the 24th's dry count of 46 was carried
+      over from the 23rd and should not be read, and with the archive's own observations the 24th
+      is 44. The count then rose to 48 on the 25th and 49 on the 26th. The caveat now applies to
+      the 27th, which repeats the 26th's 49.
+  1.9 (2026-09-24) Data refreshed: the archive's observations run through 23 September, the series
+      is forward-filled to the 24th, and the station snapshot is this morning's. Local diesel is
+      flat at 2,380 EUR/L, +12,3 c over 30 days and +74,1 c over the year, 1,40 c below the French
+      mean of 2,394. The September squeeze has eased on every count: 9 of the 21 Total-group
+      stations post diesel against 4 on the 21st, 58 local stations post diesel against 51, the
+      snapshot share of French stations at exactly 2,250 EUR is back to 17,7% from 13,6%, E10 at
+      1,990 EUR to 16,2% from 9,9% and SP98 to 12,0% from 7,3%. The dry count in the
+      Total/rivals table peaked at 62 on 20 September and reads 46 for the 23rd. The Ramonville
+      Total (98 avenue Tolosane, 3,17 km), dry since 15 September, posts the ceiling again with no
+      outage flag, so the nearest ceiling station comes back in from 8,76 km to 3,17 km - 12,9 c/L
+      below the nearest pump, about 8 EUR a tank.
+      The ceiling-share chart was wrong, and had been since v1.1. capshare.csv carries one row per
+      day and fuel (E10, Gazole, SP98), and build_report.py read every row, so cap.loc and cap.nat
+      came out 1,854 long against 618 days. The chart helper takes the *last* N values, so the
+      panel titled "share of diesel-posting stations at exactly 2,250 EUR" actually plotted the
+      last 206 days of three interleaved fuels stretched across a 618-day axis; the 7-day mean
+      smoothed the sawtooth into a plausible-looking curve, which is why it survived eight
+      versions. The findings took the same arrays' last element - the last row of the file, SP98 -
+      and printed it as the diesel share, which is why they read "31% of local stations against
+      22% of French ones" while quoting a diesel ceiling. The series is now filtered to Gazole and
+      aligned to the day axis, and the findings take the last non-null value. The diesel shares
+      are 34% local and 22% French, matching the archive shares computed independently elsewhere
+      in the same file (33,8% and 22,5%). The corrected chart shows the ceiling arriving on
+      8 April (0,96% to 14,6% nationally), gone through June, and back now.
+      One nearby number is NOT a mistake, for the benefit of the next reader: finding 2's jump
+      "from 1,5% to 25%" counts only stations that posted that day (1,5% to 25,2%, with the share
+      below falling to 1,2%), while the chart counts every station with a live price carried
+      forward. The two measures differ by design; the finding describes an overnight move, so the
+      same-day measure is the right one.
+      Three further fixes, all in finding 6. First, the dry
+      clause fired on the count of dry ceiling stations but asserted that the nearest was one of
+      them; with the nearest back in stock it rendered "dry since NaN undefined" and then
+      contradicted itself two sentences later. The count and the "including the nearest" clause are
+      now guarded separately. Second, the finding called the nearest pump "one of the dearest" in
+      hard-coded prose. The Castanet-Tolosan Intermarche cut diesel from 2,429 to 2,379 EUR, which
+      leaves 37 of the 58 stations posting diesel dearer than it and puts it 4,9 c below the local
+      median; the finding now states that rank rather than an adjective that the data has to keep
+      earning. Third, the same finding called the ceiling "twice as common here as nationally"
+      while printing the two shares beside it; on the corrected diesel figures that ratio is 1,5,
+      and on the figures it used to print it was 1,4, so the claim was wrong before this refresh
+      too. It now says "more common" and lets the two percentages carry the size.
+      v1.8's forward-fill caveat held: it warned that the 21st's dry count of 62 was
+      carried over and should not be read, and with the archive's own observations the 21st is 52.
+      The caveat now applies to the 24th, which repeats the 23rd's 46.
+  1.8 (2026-09-21) Data refreshed: the archive's observations now run through 20 September, the
+      series is forward-filled to the 21st, and the station snapshot is this morning's, 06:20.
+      Local diesel holds at 2,379 EUR/L, +12,4 c over 30 days and +73,9 c over the year, 1,79 c
+      below the French mean. Two corrections. First, the findings picked the nearest station
+      posting the 2,250 EUR ceiling by price alone - the fault v1.4 fixed in the station table and
+      left here. Today that names the Saint-Orens-de-Gameville Total, 5,09 km, whose diesel has
+      been flagged out of stock since 19 September. The pick now skips open diesel outages, and
+      the finding gives both: 2 of the 4 local stations on the ceiling are dry, and the nearest
+      without a flag is 8,76 km away at 10 Boulevard de Thibaud, Toulouse. Second, v1.7 called the
+      archive's last day partial because it carried "about half a normal day's updates" - that
+      compared a Saturday against weekdays. The feed runs on a weekly cycle: 12-18k price updates
+      on weekdays, 9,6-10,8k on Saturdays, 5,0-6,0k on Sundays. The 19th (8,899 rows) and the 20th
+      (4,828) sit within a tenth of the three preceding Saturdays and Sundays, and republication
+      did not backfill the 19th (8,903 rows yesterday, 8,899 today). Row counts cannot tell a
+      partial day from a quiet one; archive_end can. The footer no longer calls the last day
+      partial, only incomplete after the evening publication. The squeeze meanwhile deepened: 4 of
+      the 21 Total-group stations post diesel against 5 yesterday, the snapshot share of French
+      stations at exactly 2,250 EUR fell to 13,6% from 15,6%, and the dry count reads 62
+      station-fuel pairs in the Total/rivals table for 20 September against 51 for the 19th,
+      approaching the 69 of 6 April. The 21st also reads 62 and should not be read: the archive
+      holds no observations for it.
+  1.7 (2026-09-20) Data refreshed to 2026-09-20. Local diesel 2,379 EUR/L, +12,6 c over 30 days
+      and +73,9 c over the year; 51 station-fuel pairs dry in the Total/rivals table. The nearest
+      station posting the 2,250 EUR ceiling moved out from 5,09 km to 8,2 km (106 route d'Espagne,
+      Portet-sur-Garonne), 17,9 c below the local mean. In today's snapshot 5 local stations hold
+      the ceiling against 8 yesterday, and 52 post diesel at all against 55; capped stations drop
+      out of the feed when they run dry, so the ceiling recedes partly because fewer pumps report.
+      Read the last two days with care: the annual archive was published on 19 September at 22:38
+      and ends there, carrying about half a normal day's updates on the 19th, so 20 September is
+      forward-filled from the 19th rather than measured. The snapshot, the station table and the
+      ceiling counts are from today. Corrects v1.6, which said the tail of the dry-pumps chart
+      "revises upward": 19 September was built at 56 dry pairs and now reads 51. Resupplies backfill
+      as end dates on open flags, so the tail revises in both directions. The final day is lower
+      again for a third reason - it counts only the flags that have arrived so far.
+  1.6 (2026-09-19) Data refreshed to 2026-09-19: local diesel 2,378 EUR/L, +12,9 c over 30 days
+      and +73,8 c over the year; 56 station-fuel pairs dry in the Total/rivals table; the nearest
+      station posting the 2,250 EUR ceiling is 5,09 km away, 17,9 c below the local mean. Fixes two
+      faults in the 17-18 September builds. The series end was pinned to 2026-09-13 in agg.py,
+      capshare.py and build_report.py, so every refresh after that date silently rebuilt the same
+      frozen series: v1.5 reported 2,296 EUR as the current price while the archive already held
+      2,371 EUR. END now comes from the last day in nat_daily.csv and the two aggregators
+      forward-fill to the fetch date. Separately, the 18 September rebuild shipped fresh numbers
+      under an unchanged v1.5 / 2026-09-17 header, so the markers understated the data by a day.
+      Outage flags land in the archive late: 18 September read 45 dry pairs when built on the 18th
+      and reads 56 today. The last days of that chart are provisional and revise upward.
+  1.5 (2026-09-17) Added the dry-pumps history chart: scripts/ruptures.py now extracts every
+      rupture interval, open or closed, from both annual archives, and the report reconstructs
+      for each day how many station-fuel pairs in the Total/Intermarché/Super U table were dry
+      under the same 30-day rule the table itself uses. Also fixed the header version pill,
+      which v1.4 left reading "v1.3 · 2026-09-15" while the meta tags said 1.4 - the pill is
+      now filled in from the meta tags at load, so the two cannot drift again.
+  1.4 (2026-09-17) Stock outages were invisible: the pipeline read prices only, and the instant
+      feed carries no rupture elements at all - they exist only in the annual archive. v1.3
+      therefore named the Ramonville Total (98 avenue Tolosane) nearest ceiling-priced station
+      while its diesel had been declared out of stock on 2026-09-15; a reader drove there. Open
+      ruptures are now extracted (scripts/ruptures.py) and shown as a red "dry" with the outage
+      start date in the tooltip; flags older than 30 days mean "no longer sells" and stay a dash.
+      The TotalEnergies table now also lists Intermarché and Super U, since during the September
+      2026 supply squeeze the capped Total sites are exactly the ones queueing and running dry.
+  1.3 (2026-09-15) Resolved v1.2's open caveat on the petrol ceiling. A reader bought SP98 at
+      1,990 EUR from station 31300008 (6 avenue du Goupe Morhange, Toulouse - "Rocade Purpan" in
+      OSM), which reports only diesel, E85 and LPG and carries no stock-outage flag. Comparing the
+      2026-09-14 and 2026-09-15 snapshots shows why: 222 stations started reporting E10 overnight
+      and 220 of them at exactly the ceiling (194/191 for SP98). Capped sites report intermittently
+      and always arrive at the ceiling, so the snapshot share is a lower bound - 3,2% of the petrol
+      base churns per day against 0,8% for diesel, which is why the two sources agreed on diesel
+      and not on petrol. v1.2 wrongly called the gap unexplained and implied a dash meant the fuel
+      was unavailable. Both ceiling shares are now shown side by side. Data refreshed to 2026-09-15.
+  1.2 (2026-09-14) Added station brands, recovered by matching the official stations to
+      OpenStreetMap fuel features (the official feed has no brand field). Added the TotalEnergies
+      station table, a brand column in the all-stations table, and a diesel-by-brand range plot.
+      This identifies the EUR 2.25 ceiling of v1.1 as TotalEnergies': all 15 Total-group stations
+      posting diesel are at exactly that price and none is below it. Also found a second ceiling on
+      petrol at EUR 1.99 and added it as a finding, quoted from the instant feed rather than the
+      archive because the two disagree on the petrol share (see the Ceilings note in the footer);
+      prices sitting on either ceiling are now bold in both tables. Station count corrected from
+      66 to 71 - the earlier figure silently dropped the 5 stations that post no price at all.
+  1.1 (2026-09-14) Raised the de-emphasis series colour to #898781 in both modes; the previous values
+      (#c3c2b7 light, #52514e dark) measured 1.75:1 and 2.19:1 against their surfaces, so the France
+      comparison line was near-invisible. Smoothed the ceiling-share series to a 7-day mean - the daily
+      share across 71 local stations jitters by several points and rendered as a comb. Corrected the
+      March end-date in finding 1 (the local mean reached 2,220 EUR on 31 March, not 27 March).
+      Added the EUR 2.25 diesel ceiling: reference line on the station scatter,
+      a share-pinned-at-the-ceiling chart, and the findings panel. Replaced the local-vs-France
+      two-line chart, where the national line was invisible underneath the local one, with the
+      local-minus-France spread. Split the alternative-fuel chart into single-series small
+      multiples, so orange/aqua no longer stand for E85/LPG in one chart and E10/SP98 in another.
+  1.0 (2026-09-14) First issue. Fuel prices around Castanet-Tolosan (31320) vs France,
+      from the official prix-carburants open data (roulez-eco.fr annual + instant feeds).
+-->
+<title>Fuel prices — Castanet-Tolosan (31320) vs France</title>
+<style>
+  :root { color-scheme: light; }
+  .viz-root {
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#6b6a65;
+    --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --series-1:#2a78d6; --series-2:#eb6834; --series-3:#12885f;
+    --deemph:#7d7b75; --up:#d03b3b; --down:#0b7d2a;
+    --div-pos:#e34948; --div-neg:#2a78d6; --div-mid:#f0efec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) { color-scheme: dark; }
+    :root:where(:not([data-theme="light"])) .viz-root {
+      --surface-1:#202020; --page:#0d0d0d;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#a3a19a;
+      --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+      --deemph:#898781; --up:#e66767; --down:#3fca5a;
+      --div-pos:#e66767; --div-neg:#3987e5; --div-mid:#383835;
+    }
+  }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  :root[data-theme="dark"] .viz-root {
+    --surface-1:#202020; --page:#0d0d0d;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#a3a19a;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+    --deemph:#898781; --up:#e66767; --down:#3fca5a;
+    --div-pos:#e66767; --div-neg:#3987e5; --div-mid:#383835;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--page); color:var(--text-primary);
+    font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width:1060px; margin:0 auto; padding:32px 24px 64px; }
+  header { display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:8px; }
+  h1 { font-size:24px; font-weight:600; margin:0 0 4px; letter-spacing:-0.01em; }
+  .sub { color:var(--text-secondary); font-size:14px; margin:0; }
+  .pill {
+    margin-left:auto; display:flex; gap:8px; align-items:center;
+    font-size:12px; color:var(--text-secondary);
+  }
+  .pill span { border:1px solid var(--border); border-radius:999px; padding:3px 10px; }
+  button {
+    font:inherit; font-size:13px; color:var(--text-secondary); cursor:pointer;
+    background:var(--surface-1); border:1px solid var(--border);
+    border-radius:8px; padding:5px 11px;
+  }
+  button:hover { color:var(--text-primary); }
+  button[aria-pressed="true"] { color:var(--text-primary); font-weight:600; border-color:var(--axis); }
+  /* Section headings used to be 12px uppercase grey and chart titles 15px near-black,
+     which inverted the hierarchy: the label of a panel outranked the name of the
+     section holding it. Sections now lead, panels sit a step below. */
+  h2 {
+    font-size:20px; font-weight:600; letter-spacing:-0.01em;
+    color:var(--text-primary); margin:40px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--grid);
+  }
+  .card {
+    background:var(--surface-1); border:1px solid var(--border);
+    border-radius:12px; padding:20px 24px; margin-bottom:16px;
+  }
+  .hero-row { display:flex; gap:16px; flex-wrap:wrap; align-items:stretch; }
+  .hero { flex:1 1 260px; }
+  .hero .label { font-size:13px; color:var(--text-secondary); }
+  .hero .fig { font-size:52px; font-weight:600; line-height:1.05; margin:6px 0 2px; letter-spacing:-0.02em; }
+  .hero .unit { font-size:20px; font-weight:400; color:var(--text-secondary); }
+  .tiles { flex:2 1 520px; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:16px; }
+  .tile .label { font-size:12px; color:var(--text-secondary); min-height:32px; }
+  .tile .val { font-size:26px; font-weight:600; margin:2px 0 0; letter-spacing:-0.01em; }
+  .tile .val .unit { font-size:13px; font-weight:400; color:var(--text-secondary); }
+  .delta { font-size:12px; color:var(--text-secondary); margin-top:3px; }
+  .delta b { font-weight:600; font-variant-numeric:tabular-nums; }
+  .delta .u { color:var(--up); } .delta .d { color:var(--down); }
+  .chart-head { margin-bottom:6px; }
+  .chart-title { font-size:15px; font-weight:600; margin:0; }
+  .chart-sub { font-size:13px; color:var(--text-secondary); margin-top:2px; }
+  .legend { display:flex; gap:18px; flex-wrap:wrap; margin:10px 0 2px; font-size:13px; color:var(--text-secondary); }
+  .legend .key { display:inline-flex; align-items:center; gap:7px; }
+  .legend .key i { display:inline-block; width:16px; height:2px; border-radius:1px; }
+  .legend .key i.rect { width:11px; height:11px; border-radius:2px; }
+  svg { display:block; width:100%; height:auto; overflow:visible; }
+  .tip {
+    position:fixed; pointer-events:none; opacity:0; transition:opacity .09s;
+    background:var(--surface-1); border:1px solid var(--border); border-radius:9px;
+    box-shadow:0 4px 16px rgba(0,0,0,.13); padding:9px 11px; font-size:12px;
+    color:var(--text-secondary); z-index:20; min-width:150px;
+  }
+  .tip .when { font-size:11px; color:var(--muted); margin-bottom:6px; }
+  .tip .row { display:flex; align-items:center; gap:8px; margin-top:3px; }
+  .tip .row i { width:14px; height:2px; border-radius:1px; flex:none; }
+  .tip .row b { color:var(--text-primary); font-weight:600; font-variant-numeric:tabular-nums; margin-left:auto; }
+  .filters { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:16px; }
+  .filters .lab { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+  table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
+  th, td { text-align:right; padding:6px 8px; border-bottom:1px solid var(--grid); white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; }
+  th { color:var(--text-secondary); font-weight:600; font-size:13px; }
+  /* Long tables scroll inside a 340px box, so the header has to travel with them. */
+  thead th { position:sticky; top:0; background:var(--surface-1); z-index:1; }
+  caption { caption-side:top; text-align:left; font-size:12px; color:var(--muted); padding:0 0 6px; }
+  .name { white-space:normal; color:var(--text-secondary); font-weight:400; text-align:left; }
+  /* Colour alone cannot carry "this is your town": the left rule and the chip in the
+     name cell say it again for anyone who cannot see the wash. */
+  tr.hl td { background:color-mix(in srgb, var(--series-1) 9%, transparent); }
+  tr.hl > :first-child { box-shadow:inset 3px 0 0 var(--series-1); }
+  .scroll { max-height:340px; overflow:auto; margin-top:4px; }
+  .hidden { display:none; }
+  .sm { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:22px; }
+  .find { display:grid; gap:12px; }
+  .find div { display:flex; gap:12px; font-size:14px; color:var(--text-secondary); }
+  .find b { color:var(--text-primary); font-weight:600; }
+  .find .n { flex:none; width:22px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .note { font-size:12px; color:var(--muted); margin-top:8px; }
+  .note a { color:var(--text-secondary); }
+  .jump { display:flex; gap:6px; flex-wrap:wrap; margin:18px 0 2px; }
+  .jump a { font-size:13px; color:var(--text-secondary); text-decoration:none; padding:5px 11px;
+            border:1px solid var(--border); border-radius:999px; }
+  .jump a:hover, .jump a:focus-visible { color:var(--text-primary); border-color:var(--axis); }
+  .picks { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-top:12px; }
+  .pick { border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+  .pick .fuel { font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase;
+                color:var(--text-secondary); }
+  .pick .price { font-size:34px; font-weight:600; letter-spacing:-0.02em; margin:4px 0 0;
+                 font-variant-numeric:tabular-nums; }
+  .pick .price .unit { font-size:14px; font-weight:400; color:var(--text-secondary); }
+  .pick .who { font-size:14px; font-weight:600; margin-top:6px; }
+  .pick .who .km { color:var(--text-secondary); font-weight:400; }
+  .pick .adr { font-size:13px; color:var(--text-secondary); margin-top:1px; }
+  .pick .gain { font-size:13px; margin-top:8px; }
+  .pick .gain b { font-variant-numeric:tabular-nums; }
+  .pick .meta { font-size:12px; color:var(--muted); margin-top:8px; }
+  .pick.alt { background:color-mix(in srgb, var(--series-1) 4%, transparent); }
+  .chip {
+    display:inline-block; font-size:11px; padding:1px 7px; border-radius:999px;
+    border:1px solid var(--border); color:var(--text-secondary); white-space:nowrap;
+  }
+  .chip.t { border-color:var(--series-1); color:var(--series-1); }
+  td.q { color:var(--muted); }
+  .silent td { color:var(--muted); }
+  td.dry { color:var(--up); font-weight:600; }
+  .tall { max-height:none; }
+  footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--grid); font-size:12px; color:var(--muted); }
+  footer a { color:var(--text-secondary); }
+  footer p { margin:4px 0; }
+  /* Every interactive thing here is keyboard-reachable, including the chart hit
+     areas, and the browser default outline vanishes against the dark surface. */
+  :focus-visible { outline:2px solid var(--series-1); outline-offset:2px; border-radius:4px; }
+</style>
+</head>
+<body class="viz-root" data-palette="#2a78d6,#eb6834,#1baf7a">
+<div class="wrap">
+<header>
+  <div>
+    <h1>Fuel prices around Castanet-Tolosan</h1>
+    <p class="sub" id="subtitle"></p>
+  </div>
+  <div class="pill">
+    <span id="vpill">v1.11 · 2026-09-27</span>
+    <button id="theme">Dark</button>
+  </div>
+</header>
+
+<nav class="jump" aria-label="Sections">
+  <a href="#here">Around Castanet</a>
+  <a href="#where">Where to fill</a>
+  <a href="#trend">The trend</a>
+  <a href="#week">Day of the week</a>
+  <a href="#france">France</a>
+</nav>
+
+<h2>The short answer</h2>
+<div class="card find" id="answers"></div>
+
+<h2 id="here">1 · Around Castanet-Tolosan today</h2>
+<div class="hero-row">
+  <div class="card hero">
+    <div class="label">Diesel, mean of stations within 15 km</div>
+    <div class="fig" id="heroval"></div>
+    <div class="delta" id="herodelta"></div>
+    <div id="herospark"></div>
+    <div class="note" id="heronote"></div>
+  </div>
+  <div class="tiles" id="tiles"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Diesel today: price against distance</h3>
+    <div class="chart-sub" id="scattersub"></div>
+  </div>
+  <div id="scatter"></div>
+  <div class="legend">
+    <span class="key"><i class="rect" style="background:var(--series-1)"></i>Station</span>
+    <span class="key"><i style="background:var(--deemph)"></i>2,250 € ceiling</span>
+    <button id="tbtn-st" aria-expanded="false">Show table</button>
+  </div>
+  <div id="table-st" class="hidden scroll"></div>
+</div>
+
+<h2 id="where">2 · Where to fill</h2>
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Cheapest in stock today, by fuel</h3>
+    <div class="chart-sub" id="pick-sub"></div>
+  </div>
+  <div class="picks" id="picks"></div>
+  <div class="note" id="pick-note"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title" id="tot-title"></h3>
+    <div class="chart-sub" id="tot-sub"></div>
+  </div>
+  <div id="table-total" class="scroll tall"></div>
+  <div class="note" id="tot-note"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Dry pumps, day by day</h3>
+    <div class="chart-sub" id="drysub"></div>
+  </div>
+  <div id="chart-dry"></div>
+  <div class="legend" id="legend-dry"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Diesel today by brand</h3>
+    <div class="chart-sub">Median price per brand, with the range each brand spans across its local sites</div>
+  </div>
+  <div id="chart-brand"></div>
+  <div class="legend" id="legend-brand"></div>
+</div>
+
+<div class="card find" id="find-where"></div>
+
+<h2 id="trend">3 · The trend</h2>
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title" id="split-title"></h3>
+    <div class="chart-sub" id="split-sub"></div>
+  </div>
+  <div id="chart-split"></div>
+  <div class="legend" id="legend-split"></div>
+  <div class="note" id="split-note"></div>
+</div>
+
+<div class="filters">
+  <span class="lab">Range</span>
+  <button data-range="0" aria-pressed="true">All (20 months)</button>
+  <button data-range="365" aria-pressed="false">Last 12 months</button>
+  <button data-range="90" aria-pressed="false">Last 90 days</button>
+  <button data-range="30" aria-pressed="false">Last 30 days</button>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Mean pump price within 15 km of Castanet-Tolosan</h3>
+    <div class="chart-sub">Daily mean across reporting stations, € per litre</div>
+  </div>
+  <div id="chart-main"></div>
+  <div class="legend" id="legend-main"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Diesel: how far the local mean sits from the French mean</h3>
+    <div class="chart-sub">Local 15 km mean minus the French mean, in centimes per litre. Zero means the two agree.</div>
+  </div>
+  <div id="chart-spread"></div>
+  <div class="legend" id="legend-spread"></div>
+</div>
+
+<div class="card sm">
+  <div>
+    <div class="chart-head">
+      <h3 class="chart-title">Superethanol E85</h3>
+      <div class="chart-sub">Daily mean within 15 km, € per litre</div>
+    </div>
+    <div id="chart-e85"></div>
+  </div>
+  <div>
+    <div class="chart-head">
+      <h3 class="chart-title">LPG (GPLc)</h3>
+      <div class="chart-sub">Daily mean within 15 km, € per litre</div>
+    </div>
+    <div id="chart-gplc"></div>
+  </div>
+</div>
+
+<div class="card find" id="find-trend"></div>
+
+<h2 id="week">4 · Which day of the week is cheapest</h2>
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title" id="dow-title"></h3>
+    <div class="chart-sub" id="dow-sub"></div>
+  </div>
+  <div class="dec">
+    <div><div class="panel-title" id="dow-t-rose"></div><div id="chart-dow-rose"></div></div>
+    <div><div class="panel-title" id="dow-t-fell"></div><div id="chart-dow-fell"></div></div>
+    <div><div class="panel-title" id="dow-t-flat"></div><div id="chart-dow-flat"></div></div>
+  </div>
+  <div class="legend" id="legend-dow"></div>
+  <div class="note" id="dow-note"></div>
+</div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">When a price change lands, and which way it goes</h3>
+    <div class="chart-sub" id="upd-sub"></div>
+  </div>
+  <div id="chart-upd"></div>
+  <div class="legend" id="legend-upd"></div>
+  <div class="note" id="upd-note"></div>
+</div>
+
+<h2 id="france">5 · The national picture</h2>
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Diesel stations posting exactly 2,250 €</h3>
+    <div class="chart-sub" id="capsub"></div>
+  </div>
+  <div id="chart-cap"></div>
+  <div class="legend" id="legend-cap"></div>
+</div>
+
+<div class="card find" id="find-france"></div>
+
+<div class="card">
+  <div class="chart-head">
+    <h3 class="chart-title">Monthly means</h3>
+    <div class="chart-sub">Table view of every series above — local 15 km mean and the French mean</div>
+  </div>
+  <div class="legend"><button id="tbtn-mo" aria-expanded="false">Show table</button></div>
+  <div id="table-mo" class="hidden scroll"></div>
+</div>
+
+<footer>
+  <p><b>Source</b> — official French fuel-price open data, <a href="https://donnees.roulez-eco.fr">donnees.roulez-eco.fr</a>
+     (Ministry of the Economy). Annual archives for 2025 and 2026 plus the instantaneous feed,
+     fetched <span id="foot-fetched"></span>.</p>
+  <p><b>Method</b> — stations selected by great-circle distance ≤ 15 km from Castanet-Tolosan (43.5161 N, 1.5000 E).
+     Each station's last posted price per day is carried forward until its next update, and stops counting 30 days
+     after its final update, so closed sites drop out. A day counts only where at least 3 stations report.
+     Series start 2025-01-15: the 2025 archive's coverage ramps from 1 876 stations on 1 January to 8 999 on the
+     15th, 94% of the year's steady state, and a mean over a fifth of the country's pumps is not the same
+     quantity as a mean over all of them.</p>
+  <p><b>Brands</b> — the official feed has no brand field. Brands come from OpenStreetMap fuel features,
+     matched to each station by position within 250 m; 65 of the 71 stations matched. Where two stations
+     sit within ~100 m and OSM maps one feature, the further one is flagged “?”.</p>
+  <p id="foot-ceil"><b>Ceilings</b> — </p>
+  <p id="foot-counts"></p>
+</footer>
+</div>
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script id="report-data" type="application/json">/*__DATA__*/</script>
+<script>
+const D = JSON.parse(document.getElementById('report-data').textContent);
+const NS = 'http://www.w3.org/2000/svg';
+const tip = document.getElementById('tip');
+/* A no-break space before the unit: "2,367 €" was wrapping between the number and
+   the euro sign, leaving a bare € alone on a line in the narrower tiles. */
+const eur = v => v == null ? '—' : v.toFixed(3).replace('.', ',') + ' €';
+const pct = v => v == null ? '—' : v.toFixed(1).replace('.', ',') + '%';
+/* Decimal comma for distances too. Mixing "1.11 km" with "2,379 €" in one clause
+   makes the reader parse two conventions in the same breath. */
+const km = v => v == null ? '—' : v.toFixed(2).replace('.', ',') + ' km';
+/* The tiles and cards print the unit in their own smaller span, so they need the
+   number without one. Strip what eur() appended rather than rebuilding the format:
+   this went wrong once already, when eur() gained the no-break space above and
+   three strip sites still looked for a plain one, printing "2,367 € €/L". */
+const bare = v => eur(v).replace(/\u00a0€$/, '');
+/* The feed shouts addresses. Title-case them so they read like the town names beside
+   them, leaving codes (RN20, ZA, N°) upper case. The "two letters or fewer means a
+   code" rule caught the French articles too and printed "ZA DE LA BALME", so those
+   are listed out; the first word still capitalises, as in "Le Rond-Point". */
+const FR_LOWER = new Set(['de', 'du', 'des', 'le', 'la', 'les', 'sur', 'sous',
+                          'en', 'et', 'aux', 'au', 'lès', "d'", "l'"]);
+const addr = s => (s || '').toLowerCase().replace(/[^\s\-']+/g, (w, i) =>
+  FR_LOWER.has(w) && i > 0 ? w
+  : /\d/.test(w) || w.length <= 2 ? w.toUpperCase()
+  : w[0].toUpperCase() + w.slice(1));
+const css = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+
+function el(tag, attrs, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+function txt(tag, attrs, str, parent) {
+  const n = el(tag, attrs, parent);
+  n.appendChild(document.createTextNode(str));
+  return n;
+}
+function ticks(lo, hi, want) {
+  const raw = (hi - lo) / want, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= raw) || 10 * mag;
+  const out = [];
+  for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(6));
+  return out;
+}
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function dayLabel(iso) {
+  const [y, m, d] = iso.split('-');
+  return `${+d} ${MON[+m - 1]} ${y}`;
+}
+function showTip(html, ev) {
+  tip.innerHTML = html;
+  const r = tip.getBoundingClientRect();
+  let x = ev.clientX + 16, y = ev.clientY - r.height / 2;
+  if (x + r.width > innerWidth - 8) x = ev.clientX - r.width - 16;
+  tip.style.left = Math.max(8, x) + 'px';
+  tip.style.top = Math.min(Math.max(8, y), innerHeight - r.height - 8) + 'px';
+  tip.style.opacity = 1;
+}
+/* Same tooltip, positioned from an element instead of a pointer, for focus. */
+function showTipAt(html, node) {
+  const b = node.getBoundingClientRect();
+  showTip(html, { clientX: b.left + b.width / 2, clientY: b.top + b.height / 2 });
+}
+/* Charts take their viewBox width from the container. A fixed 980 with
+   `svg{width:100%}` scaled the text down with the chart: at 390 px the 11 px axis
+   labels rendered at 3,3 px, and the small multiples were smaller than the charts
+   above them even on a desktop. */
+function chartW(host, fallback) {
+  return Math.max(320, Math.round(host.clientWidth || fallback || 980));
+}
+const hideTip = () => { tip.style.opacity = 0; };
+
+/* ---------- line chart ---------- */
+function lineChart(host, opt) {
+  const W = chartW(host), H = opt.height || 330;
+  const fmt = opt.unit === '%' ? (v => v == null ? '—' : v.toFixed(1).replace('.', ',') + ' %')
+            : opt.unit === 'n' ? (v => v == null ? '—' : String(v)) : eur;
+  /* Below ~560 px the end labels would eat half the plot, so they go and the
+     legend under the chart carries the series names instead. */
+  const narrow = W < 560;
+  const M = { t: 14, r: narrow ? 12 : (opt.labelRoom || 96), b: 30, l: narrow ? 40 : 46 };
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img',
+                          'aria-label': opt.aria || 'line chart' }, host);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const days = opt.days, n = days.length;
+  let lo = Infinity, hi = -Infinity;
+  for (const s of opt.series) for (const v of s.values) if (v != null) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  // A reference line has to be inside the domain or the reader cannot see what
+  // the series is being compared against.
+  if (opt.rule) { lo = Math.min(lo, opt.rule.value); hi = Math.max(hi, opt.rule.value); }
+  if (!(lo < hi)) { lo -= 0.05; hi += 0.05; }
+  const pad = (hi - lo) * 0.12;
+  lo -= pad; hi += pad;
+  const X = i => M.l + (n === 1 ? iw / 2 : i * iw / (n - 1));
+  const Y = v => M.t + ih - (v - lo) / (hi - lo) * ih;
+
+  for (const t of ticks(lo, hi, 5)) {
+    if (opt.unit === 'n' && t % 1) continue;
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(t), y2: Y(t), stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: M.l - 9, y: Y(t) + 4, 'text-anchor': 'end', fill: css('--muted'),
+                  'font-size': 11, style: 'font-variant-numeric:tabular-nums' },
+        opt.unit === '%' || opt.unit === 'n' ? t.toFixed(0) : t.toFixed(2).replace('.', ','), svg);
+  }
+  el('line', { x1: M.l, x2: M.l + iw, y1: M.t + ih, y2: M.t + ih, stroke: css('--axis'), 'stroke-width': 1 }, svg);
+
+  if (opt.rule) {
+    const ry = Y(opt.rule.value);
+    el('line', { x1: M.l, x2: M.l + iw, y1: ry, y2: ry, stroke: css('--deemph'),
+                 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }, svg);
+    /* The label sits inside the plot, above the left end of the line. In the right-hand
+       gutter it collided with the end label of any series that finishes on the rule —
+       which the capped group does by definition, printing "2,250 €" twice over itself. */
+    if (opt.rule.label)
+      txt('text', { x: M.l + 4, y: ry - 6, fill: css('--muted'), 'font-size': 11 },
+          opt.rule.label, svg);
+  }
+
+  const span = n, everyMonth = span <= 200, marks = [];
+  days.forEach((iso, i) => {
+    const [y, m, d] = iso.split('-').map(Number);
+    if (d !== 1) return;
+    if (everyMonth || m % 3 === 1 || span > 400 && m % 3 === 1) marks.push([i, `${MON[m - 1]}${m === 1 || marks.length === 0 ? " '" + String(y).slice(2) : ''}`]);
+  });
+  if (marks.length < 2) days.forEach((iso, i) => { if (i % Math.ceil(n / 5) === 0) marks.push([i, dayLabel(iso).slice(0, 6)]); });
+  /* Thin the x labels rather than shrink them: at 390 px a 20-month axis produced
+     seven overlapping month names. */
+  const maxMarks = Math.max(2, Math.floor(W / 78));
+  if (marks.length > maxMarks) {
+    const step = Math.ceil(marks.length / maxMarks);
+    marks.splice(0, marks.length, ...marks.filter((_, k) => k % step === 0));
+  }
+  for (const [i, lab] of marks)
+    txt('text', { x: X(i), y: H - 9, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 }, lab, svg);
+
+  const ends = [];
+  for (const s of opt.series) {
+    let dstr = '', open = false;
+    s.values.forEach((v, i) => {
+      if (v == null) { open = false; return; }
+      dstr += (open ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(v).toFixed(1) + ' ';
+      open = true;
+    });
+    el('path', { d: dstr, fill: 'none', stroke: css(s.color), 'stroke-width': 2,
+                 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+    if (s.label !== false && !narrow) {
+      let li = -1;
+      for (let i = s.values.length - 1; i >= 0; i--) if (s.values[i] != null) { li = i; break; }
+      if (li >= 0) {
+        el('circle', { cx: X(li), cy: Y(s.values[li]), r: 4.5, fill: css(s.color),
+                       stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+        ends.push({ s, x: X(li), y: Y(s.values[li]), v: s.values[li] });
+      }
+    }
+  }
+  /* End labels are placed after every line is drawn, because two series that finish
+     close together need to be pushed apart. Petrol SP98 and E10 end 7,6 centimes
+     apart, which is 11 px on a 20-month scale — half the height of a two-line label —
+     so "Petrol E10" was printed across "2,214 €". Each label claims a fixed band,
+     the bands are separated in a single pass down the chart, and a leader line is
+     drawn wherever the label had to leave its dot. */
+  ends.sort((a, b) => a.y - b.y);
+  /* 31 px, not the 26 the two lines of text measure: at 26 the name of the lower
+     label cleared the value of the upper one by a single pixel, which reads as
+     touching. The band is the text plus the gap a reader needs to separate them. */
+  ends.forEach(e => { e.h = e.s.name ? 31 : 15; e.ly = e.y; });
+  for (let i = 1; i < ends.length; i++)
+    ends[i].ly = Math.max(ends[i].ly, ends[i - 1].ly + (ends[i - 1].h + ends[i].h) / 2);
+  const floor = M.t + ih;
+  for (let i = ends.length - 1; i >= 0; i--) {
+    ends[i].ly = Math.min(ends[i].ly, floor - ends[i].h / 2 + 8);
+    if (i) ends[i - 1].ly = Math.min(ends[i - 1].ly,
+                                     ends[i].ly - (ends[i - 1].h + ends[i].h) / 2);
+  }
+  for (const e of ends) {
+    if (Math.abs(e.ly - e.y) > 3)
+      el('line', { x1: e.x + 5, y1: e.y, x2: e.x + 9, y2: e.ly, stroke: css(e.s.color),
+                   'stroke-width': 1, opacity: 0.55 }, svg);
+    if (e.s.name) txt('text', { x: e.x + 10, y: e.ly - 7, fill: css('--text-secondary'),
+                  'font-size': 11 }, e.s.name, svg);
+    txt('text', { x: e.x + 10, y: e.ly + (e.s.name ? 7 : 4), fill: css('--text-primary'),
+                  'font-size': 12, 'font-weight': 600,
+                  style: 'font-variant-numeric:tabular-nums' }, fmt(e.v), svg);
+  }
+
+  const cross = el('line', { y1: M.t, y2: M.t + ih, stroke: css('--axis'),
+                             'stroke-width': 1, opacity: 0 }, svg);
+  const dots = opt.series.map(s => el('circle', { r: 4.5, fill: css(s.color),
+                    stroke: css('--surface-1'), 'stroke-width': 2, opacity: 0 }, svg));
+  const hit = el('rect', { x: M.l, y: M.t, width: iw, height: ih, fill: 'transparent',
+                           style: 'cursor:crosshair' }, svg);
+  const move = ev => {
+    const b = svg.getBoundingClientRect();
+    const px = (ev.clientX - b.left) / b.width * W;
+    let i = Math.round((px - M.l) / iw * (n - 1));
+    i = Math.max(0, Math.min(n - 1, i));
+    cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('opacity', 1);
+    let rows = `<div class="when">${dayLabel(days[i])}</div>`;
+    opt.series.forEach((s, k) => {
+      const v = s.values[i];
+      if (v == null) { dots[k].setAttribute('opacity', 0); return; }
+      dots[k].setAttribute('cx', X(i)); dots[k].setAttribute('cy', Y(v)); dots[k].setAttribute('opacity', 1);
+      const nm = document.createElement('span'); nm.textContent = s.name;
+      rows += `<div class="row"><i style="background:${css(s.color)}"></i>${nm.innerHTML || (opt.aria || '').split(' ')[0]}<b>${fmt(v)}</b></div>`;
+    });
+    showTip(rows, ev);
+  };
+  hit.addEventListener('pointermove', move);
+  hit.addEventListener('pointerleave', () => {
+    hideTip(); cross.setAttribute('opacity', 0); dots.forEach(d => d.setAttribute('opacity', 0));
+  });
+}
+
+/* ---------- diverging area around zero ---------- */
+function divergingArea(host, opt) {
+  const W = chartW(host), H = opt.height || 240;
+  const M = { t: 14, r: W < 560 ? 12 : 96, b: 30, l: W < 480 ? 42 : 52 };
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': opt.aria }, host);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const v = opt.values, n = v.length;
+  let m = 0;
+  for (const x of v) if (x != null) m = Math.max(m, Math.abs(x));
+  m = m * 1.15 || 1;
+  const X = i => M.l + (n === 1 ? iw / 2 : i * iw / (n - 1));
+  const Y = x => M.t + ih / 2 - x / m * (ih / 2);
+  const z = Y(0);
+
+  for (const t of ticks(-m, m, 4)) {
+    if (Math.abs(t) < 1e-9) continue;
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(t), y2: Y(t), stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: M.l - 9, y: Y(t) + 4, 'text-anchor': 'end', fill: css('--muted'), 'font-size': 11,
+                  style: 'font-variant-numeric:tabular-nums' }, (t > 0 ? '+' : '−') + Math.abs(t).toFixed(1), svg);
+  }
+  // area shape: line, then back along zero
+  let segs = [], run = [];
+  v.forEach((x, i) => { if (x == null) { if (run.length) segs.push(run); run = []; } else run.push(i); });
+  if (run.length) segs.push(run);
+  let area = '';
+  for (const s of segs) {
+    area += 'M' + X(s[0]) + ',' + z + ' ';
+    for (const i of s) area += 'L' + X(i).toFixed(1) + ',' + Y(v[i]).toFixed(1) + ' ';
+    area += 'L' + X(s[s.length - 1]) + ',' + z + ' Z ';
+  }
+  const defs = el('defs', {}, svg);
+  el('rect', { x: 0, y: 0, width: W, height: z }, el('clipPath', { id: host.id + '-pos' }, defs));
+  el('rect', { x: 0, y: z, width: W, height: H - z }, el('clipPath', { id: host.id + '-neg' }, defs));
+  for (const [side, colour] of [['pos', '--div-pos'], ['neg', '--div-neg']]) {
+    el('path', { d: area, fill: css(colour), 'fill-opacity': 0.14,
+                 'clip-path': `url(#${host.id}-${side})` }, svg);
+    let line = '';
+    for (const s of segs) {
+      line += 'M' + X(s[0]).toFixed(1) + ',' + Y(v[s[0]]).toFixed(1) + ' ';
+      for (const i of s) line += 'L' + X(i).toFixed(1) + ',' + Y(v[i]).toFixed(1) + ' ';
+    }
+    el('path', { d: line, fill: 'none', stroke: css(colour), 'stroke-width': 2, 'stroke-linecap': 'round',
+                 'clip-path': `url(#${host.id}-${side})` }, svg);
+  }
+  el('line', { x1: M.l, x2: M.l + iw, y1: z, y2: z, stroke: css('--axis'), 'stroke-width': 1 }, svg);
+  txt('text', { x: M.l + iw + 8, y: z + 4, fill: css('--muted'), 'font-size': 11 }, 'same as France', svg);
+
+  const marks = [];
+  opt.days.forEach((iso, i) => {
+    const [y, mo, d] = iso.split('-').map(Number);
+    if (d === 1 && (n <= 200 || mo % 3 === 1)) marks.push([i, MON[mo - 1] + (mo === 1 || !marks.length ? " '" + String(y).slice(2) : '')]);
+  });
+  for (const [i, lab] of marks)
+    txt('text', { x: X(i), y: H - 9, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 }, lab, svg);
+
+  let li = -1;
+  for (let i = n - 1; i >= 0; i--) if (v[i] != null) { li = i; break; }
+  if (li >= 0) {
+    const c = v[li] >= 0 ? '--div-pos' : '--div-neg';
+    el('circle', { cx: X(li), cy: Y(v[li]), r: 4.5, fill: css(c), stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+    txt('text', { x: X(li) + 10, y: Y(v[li]) - 6, fill: css('--text-primary'), 'font-size': 12, 'font-weight': 600 },
+        (v[li] >= 0 ? '+' : '−') + Math.abs(v[li]).toFixed(1) + ' c', svg);
+  }
+  const cross = el('line', { y1: M.t, y2: M.t + ih, stroke: css('--axis'), 'stroke-width': 1, opacity: 0 }, svg);
+  const hit = el('rect', { x: M.l, y: M.t, width: iw, height: ih, fill: 'transparent', style: 'cursor:crosshair' }, svg);
+  hit.addEventListener('pointermove', ev => {
+    const b = svg.getBoundingClientRect();
+    let i = Math.round(((ev.clientX - b.left) / b.width * W - M.l) / iw * (n - 1));
+    i = Math.max(0, Math.min(n - 1, i));
+    cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('opacity', 1);
+    const x = v[i];
+    const c = x == null ? '--axis' : x >= 0 ? '--div-pos' : '--div-neg';
+    showTip(`<div class="when">${dayLabel(opt.days[i])}</div><div class="row">` +
+            `<i style="background:${css(c)}"></i>${x == null ? 'no data' : x >= 0 ? 'local dearer' : 'local cheaper'}` +
+            `<b>${x == null ? '—' : Math.abs(x).toFixed(1) + ' c/L'}</b></div>`, ev);
+  });
+  hit.addEventListener('pointerleave', () => { hideTip(); cross.setAttribute('opacity', 0); });
+}
+
+/* ---------- scatter: price vs distance ---------- */
+/* ---------- weekday columns around a baseline, with 95% whiskers ----------
+   Seven categories and effects under a centime: the whiskers are not decoration.
+   Without them a reader reads the tallest bar as "the cheap day" when the bar is
+   shorter than its own error. Colour repeats the sign, so it is never the only
+   encoding.                                                                   */
+function dowChart(host, rows, opt) {
+  const W = chartW(host), H = opt.height || 270;
+  const M = { t: 18, r: W < 560 ? 14 : (opt.right || 118), b: 52, l: W < 480 ? 36 : 56 };
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': opt.aria }, host);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b, base = opt.baseline ?? 0;
+  const fmt = opt.unit === '%' ? (v => v.toFixed(1).replace('.', ',') + ' %')
+                               : (v => (v > 0 ? '+' : v < 0 ? '−' : '') +
+                                       Math.abs(v).toFixed(2).replace('.', ',') + ' c');
+  /* On a phone seven bands are ~53 px wide and a 12 px "+1,82 c" is nearly as wide as
+     its own band, so neighbouring labels at the same height ran into each other. The
+     smaller type drops the unit as well; the panel's own subtitle names it. */
+  const tight = W < 520;
+  const vfmt = tight && opt.unit !== '%' ? (v => fmt(v).replace(' c', '')) : fmt;
+  let lo = base, hi = base;
+  for (const r of rows) {
+    const e = 1.96 * (r.se || 0);
+    lo = Math.min(lo, r.value - e); hi = Math.max(hi, r.value + e);
+  }
+  if (opt.limit != null) {
+    /* A caller-supplied symmetric limit, so panels meant to be compared share one
+       scale. Autoscaling each panel would make the flat panel look as eventful as
+       the rising one, which is the opposite of what these panels are for. */
+    lo = base - opt.limit; hi = base + opt.limit;
+  } else {
+    const pad = (hi - lo) * 0.18 || 1;
+    lo -= pad; hi += pad;
+  }
+  const band = iw / rows.length;
+  const X = i => M.l + band * (i + 0.5);
+  const Y = v => M.t + ih - (v - lo) / (hi - lo) * ih;
+
+  for (const t of ticks(lo, hi, 5)) {
+    if (Math.abs(t - base) < 1e-9) continue;
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(t), y2: Y(t), stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: M.l - 9, y: Y(t) + 4, 'text-anchor': 'end', fill: css('--muted'), 'font-size': 11,
+                  style: 'font-variant-numeric:tabular-nums' },
+        opt.unit === '%' ? t.toFixed(0) : (t > 0 ? '+' : t < 0 ? '−' : '') + Math.abs(t).toFixed(1), svg);
+  }
+  const bw = Math.min(band * 0.52, 74);
+  rows.forEach((r, i) => {
+    const colour = r.value >= base ? '--div-pos' : '--div-neg';
+    const y0 = Y(base), y1 = Y(r.value);
+    el('rect', { x: X(i) - bw / 2, y: Math.min(y0, y1), width: bw,
+                 height: Math.max(1, Math.abs(y1 - y0)), rx: 3,
+                 fill: css(colour), 'fill-opacity': 0.72 }, svg);
+    if (r.se) {
+      const e = 1.96 * r.se;
+      el('line', { x1: X(i), x2: X(i), y1: Y(r.value - e), y2: Y(r.value + e),
+                   stroke: css('--text-secondary'), 'stroke-width': 1.3 }, svg);
+      for (const v of [r.value - e, r.value + e])
+        el('line', { x1: X(i) - 6, x2: X(i) + 6, y1: Y(v), y2: Y(v),
+                     stroke: css('--text-secondary'), 'stroke-width': 1.3 }, svg);
+    }
+    const above = r.value >= base;
+    /* Clamped: on a shared scale the deepest bar's whisker reaches the plot floor, and
+       its value label then landed on top of the day name underneath. */
+    const ly = Math.min((r.se ? Y(r.value + (above ? 1 : -1) * 1.96 * r.se) : y1)
+                        + (above ? -9 : 17), M.t + ih + 14);
+    txt('text', { x: X(i), y: ly, 'text-anchor': 'middle',
+                  fill: css('--text-primary'), 'font-size': tight ? 10 : 12, 'font-weight': 600,
+                  style: 'font-variant-numeric:tabular-nums' }, vfmt(r.value), svg);
+    txt('text', { x: X(i), y: H - 22, 'text-anchor': 'middle',
+                  fill: css(r.emphasis ? '--text-primary' : '--text-secondary'),
+                  'font-size': 12, 'font-weight': r.emphasis ? 600 : 400 }, r.name.slice(0, 3), svg);
+    if (r.sub)
+      txt('text', { x: X(i), y: H - 6, 'text-anchor': 'middle', fill: css('--muted'),
+                    'font-size': 11, style: 'font-variant-numeric:tabular-nums' }, r.sub, svg);
+    const hit = el('rect', { x: M.l + band * i, y: M.t, width: band, height: ih,
+                             fill: 'transparent' }, svg);
+    const body = `<div class="when">${r.name}</div>` +
+      `<div class="row"><i style="background:${css(colour)}"></i>${opt.tipLabel || 'Effect'}` +
+      `<b>${fmt(r.value)}</b></div>` +
+      (r.se ? `<div class="row">95% interval<b>${fmt(r.value - 1.96 * r.se)} to ` +
+              `${fmt(r.value + 1.96 * r.se)}</b></div>` : '') +
+      (r.n != null ? `<div class="row">${opt.nLabel || 'observations'}<b>${r.n.toLocaleString('en')}</b></div>` : '');
+    hit.setAttribute('tabindex', '0');
+    hit.setAttribute('role', 'img');
+    hit.setAttribute('aria-label',
+      `${r.name}: ${fmt(r.value)}` + (r.se ? `, 95% interval ${fmt(r.value - 1.96 * r.se)} to ` +
+        `${fmt(r.value + 1.96 * r.se)}` : ''));
+    hit.addEventListener('pointermove', ev => showTip(body, ev));
+    hit.addEventListener('pointerleave', hideTip);
+    /* Keyboard users get the same numbers: without a focus handler the tabindex
+       above would be a trap that reveals nothing. */
+    hit.addEventListener('focus', () => showTipAt(body, hit));
+    hit.addEventListener('blur', hideTip);
+  });
+  el('line', { x1: M.l, x2: M.l + iw, y1: Y(base), y2: Y(base), stroke: css('--axis'),
+               'stroke-width': 1.5 }, svg);
+  /* Narrow layouts have no right-hand gutter, so the annotation would run off the
+     edge — it was clipped mid-word at 420 px. */
+  if (opt.baseLabel && M.r > 40)
+    txt('text', { x: M.l + iw + 8, y: Y(base) + 4, fill: css('--muted'), 'font-size': 11 },
+        opt.baseLabel, svg);
+}
+
+function scatter(host, rows) {
+  const W = chartW(host), H = 300;
+  const M = { t: 14, r: W < 560 ? 14 : 118, b: 38, l: W < 480 ? 40 : 46 };
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img',
+    'aria-label': 'Diesel price against distance from Castanet-Tolosan' }, host);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const ps = rows.map(r => r.p);
+  let lo = Math.min(...ps), hi = Math.max(...ps);
+  const pad = (hi - lo) * 0.15 || 0.05; lo -= pad; hi += pad;
+  const X = d => M.l + d / 15 * iw, Y = v => M.t + ih - (v - lo) / (hi - lo) * ih;
+
+  for (const t of ticks(lo, hi, 4)) {
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(t), y2: Y(t), stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: M.l - 9, y: Y(t) + 4, 'text-anchor': 'end', fill: css('--muted'), 'font-size': 11,
+                  style: 'font-variant-numeric:tabular-nums' }, t.toFixed(2).replace('.', ','), svg);
+  }
+  el('line', { x1: M.l, x2: M.l + iw, y1: M.t + ih, y2: M.t + ih, stroke: css('--axis'), 'stroke-width': 1 }, svg);
+  for (let d = 0; d <= 15; d += 3)
+    txt('text', { x: X(d), y: H - 16, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 }, d + ' km', svg);
+  txt('text', { x: M.l + iw / 2, y: H - 2, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11 },
+      'Straight-line distance from Castanet-Tolosan centre', svg);
+  txt('text', { x: M.l - 9, y: M.t - 2, 'text-anchor': 'end', fill: css('--muted'), 'font-size': 11 }, '€/L', svg);
+
+  const CAPL = D.cap.level;
+  if (CAPL > lo && CAPL < hi) {
+    el('line', { x1: M.l, x2: M.l + iw, y1: Y(CAPL), y2: Y(CAPL), stroke: css('--deemph'), 'stroke-width': 2 }, svg);
+    txt('text', { x: M.l + iw + 8, y: Y(CAPL) - 2, fill: css('--text-secondary'), 'font-size': 11 },
+        '2,250 € ceiling', svg);
+    txt('text', { x: M.l + iw + 8, y: Y(CAPL) + 12, fill: css('--muted'), 'font-size': 11 },
+        D.cap.n_local + ' of ' + D.cap.n_local_diesel + ' stations', svg);
+  }
+
+  for (const r of rows) {
+    el('circle', { cx: X(r.d), cy: Y(r.p), r: 5, fill: css('--series-1'),
+                   stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+    const h = el('circle', { cx: X(r.d), cy: Y(r.p), r: 13, fill: 'transparent',
+                             tabindex: 0, style: 'cursor:pointer' }, svg);
+    const nm = document.createElement('span'); nm.textContent = r.name;
+    const ad = document.createElement('span'); ad.textContent = r.adr;
+    const body = `<div class="when">${nm.innerHTML} · ${km(r.d)} · updated ${r.maj}</div>` +
+      `<div class="row"><i style="background:${css('--series-1')}"></i>${ad.innerHTML}<b>${eur(r.p)}</b></div>`;
+    h.addEventListener('pointerenter', e => showTip(body, e));
+    h.addEventListener('pointermove', e => showTip(body, e));
+    h.addEventListener('pointerleave', hideTip);
+    h.addEventListener('focus', e => showTip(body, { clientX: X(r.d) / W * host.clientWidth + host.getBoundingClientRect().left, clientY: host.getBoundingClientRect().top + Y(r.p) / H * host.clientHeight }));
+    h.addEventListener('blur', hideTip);
+  }
+  const near = rows.reduce((a, b) => a.d < b.d ? a : b);
+  el('circle', { cx: X(near.d), cy: Y(near.p), r: 7.5, fill: 'none', stroke: css('--series-1'),
+                 'stroke-width': 1.5, opacity: 0.55 }, svg);
+  txt('text', { x: X(near.d) + 13, y: Y(near.p) - 8, fill: css('--text-secondary'), 'font-size': 11 },
+      'Castanet-Tolosan ' + eur(near.p), svg);
+}
+
+/* ---------- range plot: median + spread per category ---------- */
+function rangePlot(host, rows) {
+  const rowH = 26, M = { t: 16, r: 74, b: 34, l: 168 }, W = 980;
+  const H = M.t + rows.length * rowH + M.b;
+  host.textContent = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img',
+                          'aria-label': 'Median diesel price by brand' }, host);
+  const iw = W - M.l - M.r;
+  let lo = Math.min(...rows.map(r => r.min)), hi = Math.max(...rows.map(r => r.max));
+  const pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
+  const X = v => M.l + (v - lo) / (hi - lo) * iw;
+
+  for (const t of ticks(lo, hi, 5)) {
+    el('line', { x1: X(t), x2: X(t), y1: M.t - 6, y2: M.t + rows.length * rowH,
+                 stroke: css('--grid'), 'stroke-width': 1 }, svg);
+    txt('text', { x: X(t), y: H - 16, 'text-anchor': 'middle', fill: css('--muted'), 'font-size': 11,
+                  style: 'font-variant-numeric:tabular-nums' }, t.toFixed(2).replace('.', ','), svg);
+  }
+  txt('text', { x: M.l + iw / 2, y: H - 2, 'text-anchor': 'middle', fill: css('--muted'),
+                'font-size': 11 }, 'Diesel, € per litre', svg);
+
+  rows.forEach((r, i) => {
+    const y = M.t + i * rowH + rowH / 2;
+    const colour = r.total ? '--series-1' : '--deemph';
+    txt('text', { x: M.l - 12, y: y + 4, 'text-anchor': 'end',
+                  fill: css(r.total ? '--text-primary' : '--text-secondary'), 'font-size': 12,
+                  'font-weight': r.total ? 600 : 400 }, r.brand, svg);
+    /* The min-max bar is data, not decoration: at 0.4 opacity over --deemph it was
+       fainter than the gridlines behind it. */
+    if (r.max > r.min)
+      el('line', { x1: X(r.min), x2: X(r.max), y1: y, y2: y, stroke: css(colour),
+                   'stroke-width': 3, 'stroke-linecap': 'round', opacity: 0.6 }, svg);
+    el('circle', { cx: X(r.median), cy: y, r: 5, fill: css(colour),
+                   stroke: css('--surface-1'), 'stroke-width': 2 }, svg);
+    txt('text', { x: M.l + iw + 10, y: y + 4, fill: css('--text-primary'), 'font-size': 12,
+                  'font-weight': r.total ? 600 : 400,
+                  style: 'font-variant-numeric:tabular-nums' }, eur(r.median), svg);
+    const hit = el('rect', { x: M.l, y: y - rowH / 2, width: iw, height: rowH,
+                             fill: 'transparent', tabindex: 0, style: 'cursor:pointer' }, svg);
+    const nm = document.createElement('span'); nm.textContent = r.brand;
+    const body = `<div class="when">${nm.innerHTML} · ${r.n} station${r.n > 1 ? 's' : ''}</div>` +
+      `<div class="row"><i style="background:${css(colour)}"></i>median<b>${eur(r.median)}</b></div>` +
+      (r.max > r.min ? `<div class="row"><i style="background:${css(colour)};opacity:.6"></i>range` +
+        `<b>${eur(r.min)} – ${eur(r.max)}</b></div>` : '');
+    hit.addEventListener('pointerenter', e => showTip(body, e));
+    hit.addEventListener('pointermove', e => showTip(body, e));
+    hit.addEventListener('pointerleave', hideTip);
+    hit.addEventListener('focus', () => showTipAt(body, hit));
+    hit.addEventListener('blur', hideTip);
+  });
+}
+
+/* ---------- render ---------- */
+const FUEL3 = [['Gazole', '--series-1'], ['E10', '--series-2'], ['SP98', '--series-3']];
+/* Infinity, not a day count: the button says "All" and a hardcoded 607 silently
+   dropped the first fortnight once the series passed 607 days. */
+let range = Infinity;
+
+function slice(arr) { return range >= arr.length ? arr : arr.slice(arr.length - range); }
+function roll(arr, w) {
+  return arr.map((_, i) => {
+    let s = 0, k = 0;
+    for (let j = Math.max(0, i - w + 1); j <= i; j++) if (arr[j] != null) { s += arr[j]; k++; }
+    return k ? +(s / k).toFixed(2) : null;
+  });
+}
+
+function legend(host, items) {
+  host.textContent = '';
+  for (const it of items) {
+    const k = document.createElement('span'); k.className = 'key';
+    const i = document.createElement('i'); i.style.background = css(it[1]);
+    k.appendChild(i); k.appendChild(document.createTextNode(it[0]));
+    host.appendChild(k);
+  }
+}
+
+function draw() {
+  const days = slice(D.days);
+  /* The two cohorts, with the cap drawn in. One mean over all 71 stations describes
+     neither: the capped group cannot follow the market up and the rest can, so the
+     pooled line rises too slowly for one and too fast for the other. */
+  lineChart(document.getElementById('chart-split'), {
+    days, height: 340, labelRoom: 150,
+    aria: `Daily mean diesel price within 15 km, Total-group stations against every other brand, ` +
+          `with the ${eur(SP.level)} cap marked`,
+    rule: { value: SP.level, label: `${eur(SP.level)} cap` },
+    series: [
+      { name: 'Other brands', color: '--series-2', values: slice(SP.other) },
+      { name: 'Total group', color: '--series-1', values: slice(SP.total) }
+    ]
+  });
+  legend(document.getElementById('legend-split'),
+         [[`TotalEnergies group (${SP.total_n} stations)`, '--series-1'],
+          [`Every other brand (${SP.other_n})`, '--series-2']]);
+
+  lineChart(document.getElementById('chart-main'), {
+    days, height: 360,
+    aria: 'Daily mean diesel, E10 and SP98 prices within 15 km of Castanet-Tolosan',
+    series: FUEL3.map(([f, c]) => ({ name: D.labels[f].replace(/ \(.*\)/, ''), color: c, values: slice(D.local[f]) }))
+  });
+  legend(document.getElementById('legend-main'),
+         FUEL3.map(([f, c]) => [D.labels[f], c]));
+
+  divergingArea(document.getElementById('chart-spread'), {
+    days, height: 250,
+    aria: 'Local diesel mean minus the French mean, centimes per litre',
+    values: slice(D.spread).map(v => v == null ? null : +(v * 100).toFixed(2))
+  });
+  legend(document.getElementById('legend-spread'),
+         [['Local dearer than France', '--div-pos'], ['Local cheaper than France', '--div-neg']]);
+
+  lineChart(document.getElementById('chart-cap'), {
+    days, height: 250, labelRoom: 116, unit: '%',
+    aria: 'Share of diesel-posting stations at exactly 2.250 euro',
+    series: [
+      { name: 'Within 15 km', color: '--series-1', values: roll(slice(D.cap.loc), 7) },
+      { name: 'France', color: '--deemph', values: roll(slice(D.cap.nat), 7) }
+    ]
+  });
+  legend(document.getElementById('legend-cap'),
+         [['Within 15 km of Castanet-Tolosan', '--series-1'], ['France', '--deemph']]);
+
+  for (const [id, fuel] of [['chart-e85', 'E85'], ['chart-gplc', 'GPLc']])
+    lineChart(document.getElementById(id), {
+      days, height: 250, labelRoom: 84, width: 620,
+      aria: D.labels[fuel] + ' daily mean within 15 km',
+      series: [{ name: '', color: '--series-1', values: slice(D.local[fuel]) }]
+    });
+}
+
+/* today */
+document.getElementById('vpill').textContent =
+  'v' + document.querySelector('meta[name="version"]').content + ' · ' +
+  document.querySelector('meta[name="last-updated"]').content;
+/* "Diesel today" is a composite, not a reading: most stations' latest posted price is
+   days old, and the oldest is a fortnight old. Every panel built from the snapshot
+   says so, because a driver who reads "today" will otherwise expect to pay it. */
+const FRESH = (() => {
+  const f = D.freshness;
+  return `Prices as posted: ${f.today} of ${f.n} on ${dayLabel(f.snapshot)} itself, the rest older ` +
+         `— ${f.median_days} days at the median, ${f.oldest_days} at the oldest (${dayLabel(f.oldest_day)}).`;
+})();
+document.getElementById('subtitle').textContent =
+  `${D.meta.n_stations} stations within ${D.meta.radius} km, ${D.meta.n_diesel} posting diesel, ` +
+  /* The snapshot day and D.meta.end are the same date, so naming both read as two
+     facts when it is one. The series end is the different date worth stating. */
+  `against the French mean. Snapshot ${dayLabel(D.meta.built)}: ${D.freshness.today} of ` +
+  `${D.freshness.n} diesel prices posted that day. Series observed to ${dayLabel(D.meta.archive_end)}.`;
+document.getElementById('foot-counts').textContent =
+  `Latest day used: ${D.meta.end} — ${D.meta.loc_n} local stations and ${D.meta.nat_n.toLocaleString('en')} French stations reporting diesel. ` +
+  `The annual archive's own observations stop at ${D.meta.archive_end}, so the newest point of every price series is each ` +
+  `station's last posted price carried forward, not a day that was measured; that last day also misses whatever was posted ` +
+  `after the archive was published in the evening. The archive runs on a weekly cycle — roughly 12,000–18,000 price updates ` +
+  `on a weekday, 10,000 on a Saturday, 5,000 on a Sunday — so a thin day is not by itself an incomplete one. The station ` +
+  `table, the ceiling counts and the dry flags come from the ${D.meta.built} snapshot and the archive as it stood this morning.`;
+document.getElementById('foot-fetched').textContent = D.meta.built;
+
+/* Templated, because the earlier hand-written version of this note went stale and
+   said the two diesel figures "nearly agree" when they were 6 points apart. The
+   churn dates are printed for the same reason: the snapshot pair is fixed at build
+   time and the reader has to be able to see how old it is. */
+{
+  const one = f => `${pct(D.ceilings[f].pct_at)} against ${pct(D.ceilings[f].archive.nat.at)}`;
+  const gap = f => (D.ceilings[f].archive.nat.at - D.ceilings[f].pct_at).toFixed(1).replace('.', ',');
+  const rate = f => (100 * D.churn[f].arrived / D.churn[f].base).toFixed(1).replace('.', ',');
+  document.getElementById('foot-ceil').innerHTML =
+    `<b>Ceilings</b> — two figures exist for every ceiling share and they differ. The instant feed counts ` +
+    `only what is reported right now; the annual archive counts any station that reported within 30 days. ` +
+    `The instant figure is the lower one for every fuel: diesel ${one('Gazole')} of stations at ` +
+    `${eur(D.ceilings.Gazole.ceiling)}, a gap of ${gap('Gazole')} points, and E10 ${one('E10')}, ` +
+    `a gap of ${gap('E10')}. The reason is per-fuel reporting churn, measured by ` +
+    `<code>scripts/snapshot_churn.py</code> across the ${D.churn.between[0]} and ${D.churn.between[1]} ` +
+    `snapshots: ${D.churn.E10.arrived} stations started reporting E10 overnight and ` +
+    `${D.churn.E10.at_ceiling} of them at exactly ${eur(D.ceilings.E10.ceiling)}, against ` +
+    `${D.churn.Gazole.arrived} diesel arrivals on a base ` +
+    `${(D.churn.Gazole.base / D.churn.E10.base).toFixed(2).replace('.', ',')}× as large. Capped sites drop in and out ` +
+    `of the feed and always arrive at the ceiling, so the snapshot figure is a lower bound and the archive ` +
+    `is the better estimate of the ceiling's reach. The ceiling-share history is drawn for diesel only ` +
+    `because that churn is smallest there — ${rate('Gazole')}% of the diesel base arriving overnight ` +
+    `against ${rate('E10')}% of the E10 base.`;
+}
+
+const g = D.cards[0];
+document.getElementById('heroval').innerHTML =
+  bare(g.value) + '<span class="unit"> €/L</span>';
+const sgn = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(3).replace('.', ',');
+const andList = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]
+                                  : (a[0] || 'nothing');
+const MON_FULL = ['January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'];
+const monLabel = ym => MON_FULL[+ym.slice(5, 7) - 1] + ' ' + ym.slice(0, 4);
+const t = D.trend.Gazole.loc;          /* local diesel: peak, band and slope */
+const castanet = D.cap.castanet;
+document.getElementById('herodelta').innerHTML =
+  `<div><b class="${g.d365 >= 0 ? 'u' : 'd'}">${sgn(g.d365)}</b> vs 12 months ago</div>` +
+  `<div><b class="${g.d30 >= 0 ? 'u' : 'd'}">${sgn(g.d30)}</b> vs 30 days ago</div>` +
+  `<div>France today ${eur(g.nat)}</div>`;
+
+function spark(host, vals, w, hh) {
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const sv = el('svg', { viewBox: `0 0 ${w} ${hh}`, 'aria-hidden': 'true' }, host);
+  const px = i => i / (vals.length - 1) * (w - 6) + 3;
+  const py = v => hh - 4 - (v - lo) / ((hi - lo) || 1) * (hh - 8);
+  el('path', { d: vals.map((v, i) => (i ? 'L' : 'M') + px(i).toFixed(1) + ',' + py(v).toFixed(1)).join(' '),
+               style: 'fill:none;stroke:var(--deemph);stroke-width:2;stroke-linecap:round' }, sv);
+  el('circle', { cx: px(vals.length - 1), cy: py(vals[vals.length - 1]), r: 3.5,
+                 style: 'fill:var(--series-1);stroke:var(--surface-1);stroke-width:2' }, sv);
+  return sv;
+}
+const heroVals = D.local.Gazole.filter(v => v != null);
+spark(document.getElementById('herospark'), heroVals.slice(-365), 240, 44);
+/* The series ends on the build day, which the archive has not observed yet, so its
+   last point is every station's last posted price carried forward. Saying "carried
+   forward" here is cheaper than having the reader discover it in the footnote. */
+document.getElementById('heronote').textContent =
+  `last 12 months · ${g.n} stations, ${D.meta.end} carried forward from ${D.meta.archive_end}`;
+
+const tiles = document.getElementById('tiles');
+/* E85 had the fourth tile and did not earn it. At 0,914 € beside three prices in the
+   2,1–2,4 € band it flattened nothing and compared with nothing, and it keeps its own
+   panel further down. The slot now answers the question the hero raises — you are
+   paying the local mean, so what is the cheapest pump actually charging. */
+for (const c of D.cards.slice(1).filter(c => c.fuel !== 'E85')) {
+  const d = document.createElement('div'); d.className = 'card tile';
+  const lab = document.createElement('div'); lab.className = 'label'; lab.textContent = D.labels[c.fuel];
+  const val = document.createElement('div'); val.className = 'val';
+  val.innerHTML = bare(c.value) + '<span class="unit"> €/L</span>';
+  const del = document.createElement('div'); del.className = 'delta';
+  del.innerHTML = `<div><b class="${c.d365 >= 0 ? 'u' : 'd'}">${sgn(c.d365)}</b> vs 12 months</div>` +
+                  `<div><b class="${c.d30 >= 0 ? 'u' : 'd'}">${sgn(c.d30)}</b> vs 30 days</div>`;
+  d.append(lab, val, del);
+  const sw = document.createElement('div'); sw.style.marginTop = '8px'; d.appendChild(sw);
+  spark(sw, c.spark, 150, 32);
+  const cp = document.createElement('div'); cp.className = 'note';
+  cp.textContent = 'last 90 days · France ' + eur(c.nat);
+  d.appendChild(cp);
+  tiles.appendChild(d);
+}
+{
+  const b = inStock('Gazole')[0];
+  const d = document.createElement('div'); d.className = 'card tile';
+  const gain = (g.value - b.prices.Gazole) * 100;
+  d.innerHTML =
+    `<div class="label">Cheapest diesel in stock</div>` +
+    `<div class="val">${bare(b.prices.Gazole)}<span class="unit"> €/L</span></div>` +
+    `<div class="delta"><div><b class="d">−${gain.toFixed(1).replace('.', ',')} c</b> vs the local mean</div>` +
+    `<div lang="fr">${b.ville}, ${km(b.dist)}</div></div>` +
+    `<div class="note">posted ${b.maj || '—'} · <a href="#where">where to go</a></div>`;
+  tiles.appendChild(d);
+}
+
+const lastSpread = [...D.spread].reverse().find(v => v != null) ?? 0;
+const lastOf = a => [...a].reverse().find(v => v != null) ?? 0;
+const capLocNow = lastOf(D.cap.loc), capNatNow = lastOf(D.cap.nat);
+const nextBrand = D.brands.find(b => !b.total && b.known);
+/* Where the nearest pump sits on price: it has been the dearest in the radius and
+   has also undercut the local median, so the finding states the rank, not an adjective. */
+const dieselAll = D.stations.filter(s => s.prices.Gazole != null).map(s => s.prices.Gazole);
+const castPrice = D.cap.castanet.price;
+const castDearer = dieselAll.filter(p => p > castPrice).length;
+const castMedian = (() => {
+  const a = [...dieselAll].sort((x, y) => x - y), h = a.length >> 1;
+  return a.length % 2 ? a[h] : (a[h - 1] + a[h]) / 2;
+})();
+const capOthers = (() => {
+  const named = D.cap_others.filter(o => o.brand).map(o => `${o.brand} in ${o.ville}`);
+  const anon = D.cap_others.length - named.length;
+  const parts = named.slice();
+  if (anon) parts.push(`${anon} whose brand OpenStreetMap does not record`);
+  return parts.length ? parts.join(' and ') : 'none';
+})();
+/* Cheapest in-stock station per fuel. Computed here rather than in the picks block
+   below because the findings need it too: telling a reader to trust a capped pump
+   without checking the outage flag is how v1.9 sent them to an empty one. */
+const TANK = 50;
+const PICK_FUELS = [['Gazole', 'Diesel'], ['E10', 'Petrol E10'], ['SP98', 'Petrol SP98']];
+function inStock(fuel) {
+  return D.stations
+    .filter(s => s.prices[fuel] != null && !(s.dry && s.dry[fuel]))
+    .sort((a, b) => a.prices[fuel] - b.prices[fuel] || a.dist - b.dist);
+}
+const pickBest = {};
+for (const [fuel] of PICK_FUELS) {
+  const rows = inStock(fuel);
+  if (rows.length) pickBest[fuel] = rows[0];
+}
+/* Nearest station posting a fuel at exactly the cap with no outage flag. */
+function nearestAtCap(fuel, level) {
+  return inStock(fuel).filter(s => Math.abs(s.prices[fuel] - level) < 5e-4)
+                      .sort((a, b) => a.dist - b.dist)[0] || null;
+}
+const e10Cap = nearestAtCap('E10', D.petrol_cap);
+const e10CapN = inStock('E10').filter(s => Math.abs(s.prices.E10 - D.petrol_cap) < 5e-4).length;
+/* Brand medians tie constantly at three digits, so "the next cheapest is X" needs
+   the tie named or it is an arbitrary pick between equals. */
+const nextTies = nextBrand ? D.brands.filter(b => !b.total && b.known && b.median === nextBrand.median) : [];
+const thinBrands = D.brands.filter(b => b.n < 3).length;
+const CS = D.cap_story;
+const F = [
+  [`Diesel has risen <b>${sgn(g.d365)} €/L in twelve months</b> — from ${eur(g.value - g.d365)} to ` +
+   `<b>${eur(g.value)}</b> within 15 km. ` +
+   (D.big_month
+     ? `Nearly half of it landed in one month: the monthly mean rose ` +
+       `${D.big_month.c.toFixed(0)} centimes in ${monLabel(D.big_month.month)}, ` +
+       `${D.big_month.share}% of the year's move — you can check it against the monthly table below. `
+     : '') +
+   `It peaked at <b>${eur(t.peak.value)}</b> on ${dayLabel(t.peak.day)} and has run between ` +
+   `${eur(t.band_since_cap[0])} and ${eur(t.band_since_cap[1])} since the ceiling arrived.`],
+  [`The <b>2,250 € line is a cap on some brands, not a national maximum</b>. Today ` +
+   `${pct(D.ceilings.Gazole.pct_at)} of French stations post diesel at exactly 2,250 €, ` +
+   `${pct(D.ceilings.Gazole.pct_below)} below it — and <b>${pct(D.ceilings.Gazole.pct_above)} above it</b>. ` +
+   `On ${dayLabel(CS.day)} the share sitting exactly on the line jumped from ${pct(CS.before.nat.at)} to ` +
+   `${pct(CS.after.nat.at)} while the share above it did not move (${pct(CS.before.nat.above)} to ` +
+   `${pct(CS.after.nat.above)}): nothing crossed the line, the capped stations simply rose into their own ` +
+   `cap and stopped. It binds only when the market runs above it — on ${dayLabel(CS.trough.day)}, with diesel ` +
+   `near ${eur(D.trend.Gazole.nat.band_all[0])}, just ${pct(CS.trough.at)} of France was on it and ` +
+   `${pct(CS.trough.below)} below.`],
+  [`Locally, <b>the cap is TotalEnergies'</b>. Of the ${D.total.n} Total-group stations here, ` +
+   `${D.total.n_diesel} post a diesel price at all and all ${D.total.n_at_cap} of those are at exactly ` +
+   `2,250 €. The maximum across the group has exceeded 2,250 € on ` +
+   `${D.split.Gazole.cap_evidence.over} of ${D.split.Gazole.cap_evidence.days} days in the series, most ` +
+   `recently ${dayLabel(D.split.Gazole.cap_evidence.last_over)}, while the other brands' maximum today is ` +
+   `${eur(D.split.Gazole.cap_evidence.other_max)}. That asymmetry is what a cap looks like; a shared ` +
+   `pricing habit would show through in both. ` +
+   (D.cap_others.length
+     ? `Of the ${D.cap.n_local} local stations on the line, ${D.total.n_at_cap} are Total-group; ` +
+       `the rest are ${capOthers}. `
+     : `All ${D.cap.n_local} local stations on the line are Total-group. `) +
+   `The official feed carries no brand field, so the brands come from OpenStreetMap.`],
+  [`Petrol has its own cap, <b>1,990 €</b>, and it reaches less far. ` +
+   `${pct(D.ceilings.E10.pct_at)} of French stations post E10 at exactly that price today, ` +
+   `${pct(D.ceilings.E10.pct_below)} below it and ${pct(D.ceilings.E10.pct_above)} above ` +
+   `(${pct(D.ceilings.SP98.pct_at)} / ${pct(D.ceilings.SP98.pct_below)} / ` +
+   `${pct(D.ceilings.SP98.pct_above)} for SP98). Counting any station that posted in the last 30 days ` +
+   `raises the "at" share to <b>${pct(D.ceilings.E10.archive_pct_at)}</b>, because capped sites report ` +
+   `intermittently. In the one pair of snapshots compared station by station ` +
+   `(${dayLabel(D.churn.between[0])} to ${dayLabel(D.churn.between[1])}), ${D.churn.E10.arrived} stations ` +
+   `started reporting E10 and ${D.churn.E10.at_ceiling} of them were at exactly the cap.`],
+  [`<b>A dash in the tables means “not reported”, not “not sold”.</b> Station ` +
+   `${D.example.id}, ${D.example.adresse} (${km(D.example.km)} — “${D.example.name}” in OSM), posts ` +
+   `${andList(D.example.reports)} in today's snapshot and flags ` +
+   `${D.example.dry.length ? `${andList(D.example.dry)} out of stock` : 'no stock outage'}, ` +
+   `yet it sold ${D.example.sold_unreported} on ${dayLabel(D.example.observed)} while posting no SP98 price` +
+   (D.example.sp98_silent ? '' : `; it posts SP98 again today, so read that as history`) + `. ` +
+   `So a silent pump may still be selling — but do not assume it. ` +
+   (e10Cap
+     ? `${e10CapN} local stations post E10 at ${eur(D.petrol_cap)} with no outage flag; the nearest is ` +
+       `<b>${km(e10Cap.dist)}</b> away in ${e10Cap.ville}.`
+     : `No local station currently posts E10 at ${eur(D.petrol_cap)} with its stock confirmed.`)],
+  [`Your nearest pump is the ${castanet.brand || 'unbranded station'} in ${castanet.ville} ` +
+   `(${km(D.cap.castanet.km)}), posting <b>${eur(castPrice)}</b> — ` +
+   `${castDearer} of the ${dieselAll.length} stations posting diesel within 15 km are dearer, and it sits ` +
+   `${(Math.abs(castPrice - castMedian) * 100).toFixed(1).replace('.', ',')} centimes ` +
+   `${castPrice <= castMedian ? 'below' : 'above'} the local median of ${eur(castMedian)}. ` +
+   `${D.cap.n_local} of the ${D.cap.n_local_diesel} stations posting diesel today are on the cap` +
+   (D.cap.n_dry
+     ? `, ${D.cap.n_dry} of them with diesel declared out of stock` +
+       (D.cap.nearest_any.dry
+         ? ` — including the nearest, ${km(D.cap.nearest_any.km)} away in ${D.cap.nearest_any.ville}, ` +
+           `dry since ${dayLabel(D.cap.nearest_any.dry)}`
+         : '')
+     : '') + `; counting any station that posted in the last 30 days, ` +
+   `${D.ceilings.Gazole.archive.loc.at.toFixed(0)}% of the ${D.ceilings.Gazole.archive.loc.n} local ` +
+   `stations have. ` +
+   (D.cap.nearest
+     ? `The nearest on the cap with no outage flag is <b>${km(D.cap.nearest.km)}</b> away in ` +
+       `${D.cap.nearest.ville} (${D.cap.nearest.adresse}, last update ${D.cap.nearest.maj}). Filling there costs ` +
+       `<b>${Math.abs(D.cap.save * 100).toFixed(1).replace('.', ',')} centimes a litre less</b> — about ` +
+       `${(D.cap.save * TANK).toFixed(0)} € on a ${TANK}-litre tank.`
+     : `Every station on the cap has flagged its diesel out of stock, so there is nothing to drive to today.`)],
+  [`<b>Local diesel tracks the French mean</b> and has all year — ` +
+   `<b>${(Math.abs(lastSpread) * 100).toFixed(1).replace('.', ',')} centimes` +
+   `${lastSpread <= 0 ? ' below' : ' above'}</b> it today, and never more than ` +
+   `${(Math.max(...D.spread.filter(v => v != null).map(Math.abs)) * 100).toFixed(0)} centimes either way ` +
+   `in twenty months. The comparison is diesel only; the other fuels have no national series here.`]
+];
+/* Findings live with the question they answer rather than in one list at the top.
+   The index-to-section map is deliberately explicit: reordering F without moving
+   a finding's section tag would silently file it under the wrong heading. */
+const F_SEC = ['trend', 'france', 'where', 'france', 'where', 'where', 'france'];
+function renderFindings(sec, host, labels) {
+  host.textContent = '';
+  let k = 0;
+  F.forEach((f, i) => {
+    if (F_SEC[i] !== sec) return;
+    const row = document.createElement('div');
+    const n = document.createElement('span'); n.className = 'n'; n.textContent = (++k) + '.';
+    const t = document.createElement('span'); t.innerHTML = f[0];
+    row.append(n, t); host.appendChild(row);
+  });
+  if (!k) host.remove();
+}
+for (const sec of ['where', 'trend', 'france'])
+  renderFindings(sec, document.getElementById('find-' + sec));
+
+/* ---------- 2 · where to fill ---------- */
+/* One station per fuel, cheapest first, outage-flagged sites excluded. Price
+   alone is the wrong sort: a station can post the ceiling and have declared that
+   fuel out of stock days ago, because the price comes from the instant feed and
+   the outage flag only from the annual archive. */
+const picks = document.getElementById('picks');
+for (const [fuel, label] of PICK_FUELS) {
+  const rows = inStock(fuel);
+  if (!rows.length) continue;
+  const best = rows[0];
+  const near = [...rows].sort((a, b) => a.dist - b.dist)[0];
+  const save = near.prices[fuel] - best.prices[fuel];
+  const box = document.createElement('div');
+  box.className = 'pick' + (fuel === 'Gazole' ? ' alt' : '');
+  const who = document.createElement('span'); who.textContent = (best.brand || 'Brand unknown') + ' · ' + best.ville;
+  const adr = document.createElement('span'); adr.textContent = addr(best.adresse);
+  const nwho = document.createElement('span'); nwho.textContent = (near.brand || 'Brand unknown') + ' · ' + near.ville;
+  box.innerHTML =
+    `<div class="fuel">${label}</div>` +
+    `<div class="price">${bare(best.prices[fuel])}<span class="unit"> €/L</span></div>` +
+    `<div class="who">${who.innerHTML} <span class="km">· ${km(best.dist)} ${best.dir}</span></div>` +
+    `<div class="adr">${adr.innerHTML}</div>` +
+    (save > 0.0005
+      ? `<div class="gain"><b>${(save * 100).toFixed(1).replace('.', ',')} c/L</b> below your nearest pump ` +
+        `(${nwho.innerHTML}, ${km(near.dist)}, ${eur(near.prices[fuel])}) — about ` +
+        `<b>${(save * TANK).toFixed(2).replace('.', ',')} €</b> on a ${TANK}-litre tank, for ` +
+        `${km(2 * (best.dist - near.dist))} of extra driving.</div>`
+      : `<div class="gain">Your nearest pump is also the cheapest.</div>`) +
+    `<div class="meta">Price posted ${best.maj}. No outage flagged in the archive, which runs to ` +
+    `${dayLabel(D.obs_end)} — a station can run dry after that without the feed saying so.</div>`;
+  picks.appendChild(box);
+}
+document.getElementById('pick-sub').textContent =
+  `Cheapest station within ${D.meta.radius} km for each fuel, skipping any that has declared that fuel ` +
+  `out of stock. Distances are straight-line from the centre of Castanet-Tolosan, not driving distance.`;
+document.getElementById('pick-note').textContent =
+  `Every fuel here has more than one station at the same price — these ceilings are posted, not competed to — ` +
+  `so the table below is worth a look if one of them is on your way.`;
+
+/* ---------- 4 · day of the week ---------- */
+const WK = D.weekday;
+const PL = WK.pooled;
+/* The pooled bars are deliberately NOT drawn. Over every week in the series Monday
+   comes out cheapest, and publishing that alone would tell a reader to fill on
+   Monday. Split the same station-weeks by their own net move and the shape flips
+   with it — so what the pooled view shows is last year's climb, not a weekly
+   habit. The three panels are the argument; the pooled number stays in the note. */
+const DEC = [['rose', 'Weeks the price rose'], ['fell', 'Weeks it fell'],
+             ['flat', 'Weeks it did not move']];
+const decRows = key => WK.dec[key].rows.map(r => ({
+  name: r.name, value: r.dev, se: r.se, n: r.n
+}));
+const updRows = f => WK.upd[f].filter(r => r.weeks >= 10).map(r => ({
+  name: r.name, value: r.share_up, n: r.up + r.down,
+  emphasis: WK.rise_day && r.dow === WK.rise_day.dow
+}));
+document.getElementById('dow-title').textContent = 'No day of the week is worth waiting for';
+document.getElementById('dow-sub').innerHTML =
+  `Diesel, each day against the same station's own average for that week — comparing days across stations ` +
+  `instead would measure which stations reported, not what prices did. ` +
+  `${WK.dec_weeks.toLocaleString('en')} station-weeks, split by the week's own net move. ` +
+  `<b>All three panels share one scale</b>, because the symmetry between the first two is the point. ` +
+  `Whiskers are 95% intervals, clustered by calendar week.`;
+document.getElementById('dow-note').innerHTML =
+  `Weeks that rose are cheap on Monday and dear by Sunday; weeks that fell are the mirror image, almost ` +
+  `exactly (${WK.dec.rose.span_c.toFixed(1).replace('.', ',')} centimes of spread against ` +
+  `${WK.dec.fell.span_c.toFixed(1).replace('.', ',')}); weeks that did not move are flat all week ` +
+  `(${WK.dec.flat.span_c.toFixed(1).replace('.', ',')} centimes). Rising and falling weeks are equally ` +
+  `common — ${WK.dec.rose.share.toFixed(0)}% and ${WK.dec.fell.share.toFixed(0)}% — so pooling them nearly ` +
+  `cancels: ${PL.cheapest.name} ends up ${Math.abs(PL.cheapest.dev).toFixed(2).replace('.', ',')} centimes ` +
+  `below ${PL.dearest.name}, less than its own error bar of ` +
+  `±${(1.96 * PL.cheapest.se).toFixed(2).replace('.', ',')}. That residue is not a habit; it is the ` +
+  `${WK.asym_c.toFixed(1).replace('.', ',')} centimes by which a rising week outruns a falling one, in a ` +
+  `year when diesel rose ${(t.d365 / 100).toFixed(2).replace('.', ',')} €. ` +
+  `<b>Choosing the station is worth ${pickBest.Gazole
+      ? ((castPrice - pickBest.Gazole.prices.Gazole) * 100).toFixed(0) + ' centimes'
+      : 'far more'}</b> — some ${pickBest.Gazole
+      ? Math.round((castPrice - pickBest.Gazole.prices.Gazole) * 100 / Math.max(PL.spread_c, 0.01))
+      : 'thirty'} times the whole weekday effect. Drive to the right pump; do not wait for the right day.`;
+document.getElementById('upd-sub').textContent =
+  `Share of posted diesel price changes that were increases, by the weekday they landed, over the last ` +
+  `${WK.window_days} days. A coin flip is 50%.`;
+document.getElementById('upd-note').textContent =
+  `There is a weekly rhythm, but it is in when rises are posted, not in what the week costs: ` +
+  `${WK.rise_day ? WK.rise_day.name + "'s changes are " + pct(WK.rise_day.share_up) + ' increases' :
+    'rises cluster early in the week'}, against roughly half later on. It barely moves the level because a ` +
+  `station that raises early often gives some of it back — which is exactly the shape of the panels above.`;
+function drawWeek() {
+  /* One scale across the three panels, set by the widest of them. */
+  const lim = Math.max(...DEC.flatMap(([k]) => decRows(k).map(r =>
+                Math.abs(r.value) + 1.96 * (r.se || 0)))) * 1.08;
+  for (const [key, title] of DEC) {
+    document.getElementById('dow-t-' + key).textContent =
+      `${title} — ${WK.dec[key].share.toFixed(0)}% of weeks`;
+    dowChart(document.getElementById('chart-dow-' + key), decRows(key), {
+      baseline: 0, unit: 'c', limit: lim, height: 200,
+      baseLabel: key === 'rose' ? "the station's own weekly average" : null,
+      tipLabel: 'Against its own week', nLabel: 'station-days',
+      aria: `Diesel price by day of the week in weeks when the price ${key === 'flat' ? 'did not move' : key}, ` +
+            `deviation from each station's own weekly mean, in centimes`
+    });
+  }
+  legend(document.getElementById('legend-dow'),
+         [['Dearer than that week', '--div-pos'], ['Cheaper than that week', '--div-neg']]);
+  dowChart(document.getElementById('chart-upd'), updRows('Gazole'), {
+    baseline: 50, unit: '%', baseLabel: 'a coin flip', tipLabel: 'Rises',
+    nLabel: 'price changes',
+    aria: 'Share of diesel price changes that were increases, by weekday'
+  });
+  legend(document.getElementById('legend-upd'),
+         [['Mostly rises', '--div-pos'], ['Mostly falls', '--div-neg']]);
+}
+
+/* ---------- 3 · the trend, split by who can move ---------- */
+const SPLIT_FUEL = 'Gazole';
+const SP = D.split[SPLIT_FUEL];
+const TR = D.trend[SPLIT_FUEL];
+const dirWord = { rising: 'rising', falling: 'falling', flat: 'flat' };
+document.getElementById('split-title').textContent =
+  `Rising everywhere except on the cap`;
+document.getElementById('split-sub').innerHTML =
+  `Daily mean diesel price within ${D.meta.radius} km, the ${SP.total_n} TotalEnergies-group stations against ` +
+  `the ${SP.other_n} others, with the ${eur(SP.level)} cap drawn in. Both lines end on ` +
+  `${dayLabel(D.obs_end)}: neither is carried forward.`;
+document.getElementById('split-note').innerHTML =
+  `Over the last ${SP.other_slope.n} days the uncapped stations climbed ` +
+  `<b>${SP.other_slope.cw.toFixed(1).replace('.', ',')} ± ` +
+  `${(1.96 * SP.other_slope.se).toFixed(1).replace('.', ',')} centimes a week</b> (R² ` +
+  `${SP.other_slope.r2.toFixed(2).replace('.', ',')}), the capped ones ` +
+  `${SP.total_slope.cw.toFixed(1).replace('.', ',')} — they have been pinned to ` +
+  `${eur(SP.level)} for <b>${SP.pinned_days} days</b>, since ${dayLabel(SP.pinned_since)}. ` +
+  `So the gap has opened to <b>${SP.gap_c.toFixed(1).replace('.', ',')} centimes</b> ` +
+  `(E10 ${D.split.E10.gap_c.toFixed(1).replace('.', ',')}, SP98 ` +
+  `${D.split.SP98.gap_c.toFixed(1).replace('.', ',')}). ` +
+  (SP.pre_cap
+    ? `The cap did not widen an existing gap, it reversed one: on ${dayLabel(SP.pre_cap.day)} the ` +
+      `Total-group mean was <b>${Math.abs(SP.pre_cap.gap_c).toFixed(1).replace('.', ',')} centimes ` +
+      `${SP.pre_cap.gap_c < 0 ? 'dearer' : 'cheaper'}</b> than its rivals here. `
+    : '') +
+  `Errors are clustered by calendar week, because every station in the area sees the same national ` +
+  `move in the same week; a day-by-day error would look far tighter than the evidence warrants.`;
+
+/* ---------- the short answer ---------- */
+const dieselSpread = (Math.max(...dieselAll) - Math.min(...dieselAll)) * 100;
+const A = [
+  [`#here`, `Around Castanet-Tolosan`,
+   `${D.meta.n_diesel} of the ${D.meta.n_stations} stations within ${D.meta.radius} km post a diesel price ` +
+   `today, from <b>${eur(Math.min(...dieselAll))}</b> to ${eur(Math.max(...dieselAll))} — ` +
+   `${dieselSpread.toFixed(0)} centimes a litre apart, ${(dieselSpread * TANK / 100).toFixed(0)} € a tank. ` +
+   `The local mean is ${eur(TR.loc.value)}, ${Math.abs(lastSpread * 100).toFixed(1).replace('.', ',')} centimes ` +
+   `${lastSpread <= 0 ? 'below' : 'above'} the French mean.`],
+  [`#where`, `Where to fill`,
+   PICK_FUELS.filter(([f]) => pickBest[f]).map(([f, lab]) =>
+     `<b>${lab}</b> ${eur(pickBest[f].prices[f])} at ${pickBest[f].ville}, ${km(pickBest[f].dist)}`
+   ).join('; ') + `. The same prices repeat across several stations, so take the one on your way.`],
+  [`#trend`, `The trend`,
+   `<b>Rising</b>, and not slowly: local diesel is up ${TR.loc.d90 > 0 ? '+' : ''}${(TR.loc.d90 / 100).toFixed(2).replace('.', ',')} € ` +
+   `over 90 days and climbing at ${SP.other_slope.cw.toFixed(1).replace('.', ',')} centimes a week at the ` +
+   `${SP.other_n} stations that can still move. The ${SP.total_n} Total-group sites cannot: the ` +
+   `${D.total.n_diesel} of them posting a diesel price have sat on the ${eur(SP.level)} cap for ` +
+   `${SP.pinned_days} days, so the gap between the two groups is now ` +
+   `<b>${SP.gap_c.toFixed(1).replace('.', ',')} centimes</b>.`],
+  [`#week`, `Day of the week`,
+   `<b>It does not matter.</b> ${PL.cheapest.name} is cheapest and ${PL.dearest.name} dearest, but by ` +
+   `${PL.spread_c.toFixed(2).replace('.', ',')} centimes across the whole week — less than the error bar, ` +
+   `and it is the market's climb leaking into the week rather than a weekly habit. ` +
+   `What does cluster is when rises land: ${WK.rise_day
+      ? pct(WK.rise_day.share_up) + ` of ${WK.rise_day.name}'s changes are increases` : 'early in the week'}.`],
+  [`#france`, `France`,
+   `${pct(D.ceilings.Gazole.pct_at)} of French stations post diesel at exactly ${eur(D.cap.level)} today and ` +
+   `${pct(D.ceilings.Gazole.archive_pct_at)} on the archive's fuller count, against ` +
+   `${pct(D.ceilings.Gazole.archive_pct_loc)} here — the cap reaches further around Castanet-Tolosan than ` +
+   `nationally. But <b>${pct(D.ceilings.Gazole.pct_above)} of French stations are above it</b>: it caps some ` +
+   `brands, not the market.`],
+];
+const ans = document.getElementById('answers');
+A.forEach(([href, head, body]) => {
+  const row = document.createElement('div');
+  const n = document.createElement('span'); n.className = 'n';
+  const a = document.createElement('a'); a.href = href; a.textContent = '→';
+  a.style.color = 'inherit'; a.style.textDecoration = 'none';
+  a.setAttribute('aria-label', 'Jump to ' + head);
+  n.appendChild(a);
+  const t = document.createElement('span');
+  t.innerHTML = `<b>${head}.</b> ${body}`;
+  row.append(n, t); ans.appendChild(row);
+});
+/* The claim that the ceiling only binds above the market is argued from the July
+   trough in the prose above; repeating it here as a bare assertion added nothing. */
+document.getElementById('capsub').textContent =
+  `Share of diesel-posting stations at exactly the ceiling price, 7-day mean, ` +
+  `to ${dayLabel(D.meta.archive_end)}.`;
+
+const diesel = D.stations.filter(s => s.prices.Gazole != null)
+  .map(s => ({ d: s.dist, p: s.prices.Gazole, name: s.ville, adr: s.adresse, maj: s.maj }));
+document.getElementById('scattersub').textContent =
+  `${diesel.length} stations posting diesel, spread ${eur(Math.min(...diesel.map(r => r.p)))} to ` +
+  `${eur(Math.max(...diesel.map(r => r.p)))} — ${((Math.max(...diesel.map(r => r.p)) - Math.min(...diesel.map(r => r.p))) * 100).toFixed(0)} centimes a litre apart. ` +
+  FRESH;
+scatter(document.getElementById('scatter'), diesel);
+
+/* TotalEnergies stations, with the supermarket rivals for comparison */
+const TOT = new Set(D.total.ids);
+const RIV = new Set(D.rivals.ids);
+const totRows = D.stations.filter(s => TOT.has(s.id) || RIV.has(s.id)).sort((a, b) => a.dist - b.dist);
+const dryDiesel = totRows.filter(s => s.dry && s.dry.Gazole).length;
+document.getElementById('tot-title').textContent =
+  `${D.total.n} TotalEnergies and ${D.rivals.n} ${D.rivals.brands.join(' / ')} stations within ${D.meta.radius} km`;
+document.getElementById('tot-sub').textContent =
+  `All ${D.total.n_diesel} Total-group stations that post diesel are at exactly ${eur(D.cap.level)} — the ` +
+  `ceiling, and every petrol price any of them reports is ${eur(D.petrol_cap)}. ` +
+  `${D.rivals.brands.join(' and ')} are shown for comparison.` +
+  (dryDiesel ? ` ${dryDiesel} station${dryDiesel === 1 ? '' : 's'} in the table flag${dryDiesel === 1 ? 's' : ''} a diesel outage.` : '');
+document.getElementById('tot-note').textContent =
+  'A dash means the station does not report that fuel, not that it does not sell it — station ' +
+  D.example.id + ' below sold ' + D.example.sold_unreported + ' on ' + dayLabel(D.example.observed) +
+  ' while reporting only diesel, E85 and LPG. A red “dry” is a stock outage the station declared to the ' +
+  'feed, with its start date in the tooltip; outage flags exist only in the annual archive (the instant ' +
+  'feed carries none), and a flag older than 30 days means “no longer sells”, shown as a dash. ' +
+  'Brands come from OpenStreetMap, matched to the official ' +
+  'stations by position within 250 m; a “?” marks a brand inferred from an adjacent site mapped as one feature.';
+
+const FALL = ['Gazole', 'E10', 'SP98', 'SP95', 'E85', 'GPLc'];
+const HEAD = { Gazole: 'Diesel', GPLc: 'LPG' };
+const CEIL_OF = { Gazole: D.cap.level, E10: D.petrol_cap, SP98: D.petrol_cap, SP95: D.petrol_cap };
+function priceCells(tr, s) {
+  for (const f of FALL) {
+    const td = document.createElement('td');
+    const v = s.prices[f];
+    const dry = s.dry && s.dry[f];
+    if (dry) {
+      td.textContent = 'dry';
+      td.className = 'dry';
+      td.title = 'stock outage declared ' + dayLabel(dry) +
+                 (v != null ? '; last posted ' + eur(v) : '');
+    } else {
+      td.textContent = v == null ? '—' : v.toFixed(3).replace('.', ',');
+      if (v != null && CEIL_OF[f] === v) {
+        td.style.fontWeight = 600;
+        td.title = 'on the ' + eur(v) + ' ceiling';
+      }
+    }
+    tr.appendChild(td);
+  }
+}
+/* scope= on every header cell: without it a screen reader reading the 14th column of
+   the station table announces a bare number with nothing to attach it to. These sit
+   above the first call site, not down with the other table code, because totalTable()
+   runs immediately and a `const` declared after it would still be in its dead zone. */
+const head = (...cols) => '<thead><tr>' +
+  cols.map(c => `<th scope="col">${c}</th>`).join('') + '</tr></thead>';
+const nameCell = s => {
+  const th = document.createElement('th');
+  th.scope = 'row'; th.className = 'name'; th.lang = 'fr';
+  /* addr() here too, not just on the picks cards: 71 rows of "CENTRE COMMERCIAL DE
+     L'AUTAN" is the loudest thing on the page and says nothing the lower case does not. */
+  th.textContent = s.ville + ' — ' + addr(s.adresse);
+  return th;
+};
+const caption = (t, text) => {
+  const c = document.createElement('caption'); c.textContent = text;
+  t.appendChild(c);
+};
+function totalTable() {
+  const t = document.createElement('table');
+  t.innerHTML = head('Station', 'km', '', 'Brand', ...FALL.map(f => HEAD[f] || f), 'Updated');
+  caption(t, `TotalEnergies, Intermarché and Super U stations within ${D.meta.radius} km, nearest ` +
+             `first, with the ${D.meta.built} snapshot price for each fuel.`);
+  const tb = document.createElement('tbody');
+  for (const s of totRows) {
+    const tr = document.createElement('tr');
+    if (!Object.values(s.prices).some(v => v != null)) tr.className = 'silent';
+    const c0 = nameCell(s);
+    const c1 = document.createElement('td'); c1.textContent = s.dist.toFixed(2);
+    const c2 = document.createElement('td'); c2.className = 'q'; c2.textContent = s.dir;
+    const c3 = document.createElement('td'); c3.style.textAlign = 'left'; c3.lang = 'fr';
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (TOT.has(s.id) ? ' t' : '');
+    chip.textContent = s.brand + (s.brand_shared ? ' ?' : '');
+    c3.appendChild(chip);
+    tr.append(c0, c1, c2, c3);
+    priceCells(tr, s);
+    const cm = document.createElement('td');
+    cm.textContent = s.maj || 'no price posted';
+    tr.appendChild(cm);
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  return t;
+}
+document.getElementById('table-total').appendChild(totalTable());
+
+/* dry-pumps history: the table's dry count, reconstructed for every past day
+   from the archive's outage intervals under the same 30-day rule */
+const DH = D.dry_hist;
+const dNow = DH.table[DH.table.length - 1], dWeek = DH.table[DH.table.length - 8];
+document.getElementById('drysub').textContent =
+  `Station-fuel pairs marked “dry”, counted each day by the table's rule: an outage counts while ` +
+  `open and for at most ${DH.window} days after it began. On ${dayLabel(DH.days[DH.days.length - 1])}, ` +
+  `the last day the archive observed, ${dNow} cells across the ${totRows.length} stations above — ` +
+  `${dNow === dWeek ? 'unchanged from' : (dNow > dWeek ? 'up from' : 'down from')} ${dWeek} a week earlier. ` +
+  `The newest few days revise in both directions as late reports land.`;
+function drawDry() {
+  lineChart(document.getElementById('chart-dry'), {
+    days: DH.days, height: 260, labelRoom: 170, unit: 'n',
+    aria: 'Station-fuel pairs flagged out of stock, daily',
+    series: [
+      { name: 'Table above', color: '--series-1', values: DH.table },
+      { name: 'All ' + D.meta.n_stations + ' local stations', color: '--deemph',
+        values: DH.all, label: false }
+    ]
+  });
+  legend(document.getElementById('legend-dry'),
+         [['TotalEnergies, Intermarché and Super U (the table above)', '--series-1'],
+          ['All ' + D.meta.n_stations + ' stations within 15 km', '--deemph']]);
+}
+drawDry();
+
+rangePlot(document.getElementById('chart-brand'), D.brands);
+legend(document.getElementById('legend-brand'),
+       [['TotalEnergies group', '--series-1'], ['Other brands', '--deemph']]);
+
+/* tables */
+function stationTable() {
+  const t = document.createElement('table');
+  t.innerHTML = head('Station', 'km', '', 'Brand', ...FALL.map(f => HEAD[f] || f), 'Updated');
+  caption(t, `All ${D.meta.n_stations} stations within ${D.meta.radius} km, cheapest diesel first. ` +
+             `Rows with a blue rule down the left are in Castanet-Tolosan itself.`);
+  const tb = document.createElement('tbody');
+  for (const s of [...D.stations].sort((a, b) => (a.prices.Gazole ?? 9) - (b.prices.Gazole ?? 9))) {
+    const tr = document.createElement('tr');
+    if (s.cp === '31320') tr.className = 'hl';
+    const c0 = nameCell(s);
+    const c1 = document.createElement('td'); c1.textContent = s.dist.toFixed(2);
+    const c2 = document.createElement('td'); c2.className = 'q'; c2.textContent = s.dir;
+    const c3 = document.createElement('td'); c3.style.textAlign = 'left'; c3.lang = 'fr';
+    if (s.brand) {
+      const chip = document.createElement('span');
+      chip.className = 'chip' + (TOT.has(s.id) ? ' t' : '');
+      chip.textContent = s.brand + (s.brand_shared ? ' ?' : '');
+      c3.appendChild(chip);
+    } else { c3.className = 'q'; c3.textContent = 'unknown'; }
+    tr.append(c0, c1, c2, c3);
+    priceCells(tr, s);
+    const cm = document.createElement('td'); cm.textContent = s.maj || '—'; tr.appendChild(cm);
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  return t;
+}
+function monthTable() {
+  const t = document.createElement('table');
+  t.innerHTML = head('Month', ...FALL.map(f => f === 'Gazole' ? 'Diesel' : f), 'Diesel, France');
+  caption(t, 'Monthly mean price per fuel within 15 km, newest month first, with the French diesel mean.');
+  const tb = document.createElement('tbody');
+  for (const m of Object.keys(D.monthly).sort().reverse()) {
+    const tr = document.createElement('tr');
+    const c0 = document.createElement('th'); c0.scope = 'row'; c0.textContent = m; tr.appendChild(c0);
+    for (const f of FALL) {
+      const td = document.createElement('td');
+      const v = D.monthly[m][f] && D.monthly[m][f][0];
+      td.textContent = v == null ? '—' : v.toFixed(3).replace('.', ',');
+      tr.appendChild(td);
+    }
+    const tn = document.createElement('td');
+    const nv = D.monthly[m].Gazole && D.monthly[m].Gazole[1];
+    tn.textContent = nv == null ? '—' : nv.toFixed(3).replace('.', ',');
+    tr.appendChild(tn);
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  return t;
+}
+function toggle(btn, host, build) {
+  let built = false;
+  btn.addEventListener('click', () => {
+    if (!built) { host.appendChild(build()); built = true; }
+    const open = host.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(!open));
+    btn.textContent = open ? 'Show table' : 'Hide table';
+  });
+}
+toggle(document.getElementById('tbtn-st'), document.getElementById('table-st'), stationTable);
+toggle(document.getElementById('tbtn-mo'), document.getElementById('table-mo'), monthTable);
+
+for (const b of document.querySelectorAll('[data-range]')) {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('[data-range]').forEach(o => o.setAttribute('aria-pressed', 'false'));
+    b.setAttribute('aria-pressed', 'true');
+    range = +b.dataset.range || Infinity;   /* 0 means "all", whatever the series length */
+    draw();
+  });
+}
+/* Every chart bakes its resolved colours in at draw time and its width into a
+   viewBox, so a theme change and a window resize both mean "draw everything
+   again". One function does it, and a chart added later cannot be left out of
+   half the callers. */
+function redrawAll() {
+  draw();
+  drawWeek();
+  document.getElementById('scatter').textContent = '';
+  scatter(document.getElementById('scatter'), diesel);
+  rangePlot(document.getElementById('chart-brand'), D.brands);
+  legend(document.getElementById('legend-brand'),
+         [['TotalEnergies group', '--series-1'], ['Other brands', '--deemph']]);
+  drawDry();
+}
+const tb = document.getElementById('theme');
+/* The toggle used to read an unset dataset.theme as "light", so on a dark-OS
+   machine the page rendered dark, the button said "Dark", and the first click
+   set dark again -- a visible no-op. Resolve the real theme once, up front. */
+document.documentElement.dataset.theme =
+  matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+tb.textContent = document.documentElement.dataset.theme === 'dark' ? 'Light' : 'Dark';
+tb.addEventListener('click', () => {
+  const dark = document.documentElement.dataset.theme === 'dark';
+  document.documentElement.dataset.theme = dark ? 'light' : 'dark';
+  tb.textContent = dark ? 'Dark' : 'Light';
+  redrawAll();
+});
+let rt;
+addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(redrawAll, 150); });
+draw();
+drawWeek();
+</script>
+</body>
+</html>

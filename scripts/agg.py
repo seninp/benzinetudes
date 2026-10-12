@@ -7,17 +7,9 @@ The archives are downloaded fresh at run time, so the series runs to today.
 """
 import csv, sys
 from collections import defaultdict
-from datetime import date, timedelta
-from cities import CITIES, STALE_DAYS
-
-def accumulate(rows, end_day, tot, cnt):
-    d, last = rows[0][0], rows[0][1]
-    idx, stop = 0, min(rows[-1][0] + timedelta(days=STALE_DAYS), end_day)
-    while d <= stop:
-        while idx < len(rows) and rows[idx][0] <= d:
-            last = rows[idx][1]; idx += 1
-        tot[d] += last; cnt[d] += 1
-        d += timedelta(days=1)
+from datetime import date
+from cities import CITIES, MIN_STATIONS, STALE_DAYS
+from common import carry_forward, read_daily
 
 def main(daily_csv):
     subsets = []
@@ -30,25 +22,13 @@ def main(daily_csv):
     end_day = date.today()
     obs_max = None          # last day the archive actually observed
 
-    cur, buf = None, []
-    def flush():
-        if not buf:
-            return
-        sid, fuel = cur
-        accumulate(buf, end_day, sinks["nat"][0][fuel], sinks["nat"][1][fuel])
-        for slug, ids in subsets:
-            if sid in ids:
-                accumulate(buf, end_day, sinks[slug][0][fuel], sinks[slug][1][fuel])
-    with open(daily_csv) as f:
-        for sid, fuel, day, price in csv.reader(f):
-            k = (sid, fuel)
-            if k != cur:
-                flush(); cur, buf = k, []
-            d = date.fromisoformat(day)
-            if obs_max is None or d > obs_max:
-                obs_max = d
-            buf.append((d, float(price)))
-    flush()
+    for sid, fuel, rows in read_daily(daily_csv):
+        if obs_max is None or rows[-1][0] > obs_max:
+            obs_max = rows[-1][0]
+        tgts = [sinks["nat"]] + [sinks[slug] for slug, ids in subsets if sid in ids]
+        for d, price in carry_forward(rows, end_day, STALE_DAYS):
+            for T, C in tgts:
+                T[fuel][d] += price; C[fuel][d] += 1
 
     # The series is forward-filled to today, but the archive stops earlier and
     # its last day is partial; record where the observations really end.
@@ -62,7 +42,7 @@ def main(daily_csv):
             w = csv.writer(f); w.writerow(["day", "fuel", "mean_price", "n_stations"])
             for fuel in sorted(T):
                 for d in sorted(T[fuel]):
-                    if C[fuel][d] >= 3:
+                    if C[fuel][d] >= MIN_STATIONS:
                         w.writerow([d.isoformat(), fuel, round(T[fuel][d] / C[fuel][d], 4), C[fuel][d]])
         print(f"wrote {path}", file=sys.stderr)
 

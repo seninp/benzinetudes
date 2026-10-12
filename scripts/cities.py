@@ -9,6 +9,7 @@ from datetime import date
 RADIUS_KM = 15.0
 START = date(2025, 1, 15)   # before this the archive's own coverage is still ramping
 STALE_DAYS = 30             # a station stops counting 30 days after its last update
+MIN_STATIONS = 3            # a day enters a mean only where this many stations report
 DRY_WINDOW = 30             # an outage counts while open, at most 30 days after debut
 FUELS = ("Gazole", "SP95", "SP98", "E10", "E85", "GPLc")
 CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990}   # TotalEnergies' caps

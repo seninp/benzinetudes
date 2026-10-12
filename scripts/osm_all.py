@@ -4,7 +4,7 @@
 A response younger than 30 days is reused — brands change slowly, and the
 public Overpass endpoints buckle under repeated big queries.
 """
-import os, time
+import os, sys, time
 from cities import CITIES, RADIUS_KM
 import fetch_osm, brands
 
@@ -17,4 +17,7 @@ for i, c in enumerate(CITIES):
             time.sleep(5)   # be polite to Overpass
         fetch_osm.main(osm, str(c["lat"]), str(c["lon"]),
                        str(int(RADIUS_KM * 1000 + 500)))
+    else:
+        age = (time.time() - os.path.getmtime(osm)) / 86400
+        print(f"{c['name']}: reusing OSM answer from {age:.0f} days ago", file=sys.stderr)
     brands.main(osm, f"{d}/stations_now.csv", f"{d}/brands.csv")

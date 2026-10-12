@@ -6,8 +6,9 @@ Writes data/<slug>/capshare.csv with the national columns repeated in each file.
 """
 import csv, sys
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date
 from cities import CITIES, CEILING, STALE_DAYS
+from common import carry_forward, read_daily
 
 END = date.today()   # archives are downloaded fresh at run time
 
@@ -19,17 +20,12 @@ def main(daily_csv):
     nat = defaultdict(lambda: [0, 0, 0])
     loc = {slug: defaultdict(lambda: [0, 0, 0]) for slug, _ in subsets}
 
-    def flush(key, rows):
-        sid, fuel = key
-        if fuel not in CEILING or not rows:
-            return
+    for sid, fuel, rows in read_daily(daily_csv):
+        if fuel not in CEILING:
+            continue
         cap = CEILING[fuel]
         tgts = [nat] + [loc[slug] for slug, ids in subsets if sid in ids]
-        d, last, i = rows[0][0], rows[0][1], 0
-        stop = min(rows[-1][0] + timedelta(days=STALE_DAYS), END)
-        while d <= stop:
-            while i < len(rows) and rows[i][0] <= d:
-                last = rows[i][1]; i += 1
+        for d, last in carry_forward(rows, END, STALE_DAYS):
             for tgt in tgts:
                 cell = tgt[(fuel, d)]
                 cell[0] += 1
@@ -37,18 +33,6 @@ def main(daily_csv):
                     cell[1] += 1
                 elif last < cap:
                     cell[2] += 1
-            d += timedelta(days=1)
-
-    cur, buf = None, []
-    for sid, fuel, day, price in csv.reader(open(daily_csv)):
-        k = (sid, fuel)
-        if k != cur:
-            if cur:
-                flush(cur, buf)
-            cur, buf = k, []
-        buf.append((date.fromisoformat(day), float(price)))
-    if cur:
-        flush(cur, buf)
 
     for slug, _ in subsets:
         path = f"data/{slug}/capshare.csv"

@@ -179,19 +179,28 @@ coverage is still ramping and would show up as a fake price move.
 
 ## How to run
 
-    make fetch    # download the two annual archives (~300 MB unzipped each) + instant feed
+    make          # fetch + report, holding the lock the benzine pipeline also takes
+    make fetch    # download one annual archive per year since 2025 + the instant feed
     make report   # parse, aggregate, draw figures, rewrite README.md
+    make castanet # the Castanet deep-dive, from benzine's report_data.json
 
 The figures need matplotlib and Pillow (`make venv` creates `.venv` with both);
 the parsers run on the system Python with the standard library alone.
 
 ## Project layout
 
-    Makefile              fetch / report / venv
+    Makefile              refresh / fetch / report / castanet / venv
     scripts/cities.py     the city list and shared constants
-    scripts/*_multi.py    one-pass parsers over the country-wide files
+    scripts/common.py     daily-row reader, carry-forward, distance (shared with benzine)
+    scripts/extract.py, dump_daily.py, agg.py, capshare.py, ruptures.py, snapshot.py
+                          one-pass parsers over the country-wide files
+    scripts/osm_all.py, fetch_osm.py, brands.py
+                          OSM brands, matched to stations by position
     scripts/build_data.py CSVs -> per-city summary.json
+    scripts/style.py      palette and plotting helpers
     scripts/figures.py    all PNGs under outputs/
+    scripts/castanet_md.py castanet/README.md, the single-city deep-dive
+    castanet/             that deep-dive and its figures
     scripts/tiles.py      OSM basemap tiles for the station maps
     scripts/build_readme.py  regenerates this README.md
     data/<city>/          per-city aggregates (tracked; raw XML is not)

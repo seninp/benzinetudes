@@ -4,16 +4,10 @@
 Later files win on station metadata (pass them in year order, instant last).
 Writes data/<slug>/stations.csv sorted by distance.
 """
-import csv, math, os, sys
+import csv, os, sys
 import xml.etree.ElementTree as ET
 from cities import CITIES, RADIUS_KM
-
-def haversine(la1, lo1, la2, lo2):
-    R = 6371.0088
-    p1, p2 = math.radians(la1), math.radians(la2)
-    a = (math.sin((p2 - p1) / 2) ** 2 +
-         math.cos(p1) * math.cos(p2) * math.sin(math.radians(lo2 - lo1) / 2) ** 2)
-    return 2 * R * math.asin(math.sqrt(a))
+from common import haversine_km
 
 def main(*xml_paths):
     found = {c["slug"]: {} for c in CITIES}
@@ -30,7 +24,7 @@ def main(*xml_paths):
             if lat == 0.0 and lon == 0.0:
                 el.clear(); continue
             for c in CITIES:
-                d = haversine(c["lat"], c["lon"], lat, lon)
+                d = haversine_km(c["lat"], c["lon"], lat, lon)
                 if d <= RADIUS_KM:
                     found[c["slug"]][el.get("id")] = dict(
                         id=el.get("id"), cp=el.get("cp"),

@@ -32,7 +32,7 @@ RDIR   := git/benzinetudes
 # Each directory is mirrored on its own: rsync -R --delete would also delete
 # every sibling of a copied directory, dashboard/data among them.
 SRCDIRS  := scripts dashboard/scripts dashboard/tools dashboard/!backups
-SRCFILES := Makefile .gitignore dashboard/report_template.html dashboard/README.md
+SRCFILES := Makefile .gitignore HANDOFF.md dashboard/report_template.html dashboard/README.md
 BUILT    := README.md data outputs castanet dashboard/data dashboard/benzine-prices.html
 RSYNC    := rsync -a --exclude __pycache__ --exclude .DS_Store
 

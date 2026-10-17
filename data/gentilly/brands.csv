@@ -130,7 +130,6 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 94120005,Fontenay-sous-Bois,236 Avenue de la République,9.94,Avia,recognised,node/4841685778,brand=Avia,78,
 75019013,Paris,BLD DU PERIPHERIQUE EXTERIEUR,9.98,Total Access,recognised,node/8565493452,brand=Total Access | name=TotalEnergies,13,
 92210009,Saint-Cloud,65 QUAI MARCEL DASSAULT,10.02,TotalEnergies,recognised,node/25209909,brand=TotalEnergies | operator=Total Access | name=Relais Saint-Cloud Dassault,38,
-93230005,ROMAINVILLE,22 AVENUE LENINE,10.05,TotalEnergies,recognised,node/476757242,brand=Total | operator=Total | name=Relais des Fontaines,54,
 78140001,VéLIZY-VILLACOUBLAY,4 Rue Dewoitine,10.06,Auchan,recognised,node/25209877,brand=Auchan | operator=Auchan | name=Station Auchan,76,
 92300014,Levallois-Perret,"106, rue du président wilson",10.11,BP,recognised,node/4294514704,brand=BP | name=Station BP Levallois Président Wilson,36,
 94100011,Saint-Maur-des-Fossés,57 BD DE CRETEIL,10.15,BP,recognised,node/1123183347,brand=BP | name=BP,35,

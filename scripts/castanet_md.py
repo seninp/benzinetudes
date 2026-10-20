@@ -164,10 +164,9 @@ of it: the brand split under TotalEnergies' price ceiling, the day-of-week
 effect, and the out-of-stock count that runs ahead of the price.**
 
 The data is the French government's `prix-carburants` open feed. Every number
-below is regenerated from it — none is typed by hand. Data current through
-**{meta['end']}**, built {built}; the annual archive's observations stop at
-{meta['archive_end']}, so the newest point in each price series is carried
-forward (see [Reading the data](#reading-the-data)). The snapshot tables come
+below is regenerated from it — none is typed by hand. Every series runs to
+**{meta['archive_end']}**, the last day the annual archive observed; built
+{built} (see [Reading the data](#reading-the-data)). The snapshot tables come
 from the instant feed and are current.
 """)
 
@@ -363,9 +362,9 @@ Five properties of this feed are invisible in the files themselves:
    count as dry.
 4. **The dry series revises backwards.** Flags and their end dates land a day or
    two late; the last days of the dry chart are provisional.
-5. **The archive lags the build and its last day is partial.** The newest point
-   in every price series is each station's last posted price carried forward, not
-   a day that was measured.
+5. **The archive lags the build and its last day is partial.** Every series
+   stops on the archive's last day, which misses whatever was posted after the
+   evening's publication.
 
 Method: a station's last posted price each day is carried forward until its next
 update and stops counting 30 days later, so closed sites leave the mean instead

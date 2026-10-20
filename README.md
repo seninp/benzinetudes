@@ -14,9 +14,8 @@ Zurich is absent because Switzerland publishes no station-level fuel-price
 open data; no Swiss city can be built from public feeds.
 
 Everything below is regenerated from the feed by `make report` — no number is
-transcribed by hand. Data current through **2026-10-20**, built 2026-10-20; the annual
-archive's observations stop at 2026-10-19, so the newest point in
-each series is carried forward (see [Reading the data](#reading-the-data)).
+transcribed by hand. Every series runs to **2026-10-19**, the last day the annual
+archive observed; built 2026-10-20 (see [Reading the data](#reading-the-data)).
 A sibling of [climatudes](https://github.com/seninp/climatudes), which applies
 the same one-method-many-cities idea to weather records.
 
@@ -29,27 +28,27 @@ the same one-method-many-cities idea to weather records.
 
 | City | Stations (15 km) | Diesel €/L | vs France | 30 days | 12 months | At 2.250 € (30-day archive) | Fuel-pairs dry | Nearest 2.250 € pump |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| [Castanet-Tolosan](#castanet) | 110 | **2.344** | -0.017 | -0.033 | +0.739 | 29.9% (20/67) | 47 (17.9%) | 5.1 km (Saint-Orens-de-Gameville) |
-| [Lyon](#lyon) | 238 | **2.366** | +0.005 | -0.042 | +0.747 | 27.9% (34/122) | 44 (9.9%) | 2.5 km (Lyon) |
-| [Gentilly](#gentilly) | 660 | **2.383** | +0.022 | -0.026 | +0.681 | 38.9% (96/247) | 137 (15.8%) | 1.2 km (Paris) |
+| [Castanet-Tolosan](#castanet) | 110 | **2.344** | -0.017 | -0.033 | +0.736 | 29.9% (20/67) | 47 (17.9%) | 5.1 km (Saint-Orens-de-Gameville) |
+| [Lyon](#lyon) | 238 | **2.366** | +0.005 | -0.042 | +0.744 | 27.9% (34/122) | 44 (9.9%) | 2.5 km (Lyon) |
+| [Gentilly](#gentilly) | 660 | **2.383** | +0.022 | -0.025 | +0.675 | 38.9% (96/247) | 137 (15.8%) | 1.2 km (Paris) |
 
-<sub>France mean diesel on 2026-10-20: **2.361 €/L**. "Fuel-pairs
+<sub>France mean diesel on 2026-10-19: **2.361 €/L**. "Fuel-pairs
 dry" counts station-fuel combinations flagged out of stock, under the rule used
 throughout: an outage counts while it is open and for at most 30 days after it
 began. The share is against pairs active in the price archive.</sub>
 
-![Diesel price history for the three cities against the French mean](outputs/compare/figures/diesel_history.png?v=02985303)
+![Diesel price history for the three cities against the French mean](outputs/compare/figures/diesel_history.png?v=601cc98c)
 
 The ceiling is TotalEnergies'. It appeared on 8 April 2026, vanished in June
 when the market fell below it, and has bound again since early September. How
 much of a city sits on it depends on how many TotalEnergies stations the
 radius holds:
 
-![Share of diesel stations posting exactly the ceiling price, by city](outputs/compare/figures/ceiling_share.png?v=650b2f4e)
+![Share of diesel stations posting exactly the ceiling price, by city](outputs/compare/figures/ceiling_share.png?v=66dccf23)
 
 The dry count moves ahead of the visible price story. The dry share peaked in every city on 6 April 2026 (Castanet-Tolosan 32.2%, Lyon 21.5%, Gentilly 30.6%), two days before the ceiling first appeared:
 
-![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=a1d53d15)
+![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=5f69a9f9)
 
 <a id="castanet"></a>
 ## Castanet-Tolosan
@@ -57,15 +56,15 @@ The dry count moves ahead of the visible price story. The dry share peaked in ev
 110 stations lie within 15 km of Castanet-Tolosan (a small commune south-east of Toulouse);
 71 appear in the current snapshot. Diesel stands at
 **2.344 €/L** against a French mean of 2.361 —
--0.033 over 30 days, +0.739 over a year.
+-0.033 over 30 days, +0.736 over a year.
 29.9% of its diesel stations posted exactly 2.250 €
 within the last 30 days, and 47 station-fuel pairs
 (17.9% of those active) are flagged dry.
 The nearest pump posting the 2.250 € ceiling right now is 5.1 km away (5 Av De Gameville, Saint-Orens-de-Gameville).
 
-![Castanet-Tolosan: diesel and E10 price history against the French mean](outputs/castanet/figures/prices.png?v=7fc07295)
+![Castanet-Tolosan: diesel and E10 price history against the French mean](outputs/castanet/figures/prices.png?v=1fb845fc)
 
-![Castanet-Tolosan: map of stations within 15 km](outputs/castanet/figures/stations_map.png?v=ec078346)
+![Castanet-Tolosan: map of stations within 15 km](outputs/castanet/figures/stations_map.png?v=c5a4d5e3)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -94,15 +93,15 @@ so a dash never proves the fuel is missing:
 238 stations lie within 15 km of Lyon (France's second urban area);
 125 appear in the current snapshot. Diesel stands at
 **2.366 €/L** against a French mean of 2.361 —
--0.042 over 30 days, +0.747 over a year.
+-0.042 over 30 days, +0.744 over a year.
 27.9% of its diesel stations posted exactly 2.250 €
 within the last 30 days, and 44 station-fuel pairs
 (9.9% of those active) are flagged dry.
 The nearest pump posting the 2.250 € ceiling right now is 2.5 km away (100 Avenue Barthelemy Buyer, Lyon).
 
-![Lyon: diesel and E10 price history against the French mean](outputs/lyon/figures/prices.png?v=1f2994c2)
+![Lyon: diesel and E10 price history against the French mean](outputs/lyon/figures/prices.png?v=1f7c1ea8)
 
-![Lyon: map of stations within 15 km](outputs/lyon/figures/stations_map.png?v=91604c69)
+![Lyon: map of stations within 15 km](outputs/lyon/figures/stations_map.png?v=d05f9693)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -131,15 +130,15 @@ so a dash never proves the fuel is missing:
 660 stations lie within 15 km of Gentilly (just south of the Paris périphérique; the radius covers most of Paris);
 260 appear in the current snapshot. Diesel stands at
 **2.383 €/L** against a French mean of 2.361 —
--0.026 over 30 days, +0.681 over a year.
+-0.025 over 30 days, +0.675 over a year.
 38.9% of its diesel stations posted exactly 2.250 €
 within the last 30 days, and 137 station-fuel pairs
 (15.8% of those active) are flagged dry.
 The nearest pump posting the 2.250 € ceiling right now is 1.2 km away (27 Avenue De La Porte D'Italie, Paris).
 
-![Gentilly: diesel and E10 price history against the French mean](outputs/gentilly/figures/prices.png?v=f15e2466)
+![Gentilly: diesel and E10 price history against the French mean](outputs/gentilly/figures/prices.png?v=3c841054)
 
-![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=326f1809)
+![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=140627e5)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -183,9 +182,9 @@ to get wrong:
 4. **The dry series revises backwards.** Outage flags and their end dates land
    in the archive one to two days late, so the last days of every dry-count
    chart are provisional and can move either way on the next build.
-5. **The annual archive lags the build, and its last day is partial.** The
-   newest point in every price series is each station's last posted price
-   carried forward, not a day that was measured. The snapshot tables and the
+5. **The annual archive lags the build, and its last day is partial.** Every
+   series stops on the archive's last day, which misses whatever was posted
+   after the evening's publication. The snapshot tables and the
    nearest-ceiling-pump lines come from the instant feed and are current.
 
 Method: a station's last posted price each day is carried forward until its

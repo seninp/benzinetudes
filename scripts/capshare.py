@@ -3,6 +3,7 @@
 
 Reads the sorted daily rows produced by dump_daily.py; one pass for all cities.
 Writes data/<slug>/capshare.csv with the national columns repeated in each file.
+Runs after agg.py and stops on its data/archive_end.txt, the last observed day.
 """
 import csv, sys
 from collections import defaultdict
@@ -10,7 +11,7 @@ from datetime import date
 from config import CITIES, CEILING, STALE_DAYS
 from common import carry_forward, read_daily
 
-END = date.today()   # archives are downloaded fresh at run time
+END = date.fromisoformat(open("data/archive_end.txt").read().strip())
 
 def main(daily_csv):
     subsets = []

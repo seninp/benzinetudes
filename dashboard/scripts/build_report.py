@@ -15,12 +15,11 @@ from config import (CEILING_DAY, CENTER_LAT, CENTER_LON, CENTER_NAME, DIESEL_CAP
 # data/ holds only what the dashboard derives on its own.
 SHARED, CITY = "../data", "../data/castanet"
 
-# Last day present in the aggregated series (agg.py runs it through fetch day).
-END = max(date.fromisoformat(r["day"]) for r in csv.DictReader(open(f"{SHARED}/nat_daily.csv")))
-# Last day the archive actually observed. Every measurement — trend windows, the dry
-# count, any comparison — must end here, never on END: the days between are
-# forward-filled, so a carried-forward price would count as a reading.
+# Last day the archive observed. agg.py and capshare.py stop their series there, so
+# every measurement ends on it; END is the same day, kept as the series' own name.
 OBS_END = date.fromisoformat(open(f"{SHARED}/archive_end.txt").read().strip())
+END = max(date.fromisoformat(r["day"]) for r in csv.DictReader(open(f"{SHARED}/nat_daily.csv")))
+assert END == OBS_END, f"nat_daily.csv runs to {END}, the archive to {OBS_END}"
 FUELS = ["Gazole", "E10", "SP98", "SP95", "E85", "GPLc"]
 LABEL = {"Gazole": "Diesel (Gazole)", "E10": "Petrol E10 (SP95-E10)",
          "SP98": "Petrol SP98", "SP95": "Petrol SP95", "E85": "Superethanol E85",
@@ -365,8 +364,6 @@ for fuel in TREND_FUELS:
     level = CAP if fuel == "Gazole" else PETROL_CAP
     byday = split_rows[fuel]
     obs = sorted(d for d in byday if d <= OBS_END)
-    # `days` runs one day past the observations, and trend_split.csv stops at the
-    # last observed day: neither series gets a forward-filled point drawn for it.
     ser = {k: [(round(float(byday[d][k]), 4) if d in byday and byday[d][k] else None)
                for d in days]
            for k in ("total_mean", "other_mean")}

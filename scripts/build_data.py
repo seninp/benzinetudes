@@ -21,15 +21,14 @@ def load_daily(path):
 def main():
     nat, nat_n = load_daily("data/nat_daily.csv")
     end = max(nat["Gazole"])
+    obs_end = date.fromisoformat(open("data/archive_end.txt").read().strip())
+    assert end == obs_end, f"nat_daily.csv runs to {end}, the archive to {obs_end}"
     days = []
     d = START
     while d <= end:
         days.append(d); d += timedelta(days=1)
 
-    # outage flags exist only up to the archive's last observed day; past it the
-    # dry count is unknown, not zero
-    obs_end = date.fromisoformat(open("data/archive_end.txt").read().strip())
-    obs_days = [d for d in days if d <= obs_end]
+    obs_days = days
     compare = {"end": end.isoformat(), "start": START.isoformat(),
                "archive_end": obs_end.isoformat(),
                "nat_diesel": round(nat["Gazole"][end], 3),
@@ -66,8 +65,6 @@ def main():
         dry = dry_series(intervals, obs_days, DRY_WINDOW)
         active = [sum(loc_n[f].get(d, 0) for f in FUELS) or None for d in obs_days]
         dry_pct = [round(100 * a / b, 2) if b else None for a, b in zip(dry, active)]
-        dry += [None] * (len(days) - len(obs_days))
-        dry_pct += [None] * (len(days) - len(obs_days))
 
         # nearest capped diesel station and the station table, from the snapshot
         def price(r, f):

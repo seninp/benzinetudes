@@ -8,7 +8,7 @@ published on top. Nothing mid-operation; the Mac checkout equals `origin/main`.
 Two reports built from the French `prix-carburants` open data, in one repo:
 
 - `README.md` — the three-city report (Castanet-Tolosan, Lyon, Gentilly).
-- `dashboard/benzine-prices.html` — the interactive Castanet dashboard (v1.13).
+- `dashboard/benzine-prices.html` — the interactive Castanet dashboard (v1.14).
 - `castanet/README.md` — the dashboard as static Markdown, for GitHub.
 
 ## Where it lives
@@ -114,6 +114,15 @@ Second round, the same day:
 - The Markdown reports and figures write the cap with a decimal point,
   "2.250 €", like every other price. The dashboard keeps decimal commas.
 
+Third round: every series stops on the archive's last observed day.
+`agg.py` and `capshare.py` no longer write the carried-forward days up to
+the build, and `build_data.py` and `build_report.py` assert that the series
+end equals `archive_end.txt`. Cards, 30-day and 12-month changes, ceiling
+shares and station counts were measured on the unobserved day while the
+trend used the observed one. The 12-month changes moved by 0.3–0.6 ¢
+(Castanet +0.739 → +0.736) and now agree with the trend section; the prose
+about a carried-forward point is gone from all three outputs.
+
 Checked in `~/bz-test` on poptiplex (same archives, `make build`, diffed
 against `dab378c`): only the intended text, `weekday.png`, the HTML and
 `report_data.json` changed, plus a routine Lyon OSM refresh.
@@ -129,10 +138,6 @@ difference was one of the intended changes above.
 
 From the 2026-10-20 critics, ranked by value; none is fixed yet.
 
-- **`END` against `OBS_END`.** Cards, deltas, `cap_story.now`, archive ceiling
-  shares and `meta.nat_n` read the forward-filled day; trend reads the observed
-  one. Removing the filled day in `agg.py`/`capshare.py` would end the class.
-  "Dry now" also counts back from different days in the two reports.
 - **The three outputs disagree on counts**: Total-group stations 17 (split)
   against 21 (brands); "stations on the cap" includes non-Total ones; dry
   pairs 47 against table 40 (the table covers only Total and its rivals).
@@ -156,5 +161,6 @@ From the 2026-10-20 critics, ranked by value; none is fixed yet.
 - Never run two pipelines on poptiplex at once; the flock serialises them.
 - `overpass.osm.ch` is Switzerland-only and returns an empty answer for
   Toulouse.
-- Read `data/archive_end.txt` to know where observations stop; the last day of
-  every series is forward-filled.
+- `data/archive_end.txt` is where every series stops (since 2026-10-20 no
+  carried-forward day is written). That day is partial: posts after the
+  evening's publication are missing.

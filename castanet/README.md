@@ -8,27 +8,26 @@ of it: the brand split under TotalEnergies' price ceiling, the day-of-week
 effect, and the out-of-stock count that runs ahead of the price.**
 
 The data is the French government's `prix-carburants` open feed. Every number
-below is regenerated from it — none is typed by hand. Data current through
-**2026-10-20**, built 2026-10-20; the annual archive's observations stop at
-2026-10-19, so the newest point in each price series is carried
-forward (see [Reading the data](#reading-the-data)). The snapshot tables come
+below is regenerated from it — none is typed by hand. Every series runs to
+**2026-10-19**, the last day the annual archive observed; built
+2026-10-20 (see [Reading the data](#reading-the-data)). The snapshot tables come
 from the instant feed and are current.
 
 ## Where prices stand
 
 | Fuel | Castanet €/L | France | 30 days | 12 months | Stations |
 |---|---:|---:|---:|---:|---:|
-| Diesel (Gazole) | **2.344** | 2.361 | -0.033 | +0.739 | 67 |
-| Petrol E10 (SP95-E10) | **2.132** | 2.149 | +0.008 | +0.460 | 63 |
+| Diesel (Gazole) | **2.344** | 2.361 | -0.033 | +0.736 | 67 |
+| Petrol E10 (SP95-E10) | **2.132** | 2.149 | +0.008 | +0.461 | 63 |
 | Petrol SP98 | **2.205** | 2.239 | +0.007 | +0.434 | 61 |
-| Superethanol E85 | **0.926** | 0.913 | +0.021 | +0.192 | 45 |
+| Superethanol E85 | **0.925** | 0.913 | +0.020 | +0.190 | 46 |
 
-<sub>Snapshot of 62 priced stations on 2026-10-20; 27 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
+<sub>Snapshot of 62 priced stations on 2026-10-20; 28 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
 
-![Diesel and E10: Castanet against the French mean](fig/prices.png?v=7936b80c)
+![Diesel and E10: Castanet against the French mean](fig/prices.png?v=a3a3007b)
 
 Diesel sits at **2.344 €/L**, 0.017
-below the French mean and 0.739 higher
+below the French mean and 0.736 higher
 than a year ago. Much of that rise landed in one month: 35
 centimes in March 2026 alone, 48% of the twelve-month move. The local
 line has tracked the national one within a centime or two throughout. Over the
@@ -49,7 +48,7 @@ Averaging the whole area hides what the ceiling does, because it acts on only
 some brands. The 17 Total-group stations within 15 km are pinned to
 it and cannot follow the market up; the 50 others are free.
 
-![Diesel within 15 km, Total-group against every other brand](fig/split.png?v=9f020d17)
+![Diesel within 15 km, Total-group against every other brand](fig/split.png?v=3c5c95b4)
 
 The two groups now stand **12.6 centimes** apart — Total-group at
 2.250, everyone else at 2.376 — after moving
@@ -153,9 +152,9 @@ Five properties of this feed are invisible in the files themselves:
    count as dry.
 4. **The dry series revises backwards.** Flags and their end dates land a day or
    two late; the last days of the dry chart are provisional.
-5. **The archive lags the build and its last day is partial.** The newest point
-   in every price series is each station's last posted price carried forward, not
-   a day that was measured.
+5. **The archive lags the build and its last day is partial.** Every series
+   stops on the archive's last day, which misses whatever was posted after the
+   evening's publication.
 
 Method: a station's last posted price each day is carried forward until its next
 update and stops counting 30 days later, so closed sites leave the mean instead

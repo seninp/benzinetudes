@@ -2,8 +2,10 @@
 """Daily means from sorted daily rows, forward-filled with a staleness cap.
 
 Input : daily_all.csv (station_id, fuel, day, price) sorted by station, fuel, day.
-Output: data/nat_daily.csv plus data/<slug>/loc_daily.csv per city, one pass.
-The archives are downloaded fresh at run time, so the series runs to today.
+Output: data/nat_daily.csv plus data/<slug>/loc_daily.csv per city, one pass,
+and data/archive_end.txt, the last day the archive observed. Every series stops
+there: the days up to the build were once written as carried-forward prices,
+and half the reports' figures came to be measured on a day nobody observed.
 """
 import csv, sys
 from collections import defaultdict
@@ -30,11 +32,10 @@ def main(daily_csv):
             for T, C in tgts:
                 T[fuel][d] += price; C[fuel][d] += 1
 
-    # The series is forward-filled to today, but the archive stops earlier and
-    # its last day is partial; record where the observations really end.
+    # The archive stops before the build day; record where the observations end.
     with open("data/archive_end.txt", "w") as f:
         f.write(obs_max.isoformat() + "\n")
-    print(f"archive observations end {obs_max}, series filled to {end_day}", file=sys.stderr)
+    print(f"archive observations end {obs_max}; series written to that day", file=sys.stderr)
 
     for slug, (T, C) in sinks.items():
         path = "data/nat_daily.csv" if slug == "nat" else f"data/{slug}/loc_daily.csv"
@@ -42,7 +43,7 @@ def main(daily_csv):
             w = csv.writer(f); w.writerow(["day", "fuel", "mean_price", "n_stations"])
             for fuel in sorted(T):
                 for d in sorted(T[fuel]):
-                    if C[fuel][d] >= MIN_STATIONS:
+                    if d <= obs_max and C[fuel][d] >= MIN_STATIONS:
                         w.writerow([d.isoformat(), fuel, round(T[fuel][d] / C[fuel][d], 4), C[fuel][d]])
         print(f"wrote {path}", file=sys.stderr)
 

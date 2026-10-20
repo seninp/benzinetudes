@@ -123,6 +123,16 @@ trend used the observed one. The 12-month changes moved by 0.3–0.6 ¢
 (Castanet +0.739 → +0.736) and now agree with the trend section; the prose
 about a carried-forward point is gone from all three outputs.
 
+Fourth round: `make check` (`scripts/check_outputs.py`) runs last in
+`make build` and fails it, so nothing is pushed, when an output contradicts
+its data or another output: direction words against slopes, the cap streak,
+dearer/cheaper before the cap, the rise-day claim, Castanet diesel, dry count
+and dry peak across the three outputs, the French station count, comma-decimal
+prices, "1 days", stale `?v=` figure hashes, and the dashboard's version meta,
+pill, changelog and this file's version line. Planting nine of these defects
+in a copy produced ten failures. A new fixed sentence in the prose needs a
+check here, or it can drift again.
+
 Checked in `~/bz-test` on poptiplex (same archives, `make build`, diffed
 against `dab378c`): only the intended text, `weekday.png`, the HTML and
 `report_data.json` changed, plus a routine Lyon OSM refresh.

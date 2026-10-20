@@ -10,6 +10,8 @@
 #   make report    the three-city README and figures
 #   make dashboard dashboard/benzine-prices.html, the Castanet dashboard
 #   make castanet  castanet/README.md, from dashboard/data/report_data.json
+#   make check     fail if the outputs contradict their data or each other;
+#                  the last step of build, so a failing check is never pushed
 # Off the LAN, `make fetch && make dashboard` builds the dashboard on the Mac
 # (no matplotlib needed); `make dashboard-html` rebuilds its HTML from data alone.
 #
@@ -44,7 +46,7 @@ refresh:
 	  flock -w 3600 $(LOCK) sh -c '$(MAKE) fetch && $(MAKE) build'; \
 	else $(MAKE) fetch && $(MAKE) build; fi
 
-build: report dashboard castanet
+build: report dashboard castanet check
 
 report: parse osm summary figures readme
 
@@ -117,6 +119,9 @@ dashboard-html:
 castanet:
 	$(VPY) scripts/castanet_md.py dashboard/data/report_data.json castanet
 
+check:
+	$(PY) scripts/check_outputs.py
+
 venv:
 	python3 -m venv .venv && .venv/bin/pip install -q matplotlib pillow numpy
 
@@ -158,4 +163,4 @@ push:
 # the steps read one another's files; never run them in parallel
 .NOTPARALLEL:
 .PHONY: refresh build report fetch daily parse osm summary figures readme dashboard \
-        dashboard-parse dashboard-html castanet venv publish release push
+        dashboard-parse dashboard-html castanet check venv publish release push

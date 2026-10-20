@@ -2,7 +2,7 @@
   "version": 0.6,
   "generator": "Overpass API 0.7.62.11 87bfad18",
   "osm3s": {
-    "timestamp_osm_base": "2026-09-18T18:50:47Z",
+    "timestamp_osm_base": "2026-10-20T07:09:05Z",
     "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
   },
   "elements": [
@@ -234,14 +234,14 @@
   "lon": 2.3427555,
   "tags": {
     "addr:city": "Épinay-sur-Seine",
-    "addr:country": "FR",
     "addr:housenumber": "53",
     "addr:postcode": "93800",
     "addr:street": "Route de Saint-Leu",
     "amenity": "fuel",
-    "brand": "Total",
+    "brand": "TotalEnergies",
     "brand:wikidata": "Q154037",
     "brand:wikipedia": "fr:Total (entreprise)",
+    "car_wash": "yes",
     "check_date": "2025-06-11",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
@@ -250,7 +250,7 @@
     "fuel:lpg": "yes",
     "fuel:octane_98": "yes",
     "hgv:lanes": "yes",
-    "name": "Relais Total Claude Debussy",
+    "name": "TotalEnergies",
     "opening_hours": "24/7",
     "operator": "Total",
     "ref:FR:prix-carburants": "93800006",
@@ -476,6 +476,7 @@
     "amenity": "fuel",
     "brand": "Auchan",
     "brand:wikidata": "Q758603",
+    "check_date": "2026-09-19",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
     "fuel:lpg": "yes",
@@ -1375,7 +1376,7 @@
   "lon": 2.2952295,
   "tags": {
     "amenity": "fuel",
-    "brand": "Total",
+    "brand": "TotalEnergies",
     "brand:wikidata": "Q154037",
     "brand:wikipedia": "fr:TotalEnergies",
     "check_date": "2024-10-06",
@@ -1384,7 +1385,7 @@
     "fuel:e10": "yes",
     "fuel:e85": "yes",
     "fuel:octane_98": "yes",
-    "name": "Total",
+    "name": "TotalEnergies",
     "opening_hours": "24/7",
     "ref:FR:prix-carburants": "92170002",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 03/2020"
@@ -1586,28 +1587,6 @@
     "name": "Esso",
     "ref:FR:prix-carburants": "92390001",
     "source": "survey"
-  }
-},
-{
-  "type": "node",
-  "id": 775366635,
-  "lat": 48.8378823,
-  "lon": 2.1605935,
-  "tags": {
-    "amenity": "fuel",
-    "brand": "BP",
-    "brand:wikidata": "Q152057",
-    "brand:wikipedia": "fr:BP (entreprise)",
-    "compressed_air": "yes",
-    "fuel:diesel": "yes",
-    "fuel:e10": "yes",
-    "fuel:octane_98": "yes",
-    "name": "BP Ultimate",
-    "opening_hours": "24/7",
-    "ref:FR:prix-carburants": "92420003",
-    "shop": "convenience;gas",
-    "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 03/2020",
-    "toilets": "yes"
   }
 },
 {
@@ -1866,8 +1845,8 @@
 {
   "type": "node",
   "id": 1004498944,
-  "lat": 48.8397287,
-  "lon": 2.2311002,
+  "lat": 48.8396422,
+  "lon": 2.2313048,
   "tags": {
     "amenity": "fuel",
     "brand": "TotalEnergies",
@@ -1882,7 +1861,7 @@
     "fuel:e10": "yes",
     "fuel:e85": "yes",
     "fuel:octane_98": "yes",
-    "name": "Total",
+    "name": "TotalEnergies",
     "old_brand": "Total",
     "opening_hours": "24/7",
     "phone": "+33 1 48 25 51 80",
@@ -2398,7 +2377,7 @@
     "brand": "BP",
     "brand:wikidata": "Q152057",
     "brand:wikipedia": "en:BP",
-    "check_date": "2024-04-14",
+    "check_date": "2026-10-10",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
@@ -2885,6 +2864,7 @@
     "fuel:e10": "yes",
     "fuel:e85": "yes",
     "fuel:octane_98": "yes",
+    "name": "Esso",
     "opening_hours": "24/7",
     "ref:FR:prix-carburants": "92260001",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 03/2020"
@@ -2935,6 +2915,7 @@
     "fuel:octane_98": "yes",
     "hgv:lanes": "yes",
     "name": "Total",
+    "opening_hours": "Mo-Sa 06:00-21:00",
     "ref:FR:prix-carburants": "94310004",
     "shop": "convenience;gas",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 08/04/2018",
@@ -2971,7 +2952,6 @@
   "lon": 2.2970750,
   "tags": {
     "addr:city": "Gennevilliers",
-    "addr:country": "FR",
     "addr:housenumber": "7",
     "addr:postcode": "92230",
     "addr:street": "Route Principale du Port",
@@ -3015,15 +2995,19 @@
   "lat": 48.9000078,
   "lon": 2.4411438,
   "tags": {
+    "addr:city": "Bobigny",
+    "addr:housenumber": "19",
+    "addr:postcode": "93000",
+    "addr:street": "Avenue Jean Jaurès",
     "amenity": "fuel",
-    "brand": "BP",
-    "brand:wikidata": "Q152057",
-    "brand:wikipedia": "fr:BP (entreprise)",
+    "brand": "Esso",
+    "brand:wikidata": "Q867662",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
+    "fuel:e85": "yes",
     "fuel:octane_98": "yes",
-    "name": "BP",
+    "name": "Esso",
     "opening_hours": "24/7",
     "ref:FR:prix-carburants": "93000011",
     "shop": "convenience;gas",
@@ -3268,14 +3252,14 @@
   "lon": 2.2041412,
   "tags": {
     "amenity": "fuel",
-    "brand": "ESSO",
-    "brand:wikidata": "Q152057",
+    "brand": "Esso",
+    "brand:wikidata": "Q867662",
     "brand:wikipedia": "en:ESSO",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
     "fuel:octane_98": "yes",
-    "name": "Station ESSO Garches Porte Jaune",
+    "name": "ESSO Garches Porte Jaune",
     "opening_hours": "24/7",
     "ref:FR:prix-carburants": "92380007",
     "shop": "convenience;gas",
@@ -3714,7 +3698,7 @@
     "fuel:diesel": "yes",
     "fuel:octane_95": "yes",
     "name": "Elan",
-    "opening_hours": "24/7",
+    "opening_hours": "Mo-Fr 07:00-19:30; Sa 09:00-16:00; Su 10:00-17:00",
     "phone": "+33 1 43 79 92 65",
     "ref:FR:prix-carburants": "75011003",
     "shop": "gas",
@@ -3797,14 +3781,14 @@
   "lon": 2.3438704,
   "tags": {
     "amenity": "fuel",
-    "brand": "Total",
+    "brand": "TotalEnergies",
     "brand:wikidata": "Q154037",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
     "fuel:octane_98": "yes",
     "hgv:lanes": "yes",
-    "name": "Total Michelet",
+    "name": "TotalEnergies",
     "opening_hours": "24/7",
     "ref:FR:prix-carburants": "93400010",
     "shop": "convenience;gas",
@@ -3984,25 +3968,6 @@
     "vending": "fuel",
     "vending_machine": "fuel",
     "website": "https://store.totalenergies.fr/en_EN/NF059477"
-  }
-},
-{
-  "type": "node",
-  "id": 3558089420,
-  "lat": 48.9087440,
-  "lon": 2.4278360,
-  "tags": {
-    "amenity": "fuel",
-    "compressed_air": "yes",
-    "fuel:diesel": "yes",
-    "fuel:e10": "yes",
-    "hgv:lanes": "yes",
-    "opening_hours": "24/7",
-    "ref:FR:prix-carburants": "93000009",
-    "shop": "convenience",
-    "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 22/10/2016",
-    "vending": "fuel",
-    "vending_machine": "fuel"
   }
 },
 {
@@ -4232,12 +4197,13 @@
     "addr:housenumber": "13",
     "addr:street": "Avenue de Verdun 1916",
     "amenity": "fuel",
-    "brand": "Esso",
-    "brand:wikidata": "Q867662",
+    "brand": "Esso Express",
+    "brand:wikidata": "Q2350336",
+    "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
     "fuel:octane_98": "yes",
-    "name": "Esso",
+    "name": "Esso Express",
     "opening_hours": "24/7",
     "ref:FR:prix-carburants": "92250002",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 22/10/2016"
@@ -4342,6 +4308,10 @@
   "lat": 48.9093638,
   "lon": 2.3812639,
   "tags": {
+    "addr:city": "Aubervilliers",
+    "addr:housenumber": "55",
+    "addr:postcode": "93300",
+    "addr:street": "Rue de la Commune de Paris",
     "amenity": "fuel",
     "brand": "Auchan",
     "brand:wikidata": "Q758603",
@@ -4353,7 +4323,7 @@
     "name": "Auchan",
     "opening_hours": "24/7",
     "ref:FR:SIRET": "48102002201380",
-    "ref:FR:prix-carburants": "93300008",
+    "ref:FR:prix-carburants": "93300011",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 03/2020;INSEE - 2023-10"
   }
 },
@@ -4823,7 +4793,6 @@
   "lon": 2.3764680,
   "tags": {
     "addr:city": "Viry-Châtillon",
-    "addr:country": "FR",
     "addr:housenumber": "156",
     "addr:postcode": "91170",
     "addr:street": "Avenue du Général de Gaulle",
@@ -4954,8 +4923,8 @@
 {
   "type": "node",
   "id": 7532234367,
-  "lat": 48.7812550,
-  "lon": 2.1827911,
+  "lat": 48.7812532,
+  "lon": 2.1828201,
   "tags": {
     "amenity": "fuel",
     "brand": "Esso",
@@ -4965,7 +4934,7 @@
     "fuel:e10": "yes",
     "fuel:octane_98": "yes",
     "hgv:lanes": "yes",
-    "name": "BP",
+    "name": "Esso",
     "opening_hours": "24/7",
     "ref:FR:prix-carburants": "78140010",
     "shop": "convenience;gas",
@@ -5385,19 +5354,6 @@
 },
 {
   "type": "node",
-  "id": 12290161038,
-  "lat": 48.7182071,
-  "lon": 2.4005162,
-  "tags": {
-    "amenity": "fuel",
-    "brand": "Elan",
-    "brand:wikidata": "Q57980752",
-    "name": "Elan",
-    "phone": "+33 1 69 57 54 54"
-  }
-},
-{
-  "type": "node",
   "id": 13096140647,
   "lat": 48.7780016,
   "lon": 2.4408830,
@@ -5429,7 +5385,15 @@
     "brand": "TotalEnergies",
     "brand:wikidata": "Q154037",
     "fixme": "Dessiner aire",
+    "fuel:e85": "yes",
     "name": "Total",
+    "opening_hours": "24/7",
+    "ref:FR:prix-carburants": "75014010",
+    "shop": "convenience",
+    "source": "DGCCRF - 2026",
+    "toilets": "yes",
+    "vending": "fuel",
+    "vending_machine": "fuel",
     "website": "https://services.totalenergies.fr/"
   }
 },
@@ -5725,6 +5689,7 @@
     "brand:wikidata": "Q217599",
     "brand:wikipedia": "fr:Carrefour (enseigne)",
     "building": "roof",
+    "check_date": "2026-10-18",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
@@ -7194,8 +7159,8 @@
   "type": "way",
   "id": 146245692,
   "center": {
-    "lat": 48.7854903,
-    "lon": 2.3046818
+    "lat": 48.7854900,
+    "lon": 2.3046817
   },
   "tags": {
     "amenity": "fuel",
@@ -7251,6 +7216,7 @@
     "brand:wikidata": "Q3153200",
     "brand:wikipedia": "fr:Intermarché",
     "building": "yes",
+    "check_date": "2026-10-03",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
@@ -7436,7 +7402,6 @@
   },
   "tags": {
     "addr:city": "Chilly-Mazarin",
-    "addr:country": "FR",
     "addr:full": "Route de Longjumeau, ZI de la Vigne aux Loups, 91380 Chilly Mazarin 01 69 74 88 88",
     "addr:postcode": "91380",
     "addr:street": "Route de Longjumeau",
@@ -7474,20 +7439,20 @@
     "lon": 2.3746442
   },
   "tags": {
-    "addr:postcode": "94320",
+    "addr:city": "Thiais",
+    "addr:postcode": "94651",
     "address": "Centre commercial Belle Épine",
     "amenity": "fuel",
-    "brand": "BP",
-    "brand:wikidata": "Q152057",
-    "brand:wikipedia": "fr:BP (entreprise)",
+    "brand": "Esso",
+    "brand:wikidata": "Q867662",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
+    "fuel:e85": "yes",
     "fuel:lpg": "yes",
     "fuel:octane_98": "yes",
-    "name": "Station BP",
+    "name": "Esso",
     "opening_hours": "24/7",
-    "operator": "BP",
     "ref:FR:prix-carburants": "94651002",
     "shop": "convenience;gas",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 03/2020",
@@ -7605,6 +7570,8 @@
     "amenity": "fuel",
     "brand": "TotalEnergies",
     "brand:wikidata": "Q154037",
+    "car_wash": "yes",
+    "check_date": "2026-09-19",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
@@ -7948,24 +7915,15 @@
     "amenity": "fuel",
     "brand": "BP",
     "brand:wikidata": "Q152057",
-    "brand:wikipedia": "fr:BP (entreprise)",
     "building": "roof",
     "compressed_air": "yes",
     "fuel:diesel": "yes",
     "fuel:e10": "yes",
     "fuel:lpg": "yes",
     "fuel:octane_98": "yes",
-    "name": "BP",
-    "opening_hours": "24/7",
-    "operator": "BP",
-    "ref:FR:prix-carburants": "94120010",
-    "shop": "convenience;gas",
+    "name": "Esso",
     "source": "Ministère de l'Economie, de l'Industrie et du Numérique - 03/2020",
-    "toilets": "yes",
-    "vending": "fuel",
-    "vending_machine": "fuel",
-    "wall": "no",
-    "wheelchair": "no"
+    "wall": "no"
   }
 },
 {
@@ -8270,7 +8228,6 @@
     "addr:postcode": "94100",
     "addr:street": "Avenue Foch",
     "amenity": "fuel",
-    "area": "yes",
     "brand": "Avia",
     "brand:wikidata": "Q300147",
     "brand:wikipedia": "de:Avia International",
@@ -8281,9 +8238,11 @@
     "fuel:octane_98": "yes",
     "name": "Avia",
     "opening_hours": "24/7",
-    "ref:FR:prix-carburants": "94100008",
+    "ref:FR:prix-carburants": "94100013",
     "self_service": "yes",
-    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+    "vending": "fuel",
+    "vending_machine": "fuel"
   }
 },
 {

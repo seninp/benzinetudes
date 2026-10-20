@@ -14,8 +14,8 @@ Zurich is absent because Switzerland publishes no station-level fuel-price
 open data; no Swiss city can be built from public feeds.
 
 Everything below is regenerated from the feed by `make report` — no number is
-transcribed by hand. Data current through **2026-10-17**, built 2026-10-17; the annual
-archive's observations stop at 2026-10-16, so the newest point in
+transcribed by hand. Data current through **2026-10-20**, built 2026-10-20; the annual
+archive's observations stop at 2026-10-19, so the newest point in
 each series is carried forward (see [Reading the data](#reading-the-data)).
 A sibling of [climatudes](https://github.com/seninp/climatudes), which applies
 the same one-method-many-cities idea to weather records.
@@ -29,43 +29,43 @@ the same one-method-many-cities idea to weather records.
 
 | City | Stations (15 km) | Diesel €/L | vs France | 30 days | 12 months | At 2,250 € (30-day archive) | Fuel-pairs dry | Nearest 2,250 € pump |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| [Castanet-Tolosan](#castanet) | 110 | **2.345** | -0.016 | -0.026 | +0.754 | 29.9% (20/67) | 51 (19.2%) | 3.2 km (Ramonville Saint Agne) |
-| [Lyon](#lyon) | 238 | **2.368** | +0.007 | -0.029 | +0.748 | 27.9% (34/122) | 47 (10.6%) | 2.5 km (Lyon) |
-| [Gentilly](#gentilly) | 660 | **2.384** | +0.023 | -0.017 | +0.677 | 40.0% (100/250) | 85 (9.6%) | 1.2 km (Paris) |
+| [Castanet-Tolosan](#castanet) | 110 | **2.344** | -0.017 | -0.033 | +0.739 | 29.9% (20/67) | 47 (17.9%) | 5.1 km (Saint-Orens-de-Gameville) |
+| [Lyon](#lyon) | 238 | **2.366** | +0.005 | -0.042 | +0.747 | 27.9% (34/122) | 44 (9.9%) | 2.5 km (Lyon) |
+| [Gentilly](#gentilly) | 660 | **2.383** | +0.022 | -0.026 | +0.681 | 38.9% (96/247) | 137 (15.8%) | 1.2 km (Paris) |
 
-<sub>France mean diesel on 2026-10-17: **2.361 €/L**. "Fuel-pairs
+<sub>France mean diesel on 2026-10-20: **2.361 €/L**. "Fuel-pairs
 dry" counts station-fuel combinations flagged out of stock, under the rule used
 throughout: an outage counts while it is open and for at most 30 days after it
 began. The share is against pairs active in the price archive.</sub>
 
-![Diesel price history for the three cities against the French mean](outputs/compare/figures/diesel_history.png?v=a3ff63e5)
+![Diesel price history for the three cities against the French mean](outputs/compare/figures/diesel_history.png?v=bdf748af)
 
 The ceiling is TotalEnergies'. It appeared on 8 April 2026, vanished in June
 when the market fell below it, and has bound again since early September. How
 much of a city sits on it depends on how many TotalEnergies stations the
 radius holds:
 
-![Share of diesel stations posting exactly the ceiling price, by city](outputs/compare/figures/ceiling_share.png?v=c7f37310)
+![Share of diesel stations posting exactly the ceiling price, by city](outputs/compare/figures/ceiling_share.png?v=e5141151)
 
-The dry count moves ahead of the visible price story. The dry share peaked in every city on 6 April 2026 (Castanet-Tolosan 32.2%, Lyon 21.7%, Gentilly 30.0%), two days before the ceiling first appeared:
+The dry count moves ahead of the visible price story. The dry share peaked in every city on 6 April 2026 (Castanet-Tolosan 32.2%, Lyon 21.5%, Gentilly 30.6%), two days before the ceiling first appeared:
 
-![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=5f055934)
+![Share of station-fuel pairs flagged out of stock, by city](outputs/compare/figures/dry_share.png?v=a1d53d15)
 
 <a id="castanet"></a>
 ## Castanet-Tolosan
 
 110 stations lie within 15 km of Castanet-Tolosan (a small commune south-east of Toulouse);
 71 appear in the current snapshot. Diesel stands at
-**2.345 €/L** against a French mean of 2.361 —
--0.026 over 30 days, +0.754 over a year.
+**2.344 €/L** against a French mean of 2.361 —
+-0.033 over 30 days, +0.739 over a year.
 29.9% of its diesel stations posted exactly 2,250 €
-within the last 30 days, and 51 station-fuel pairs
-(19.2% of those active) are flagged dry.
-The nearest pump posting the 2,250 € ceiling right now is 3.2 km away (98 Avenue Tolosane, Ramonville Saint Agne).
+within the last 30 days, and 47 station-fuel pairs
+(17.9% of those active) are flagged dry.
+The nearest pump posting the 2,250 € ceiling right now is 5.1 km away (5 Av De Gameville, Saint-Orens-de-Gameville).
 
-![Castanet-Tolosan: diesel and E10 price history against the French mean](outputs/castanet/figures/prices.png?v=9e5d6086)
+![Castanet-Tolosan: diesel and E10 price history against the French mean](outputs/castanet/figures/prices.png?v=7fc07295)
 
-![Castanet-Tolosan: map of stations within 15 km](outputs/castanet/figures/stations_map.png?v=45b5c415)
+![Castanet-Tolosan: map of stations within 15 km](outputs/castanet/figures/stations_map.png?v=819f1cd1)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -73,18 +73,18 @@ so a dash never proves the fuel is missing:
 
 | km | Brand | Station | Gazole | E10 | SP98 | Dry (≤ 30 d) |
 |---:|---|---|---:|---:|---:|---|
-| 1.11 | Intermarché | Route De Labège, Castanet-Tolosan | 2.359 | 2.099 | 2.235 |  |
+| 1.11 | Intermarché | Route De Labège, Castanet-Tolosan | 2.355 | 2.089 | 2.229 |  |
 | 2.57 | Intermarché | Avenue De Lauragais - Lieu Dit Condamine, Pompertuzat | 2.369 | 2.109 | 2.239 |  |
-| 2.80 | Intermarché | 1 Rue Louis Braille, Ramonville-Saint-Agne | 2.349 | 2.099 | 2.229 |  |
-| 3.17 | TotalEnergies | 98 Avenue Tolosane, Ramonville Saint Agne | **2.250** | **1.990** | **1.990** | E85 |
-| 3.27 | TotalEnergies | Centre Commercial De L'Autan, Labege | — | — | — | Gazole, SP95 |
-| 3.89 | Carrefour | Centre Commercial Labege 2, LABèGE | 2.382 | 2.196 | 2.289 |  |
+| 2.80 | Intermarché | 1 Rue Louis Braille, Ramonville-Saint-Agne | 2.339 | 2.089 | 2.219 |  |
+| 3.17 | TotalEnergies | 98 Avenue Tolosane, Ramonville Saint Agne | — | — | — | Gazole, SP98, E10, E85 |
+| 3.27 | TotalEnergies | Centre Commercial De L'Autan, Labege | — | — | — |  |
+| 3.89 | Carrefour | Centre Commercial Labege 2, LABèGE | 2.363 | 2.196 | 2.289 |  |
 | 4.17 | Avia | 53 Av. Tolosane, Ramonville-Saint-Agne | 2.439 | 2.299 | 2.399 |  |
-| 4.63 | Super U | Za De La Balme, Belberaud | 2.328 | 2.089 | 2.218 |  |
-| 5.09 | TotalEnergies | 5 Av De Gameville, Saint-Orens-de-Gameville | **2.250** | **1.990** | — | Gazole, SP98, E10, E85 |
+| 4.63 | Super U | Za De La Balme, Belberaud | 2.328 | 2.079 | 2.208 |  |
+| 5.09 | TotalEnergies | 5 Av De Gameville, Saint-Orens-de-Gameville | **2.250** | **1.990** | **1.990** | Gazole, E10, E85 |
 | 5.34 | Dyneff? | Autoroute A61Aire De Toulouse Sud Nord, Deyme | 2.468 | 2.278 | 2.344 |  |
 | 5.35 | Dyneff | Autoroute A61Aire De Toulouse Sud Sud, Deyme | 2.438 | 2.248 | 2.314 |  |
-| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-De-Gameville | 2.349 | 2.196 | 2.289 |  |
+| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-De-Gameville | 2.363 | 2.196 | 2.289 |  |
 
 <sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2.250 €, petrol 1.990 €). Brand `?` — no OSM match within 250 m; a trailing `?` — two stations share one OSM feature.</sub>
 
@@ -93,16 +93,16 @@ so a dash never proves the fuel is missing:
 
 238 stations lie within 15 km of Lyon (France's second urban area);
 125 appear in the current snapshot. Diesel stands at
-**2.368 €/L** against a French mean of 2.361 —
--0.029 over 30 days, +0.748 over a year.
+**2.366 €/L** against a French mean of 2.361 —
+-0.042 over 30 days, +0.747 over a year.
 27.9% of its diesel stations posted exactly 2,250 €
-within the last 30 days, and 47 station-fuel pairs
-(10.6% of those active) are flagged dry.
+within the last 30 days, and 44 station-fuel pairs
+(9.9% of those active) are flagged dry.
 The nearest pump posting the 2,250 € ceiling right now is 2.5 km away (100 Avenue Barthelemy Buyer, Lyon).
 
-![Lyon: diesel and E10 price history against the French mean](outputs/lyon/figures/prices.png?v=12c2c9d6)
+![Lyon: diesel and E10 price history against the French mean](outputs/lyon/figures/prices.png?v=1f2994c2)
 
-![Lyon: map of stations within 15 km](outputs/lyon/figures/stations_map.png?v=f855c8fe)
+![Lyon: map of stations within 15 km](outputs/lyon/figures/stations_map.png?v=d4332171)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -111,17 +111,17 @@ so a dash never proves the fuel is missing:
 | km | Brand | Station | Gazole | E10 | SP98 | Dry (≤ 30 d) |
 |---:|---|---|---:|---:|---:|---|
 | 1.70 | Avia | 258 Rue Garibaldi, Lyon | 2.429 | 2.269 | — |  |
-| 1.76 | Esso Express | 22 Rue Philippe De Lassalle, Lyon | 2.353 | 2.101 | 2.268 |  |
+| 1.76 | Esso Express | 22 Rue Philippe De Lassalle, Lyon | 2.340 | 2.101 | 2.268 |  |
 | 1.77 | Eni | 97 Rue Denfert Rochereau, Lyon | 2.469 | 2.244 | 2.344 |  |
-| 2.44 | Esso | 87-89 Bd Stalingrad, Villeurbanne | 2.459 | 2.279 | 2.449 |  |
-| 2.55 | Esso | 47 Cours Emile Zola, Villeurbanne | 2.499 | 2.299 | 2.479 |  |
+| 2.44 | Esso | 87-89 Bd Stalingrad, Villeurbanne | 2.469 | 2.269 | 2.439 |  |
+| 2.55 | Esso | 47 Cours Emile Zola, Villeurbanne | 2.489 | 2.289 | 2.469 |  |
 | 2.55 | Total Access | 100 Avenue Barthelemy Buyer, Lyon | **2.250** | **1.990** | — | SP98 |
 | 2.64 | Eni | 55 Bis Quai Gillet, Lyon | 2.469 | 2.249 | 2.349 |  |
-| 2.69 | TotalEnergies | 34 Rue Pasteur, Caluire-Et-Cuire | — | — | — |  |
+| 2.69 | TotalEnergies | 34 Rue Pasteur, Caluire-Et-Cuire | — | — | — | Gazole, SP98, E10 |
 | 3.08 | Avia | 65 Cours Albert Thomas, Lyon | 2.429 | 2.269 | — |  |
 | 3.14 | Avia | 44 Avenue Leclerc, Lyon 7 | 2.419 | — | 2.339 |  |
-| 3.21 | Esso | 72 Cours Tolstoi, Villeurbanne | 2.479 | 2.299 | 2.479 |  |
-| 3.21 | Esso | 110 Bd Du 11 Novembre 1918, Villeurbanne | 2.479 | 2.279 | 2.449 |  |
+| 3.21 | Esso | 72 Cours Tolstoi, Villeurbanne | 2.439 | 2.259 | 2.439 |  |
+| 3.21 | Esso | 110 Bd Du 11 Novembre 1918, Villeurbanne | 2.469 | 2.269 | 2.439 |  |
 
 <sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2.250 €, petrol 1.990 €). Brand `?` — no OSM match within 250 m; a trailing `?` — two stations share one OSM feature.</sub>
 
@@ -129,17 +129,17 @@ so a dash never proves the fuel is missing:
 ## Gentilly
 
 660 stations lie within 15 km of Gentilly (just south of the Paris périphérique; the radius covers most of Paris);
-262 appear in the current snapshot. Diesel stands at
-**2.384 €/L** against a French mean of 2.361 —
--0.017 over 30 days, +0.677 over a year.
-40.0% of its diesel stations posted exactly 2,250 €
-within the last 30 days, and 85 station-fuel pairs
-(9.6% of those active) are flagged dry.
+260 appear in the current snapshot. Diesel stands at
+**2.383 €/L** against a French mean of 2.361 —
+-0.026 over 30 days, +0.681 over a year.
+38.9% of its diesel stations posted exactly 2,250 €
+within the last 30 days, and 137 station-fuel pairs
+(15.8% of those active) are flagged dry.
 The nearest pump posting the 2,250 € ceiling right now is 1.2 km away (27 Avenue De La Porte D'Italie, Paris).
 
-![Gentilly: diesel and E10 price history against the French mean](outputs/gentilly/figures/prices.png?v=475869e0)
+![Gentilly: diesel and E10 price history against the French mean](outputs/gentilly/figures/prices.png?v=f15e2466)
 
-![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=f354e9ff)
+![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=3d62680b)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -147,18 +147,18 @@ so a dash never proves the fuel is missing:
 
 | km | Brand | Station | Gazole | E10 | SP98 | Dry (≤ 30 d) |
 |---:|---|---|---:|---:|---:|---|
-| 0.27 | Esso Express | 67 Avenue Raspail, Gentilly | 2.424 | 2.218 | 2.298 |  |
-| 0.89 | Esso | 23 Avenue Paul Doumer, Arcueil | 2.549 | 2.349 | 2.529 |  |
-| 0.92 | ? | 70-74 Av Aristide Briand, Montrouge | 2.579 | 2.459 | 2.629 |  |
-| 1.21 | TotalEnergies | 27 Avenue De La Porte D'Italie, Paris | **2.250** | **1.990** | — | SP98 |
+| 0.27 | Esso Express | 67 Avenue Raspail, Gentilly | 2.428 | 2.188 | 2.268 |  |
+| 0.89 | Esso | 23 Avenue Paul Doumer, Arcueil | 2.539 | 2.339 | 2.519 |  |
+| 0.92 | ? | 70-74 Av Aristide Briand, Montrouge | 2.569 | 2.449 | 2.619 |  |
+| 1.21 | TotalEnergies | 27 Avenue De La Porte D'Italie, Paris | **2.250** | — | — | SP98, E10 |
 | 1.36 | Avia | 91 Avenue Aristide Briand, Montrouge | 2.599 | 2.469 | 2.549 |  |
-| 1.41 | Esso | 20 Avenue Paul Vaillant-Couturier, Arcueil | 2.383 | 2.192 | 2.272 |  |
-| 1.41 | Esso | 231 Rue De Tolbiac, Paris | 2.499 | 2.299 | 2.439 |  |
-| 1.47 | E.Leclerc | Avenue De Fontainebleau, LE KREMLIN-BICêTRE | 2.415 | 2.209 | 2.289 |  |
-| 1.76 | TotalEnergies | 89 Av A. Briand, Arcueil | **2.250** | **1.990** | — | SP95 |
-| 2.21 | ? | Rue Legion Etrangere, Paris | — | — | — |  |
-| 2.34 | Total Access | 181, Boulevard Vincent Auriol, Paris | **2.250** | **1.990** | — | SP98 |
-| 2.46 | TotalEnergies | 168-180 Bld De Stalingrad, Ivry-sur-Seine | **2.250** | **1.990** | — | SP98 |
+| 1.41 | Esso | 20 Avenue Paul Vaillant-Couturier, Arcueil | 2.395 | 2.176 | 2.256 |  |
+| 1.41 | Esso | 231 Rue De Tolbiac, Paris | 2.499 | — | 2.469 | E10 |
+| 1.47 | E.Leclerc | Avenue De Fontainebleau, LE KREMLIN-BICêTRE | 2.419 | 2.179 | 2.269 |  |
+| 1.76 | TotalEnergies | 89 Av A. Briand, Arcueil | — | — | — | Gazole, SP95, E10 |
+| 2.21 | ? | Rue Legion Etrangere, Paris | — | — | — | SP98, E10 |
+| 2.34 | Total Access | 181, Boulevard Vincent Auriol, Paris | **2.250** | — | — | SP98, E10 |
+| 2.46 | TotalEnergies | 168-180 Bld De Stalingrad, Ivry-sur-Seine | **2.250** | — | — | SP98 |
 
 <sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2.250 €, petrol 1.990 €). Brand `?` — no OSM match within 250 m; a trailing `?` — two stations share one OSM feature.</sub>
 

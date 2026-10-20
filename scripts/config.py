@@ -13,7 +13,8 @@ STALE_DAYS = 30             # a station stops counting 30 days after its last up
 MIN_STATIONS = 3            # a day enters a mean only where this many stations report
 DRY_WINDOW = 30             # an outage counts while open, at most 30 days after debut
 FUELS = ("Gazole", "SP95", "SP98", "E10", "E85", "GPLc")
-CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990}   # TotalEnergies' caps
+# TotalEnergies' caps; SP95 is capped too (9.6 % of French posts sat on 1.990 on 2026-10-20)
+CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990, "SP95": 1.990}
 DIESEL_CAP, PETROL_CAP = CEILING["Gazole"], CEILING["E10"]
 CEILING_DAY = date(2026, 4, 8)   # the diesel ceiling first appeared
 # A brand group counts as "on the cap" while none of it posts above the ceiling

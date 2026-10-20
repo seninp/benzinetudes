@@ -70,3 +70,42 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 31600001,EAUNES,2 Boulevard de la leze,14.81,Super U,recognised,way/120867729,brand=Super U | operator=Super U | name=Super U,64,
 31240002,L'UNION,AVENUE DE BAYONNE,14.83,Élan (TotalEnergies),recognised,node/4318691182,brand=Elan | operator=TotalEnergies,17,
 31200008,Toulouse,168 Avenue des États-Unis,14.92,Esso,recognised,node/2078547598,brand=Esso | name=Esso,72,
+31320004,CASTANET TOLOSAN,23 Avenue du Lauragais,0.2,,unmatched,,,,
+31320005,Castanet-Tolosan,23 Avenue du Lauragais,0.22,,unmatched,,,,
+31520004,RAMONVILLE-SAINT-AGNE,98 Avenue Tolosane,3.17,TotalEnergies,recognised,way/73843868,brand=TotalEnergies | operator=Total | name=TotalEnergies,35,1
+31590003,Ramonville-Saint-Agne,Avenue Tolosane,3.89,,unmatched,,,,
+31650001,SAINT-ORENS-DE-GAMEVILLE,4 AV.DE GAMEVILLE,5.06,TotalEnergies,recognised,way/75024802,brand=TotalEnergies | operator=Total | name=Total,73,1
+31450002,Deyme,AIRE DE TOULOUSE SUD A 61,5.33,Dyneff,recognised,node/11009665968,brand=Dyneff | operator=E. Leclerc | name=Dyneff,28,1
+31400009,TOULOUSE,56 Avenue de Rangueil,7.45,Avia,recognised,node/2439481232,brand=Avia | operator=Avia | name=Avia,6,1
+31400011,Toulouse,56 AVENUE DE RANGUEIL,7.45,Avia,recognised,node/2439481232,brand=Avia | operator=Avia | name=Avia,6,1
+31120004,PORTET-SUR-GARONNE,43 Route d'Espagne,8.14,Total Access,recognised,way/84374025,brand=Total Access | name=Total Access,81,1
+31120008,PORTET-SUR-GARONNE,106 Route d'Espagne,8.19,Total Access,recognised,way/84374025,brand=Total Access | name=Total Access,36,1
+31120002,PORTET-SUR-GARONNE,106 Route d'Espagne,8.23,Total Access,recognised,way/84374025,brand=Total Access | name=Total Access,30,1
+31130011,BALMA,104 ROUTE DE CASTRES,8.23,TotalEnergies,recognised,node/5615159500,brand=TotalEnergies,1,
+31130002,Balma,ROUTE DE CASTRES LASBORDES,8.62,,unmatched,,,,
+31500014,Toulouse,228 Avenue de Castres,8.71,Avia,recognised,way/36732997,brand=Avia | operator=Avia | name=Avia,41,1
+31860004,PINS-JUSTARET,Chemin de la Croisette,9.86,,unmatched,,,,
+31300005,Toulouse,BOULEVARD DEODAT DE SEVERAC,10.11,,unmatched,,,,
+31130006,BALMA,43   Avenue des Aérostiers,10.38,Esso Express,recognised,node/4978180998,brand=Esso Express | operator=Esso | name=Esso Express Balma,88,1
+31106001,Toulouse,PLACE EDOUARD BOUILLIERES,10.44,Casino,recognised,node/8544908923,brand=Casino,8,
+31100009,TOULOUSE,222 Route de Saint-Simon,11.09,Total Access,recognised,way/74694489,brand=Total Access,109,1
+31860003,LABARTHE-SUR-LèZE,Route du Planthaurel,11.09,Intermarché,recognised,way/624866763,brand=Intermarché | name=Intermarché,205,
+31100007,TOULOUSE,222 route de st simon,11.18,Total Access,recognised,way/74694489,brand=Total Access,198,1
+31300002,Toulouse,104 Avenue de Grande-Bretagne,11.39,TotalEnergies,recognised,node/5829202341,brand=TotalEnergies | name=Relais Toulouse Grande-Bretagne,10,1
+31300006,TOULOUSE,5 AVENUE DU GOUPE MORHANGE,11.43,,unmatched,,,,
+31300003,TOULOUSE,5 av Groupe Morhange,11.45,,unmatched,,,,
+31500003,TOULOUSE,22 Avenue de Lyon,11.64,,unmatched,,,,
+31200013,TOULOUSE,20 Boulevard des Minimes,11.85,,unmatched,,,,
+31200021,TOULOUSE,20 BLD DES MINIMES,11.85,,unmatched,,,,
+31500016,TOULOUSE,65 ROUTE D'AGDE,12.37,TotalEnergies,recognised,node/5535816577,brand=TotalEnergies | name=TotalEnergies Access,37,
+31300004,TOULOUSE,6 Avenue Du Groupe Morhange,12.46,TotalEnergies,recognised,way/64893194,brand=TotalEnergies | name=Rocade Purpan,12,1
+31300009,TOULOUSE,Périphérique intérieur - 6 avenue du groupe Morhange,12.47,TotalEnergies,recognised,way/64893194,brand=TotalEnergies | name=Rocade Purpan,14,1
+31000002,TOULOUSE,ROUTE D AGDE,12.52,,unmatched,,,,
+31270006,VILLENEUVE-TOLOSANE,8 Avenue de Francazal,12.66,Total Access,recognised,node/7588684694,brand=Total Access | name=Total Access,67,1
+31200024,Toulouse,55 BOULEVARD DE SUISSE,12.71,Total Access,recognised,node/365623276,brand=Total Access | operator=Total | name=Total Access,87,1
+31200011,TOULOUSE,55 Boulevard de Suisse,12.75,Total Access,recognised,node/365623276,brand=Total Access | operator=Total | name=Total Access,45,1
+31200001,Toulouse,103 Boulevard de Suisse,13.03,TotalEnergies,recognised,way/76332901,brand=TotalEnergies | name=TotalEnergies,27,1
+31570001,LANTA,Route de Caraman,13.78,,unmatched,,,,
+31600002,MURET,68 Avenue Jacques Douzans,14.49,Avia,recognised,way/81550607,brand=Avia | name=Avia,28,
+31170002,TOURNEFEUILLE,5 Rue Bertrand Panouse,14.55,Auchan,recognised,way/74785397,brand=Auchan | name=Auchan,56,1
+31170007,Tournefeuille,20 Boulevard Vincent Auriol,14.58,Avia,recognised,node/2153375440,brand=Avia | operator=Avia | name=Avia Xpress,90,1

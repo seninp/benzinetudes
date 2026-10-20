@@ -34,8 +34,8 @@ def run(brands_csv, archive_end_path, out_csv, *px_paths):
     # fuel -> day -> group -> [total, count, max]
     agg = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: [0.0, 0, 0.0])))
     for (sid, fuel), d in hist.items():
-        # A station with no OSM brand match counts as "other": it is certainly not
-        # Total-group, since all 21 Total sites here matched.
+        # A station with no OSM brand match counts as "other". brands.csv covers
+        # every archive id, so an old id of a Total site is no longer counted as one.
         g = group.get(sid, "other")
         for day, last in carry_forward(sorted(d.items()), end_day, STALE_DAYS):
             if day >= START:

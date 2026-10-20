@@ -20,4 +20,4 @@ for i, c in enumerate(CITIES):
     else:
         age = (time.time() - os.path.getmtime(osm)) / 86400
         print(f"{c['name']}: reusing OSM answer from {age:.0f} days ago", file=sys.stderr)
-    brands.main(osm, f"{d}/stations_now.csv", f"{d}/brands.csv")
+    brands.main(osm, f"{d}/stations_now.csv", f"{d}/stations.csv", f"{d}/brands.csv")

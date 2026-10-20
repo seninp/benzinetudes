@@ -259,3 +259,403 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 93140003,Bondy,205 Avenue Gallieni,14.85,Esso,recognised,way/84185151,brand=Esso | name=Esso,137,
 78000020,VERSAILLES,71 RUE DES CHANTIERS,14.92,Total Access,recognised,way/74620040,brand=Total Access | operator=Total | name=Total Access,69,
 94370005,Sucy-en-Brie,69 Route de la Queue en Brie,14.99,Esso,recognised,way/63496787,brand=Esso | name=Esso,47,
+94110001,Arcueil,74 Avenue Vladimir Illitch Lénine,0.96,,unmatched,,,,
+75013005,Paris,AV DE LA PORTE D'ITALIE,1.22,TotalEnergies,recognised,node/1172665573,brand=Total | operator=Total | name=Relais Total Porte D'Italie,31,1
+75013006,Paris,AV DE LA PORTE D'ITALIE,1.22,TotalEnergies,recognised,node/1172665573,brand=Total | operator=Total | name=Relais Total Porte D'Italie,31,1
+75013021,PARIS,27 Avenue de la Porte d'Italie,1.22,TotalEnergies,recognised,node/1172665573,brand=Total | operator=Total | name=Relais Total Porte D'Italie,35,1
+75013011,Paris,231 Rue de Tolbiac,1.4,Esso,recognised,node/5140375294,brand=Esso | name=Esso,54,1
+92120001,Montrouge,70 Avenue Aristide Briand,1.43,Esso,recognised,node/2040281444,brand=Esso | name=Esso,37,1
+92120003,MONTROUGE,70 74 AV ARISTIDE BRIAND,1.45,Esso,recognised,node/2040281444,brand=Esso | name=Esso,0,
+94270003,LE KREMLIN-BICêTRE,136 Avenue de Fontainebleau,1.48,E.Leclerc,recognised,node/6153120886,brand=E.Leclerc | name=E. Leclerc,14,1
+75014003,Paris,RUE LEGION ETRANGERE,1.69,TotalEnergies,recognised,node/13397587064,brand=TotalEnergies | name=Total,46,
+94110002,ARCUEIL,89 Avenue Aristide Briand,1.71,TotalEnergies,recognised,way/62273350,brand=TotalEnergies | name=TotalEnergies,45,1
+75013001,PARIS,13 Quai d'Austerlitz,2.08,E.Leclerc,recognised,node/3348610471,brand=E.Leclerc | name=Station Service Choisy,232,
+75014009,PARIS,Rue de la Légion étrangère,2.23,,unmatched,,,,
+75013015,PARIS,181 Boulevard Vincent Auriol,2.32,Total Access,recognised,way/221071441,brand=Total Access | name=Total Access,11,1
+92220005,Bagneux,36 Avenue Henri Barbusse,2.34,,unmatched,,,,
+75014011,Paris,18 A 22 Avenue de la Porte de Chatillon,2.36,,unmatched,,,,
+75014007,Paris,28 Avenue de la Porte de Châtillon,2.39,,unmatched,,,,
+94200001,IVRY-SUR-SEINE,180 Boulevard de Stalingrad,2.42,TotalEnergies,recognised,node/25210516,brand=Total | operator=Total | name=Total,58,1
+92240006,Malakoff,6 Avenue Pierre Brossolette,2.44,TotalEnergies,recognised,way/83791472,brand=Total | operator=Total | name=Total,172,1
+92242002,MALAKOFF,RD 306-6/12 AVENUE PIERRE BROSSO,2.44,TotalEnergies,recognised,way/83791472,brand=Total | operator=Total | name=Total,172,1
+94200007,Ivry-sur-Seine,168 Boulevard de Stalingrad,2.46,TotalEnergies,recognised,node/25210516,brand=Total | operator=Total | name=Total,17,1
+92242003,MALAKOFF,12 Avenue Pierre Brossolette,2.52,TotalEnergies,recognised,way/83791472,brand=Total | operator=Total | name=Total,43,
+75013027,Paris,85 RUE JEANNE DARC,2.58,BP,recognised,node/625171506,brand=BP | operator=BP | name=BP,2,1
+75013012,Paris,85 Rue Jeanne d'Arc,2.59,BP,recognised,node/625171506,brand=BP | operator=BP | name=BP,7,1
+75013019,Paris,85 Rue Jeanne d'Arc,2.6,BP,recognised,node/625171506,brand=BP | operator=BP | name=BP,12,1
+75013013,Paris,114 Boulevard de l'Hôpital,2.64,TotalEnergies,recognised,way/78536213,brand=Total | name=Total,55,1
+75014008,PARIS,253 Boulevard Raspail,2.92,Avia,recognised,node/3286282646,brand=Avia | name=Avia,31,
+75014005,PARIS,154 Rue d'Alésia,2.93,TotalEnergies,recognised,node/66492656,brand=Total | name=Total,16,1
+94800002,Villejuif,117 Boulevard Maxime Gorki,2.95,Total Access,recognised,node/330170596,brand=Total Access | name=TotalEnergies Access,28,1
+92240003,MALAKOFF,76 Avenue Pierre Larousse,2.98,BP,recognised,node/1319463008,brand=BP | name=BP,5,1
+92240007,MALAKOFF,76 Avenue Pierre Larousse,2.98,BP,recognised,node/1319463008,brand=BP | name=BP,5,1
+92240009,Malakoff,76 AV PIERRE LAROUSSE,2.98,BP,recognised,node/1319463008,brand=BP | name=BP,3,1
+94800004,Villejuif,31 Avenue de la République,3.07,,unmatched,,,,
+75013020,PARIS,Rue Jean-Baptiste Berlier,3.24,TotalEnergies,recognised,node/667281517,brand=TotalEnergies | name=TotalEnergies,218,1
+94200003,Ivry-sur-Seine,79 Avenue Georges Gosnat,3.24,BP,recognised,node/1678955958,brand=BP | name=BP,21,1
+75013007,PARIS,QUAI D'IVRY / COTE A,3.34,TotalEnergies,recognised,node/667281517,brand=TotalEnergies | name=TotalEnergies,136,1
+75015020,PARIS,56 AVENUE DU MAINE,3.43,,unmatched,,,,
+75013008,PARIS,QUAI D'IVRY / COTE B - RUE J.B.,3.46,TotalEnergies,recognised,node/667281517,brand=TotalEnergies | name=TotalEnergies,18,1
+94800006,VILLEJUIF,121 Rue de Chevilly,3.62,,unmatched,,,,
+75015022,PARIS,47 Boulevard de Vaugirard,3.66,,none,node/8705761122,,230,1
+92340001,Bourg-la-Reine,18 Boulevard du Maréchal Joffre,3.67,TotalEnergies,recognised,node/915917928,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies relais du Panorama,14,1
+75015031,PARIS,47 BD DE VAUGIRARD,3.68,,none,node/8705761122,,225,
+92170001,VANVES,59 Rue Jean Bleuzen,3.77,TotalEnergies,recognised,node/605504117,brand=TotalEnergies | name=TotalEnergies,28,1
+92220004,Bagneux,12 Avenue du Général de Gaulle,3.82,Esso,recognised,way/146252462,brand=Esso | name=Esso,20,1
+75005001,Paris,36 Rue des Fossés Saint-Bernard,3.91,,unmatched,,,,
+94400002,Vitry-sur-Seine,34 Avenue Henri Barbusse,4.07,TotalEnergies,recognised,node/2137682823,brand=TotalEnergies | operator=Total | name=Relais de Vitry,20,1
+94240008,L'Hay-les-Roses,149 Rue Paul Hochart,4.11,,unmatched,,,,
+75004001,PARIS,5 RUE AGRIPPA D'AUBIGNE,4.28,,unmatched,,,,
+92220006,BAGNEUX,98 Avenue de Bourg-la-Reine,4.28,Esso,recognised,way/146245692,brand=Esso | name=Esso,35,1
+92320004,CHâTILLON,15/17 avenue de verdun,4.3,,unmatched,,,,
+75012004,Paris,238 Rue de Charenton,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,32,1
+75012018,PARIS,238 Rue de Charenton,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,29,
+75012020,Paris,238 RUE DE CHARENTON,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,29,1
+94220001,Charenton-le-Pont,4 Avenue de la Liberté,4.39,TotalEnergies,recognised,node/2117639904,brand=Total | name=Relais Total de Conflans,31,1
+75015001,PARIS,76 / 78 Boulevard Garibaldi,4.46,,unmatched,,,,
+75015032,PARIS,76 BOULEVARD GARIBALDI,4.46,,unmatched,,,,
+94150004,Chevilly-Larue,14 Avenue du Général de Gaulle,4.49,TotalEnergies,recognised,node/965881397,brand=TotalEnergies | operator=Total | name=TotalEnergies,30,1
+75015028,Paris,76-78 BOULEVARD GARIBALDI,4.51,,unmatched,,,,
+94400001,VITRY-SUR-SEINE,Avenue Youri Gagarine,4.52,,unmatched,,,,
+75015024,Paris,7 - 11 Boulevard Garibaldi,4.6,,unmatched,,,,
+92320005,CHATILLON,40 RUE DE FONTENAY,4.65,,unmatched,,,,
+92320002,CHâTILLON,40 Rue de Fontenay,4.67,,unmatched,,,,
+75015018,PARIS,44 Boulevard Victor,4.83,,unmatched,,,,
+75012002,Paris,32 Rue de Reuilly,4.86,Avia,recognised,way/78019560,brand=Avia | name=Avia,39,1
+75015007,PARIS,11 Boulevard Garibaldi,4.86,Avia,recognised,node/309654919,brand=Avia | operator=Avia | name=Avia,12,1
+94240001,L'Hay-les-Roses,81 Avenue Flouquet,4.9,,unmatched,,,,
+94140001,Alfortville,43 Quai Blanqui,5.06,TotalEnergies,recognised,node/3557801654,brand=Total | name=Total Port Anglais,81,1
+34130006,CARNON PLAGE MAUGUIO,RD62 - 59 Avenue Jean Baptiste Solignac,5.07,,unmatched,,,,
+69200010,VILLEURBANNE,283 route de genas,5.07,,unmatched,,,,
+94800001,VILLEJUIF,60 AV DE STALINGRAD,5.08,,unmatched,,,,
+75012007,PARIS,42 Rue de Picpus,5.09,,unmatched,,,,
+78150015,LE CHESNAY ROCQUENCOURT,90 RUE DE VERSAILLES,5.09,,unmatched,,,,
+75015016,PARIS,352 Rue Lecourbe,5.2,,unmatched,,,,
+75015017,Paris,1 Boulevard Victor,5.43,BP,recognised,node/1568009842,brand=BP | operator=British Petroleum | name=BP,98,
+75011003,PARIS,175 Avenue Ledru-Rollin,5.45,Élan (TotalEnergies),recognised,node/3286543311,brand=Elan | name=Elan,19,
+75012011,Paris,51 Boulevard Soult,5.49,,unmatched,,,,
+75012017,PARIS,55 BOULEVARD DE PICPUS,5.49,TotalEnergies,recognised,node/3286567614,brand=TotalEnergies | name=Total Relais du Bel Air,38,1
+75012021,PARIS,55 BLD DE PICPUS,5.51,TotalEnergies,recognised,node/3286567614,brand=TotalEnergies | name=Total Relais du Bel Air,26,
+75007001,Paris,37 Rue Fabert,5.59,TotalEnergies,recognised,node/1191594862,brand=Total | name=Total,103,1
+92130002,ISSY-LES-MOULINEAUX,18 Boulevard des frères Voisin,5.59,TotalEnergies,recognised,way/96711347,brand=TotalEnergies | name=TotalEnergies access,37,1
+75015008,PARIS,34 Boulevard de Grenelle,5.86,TotalEnergies,recognised,node/1937157672,brand=Total | operator=Total | name=Total,47,1
+75015023,Paris,21 Avenue Emile Zola,5.95,Avia,recognised,node/315123765,brand=Avia | name=Avia,52,1
+92140017,CLAMART,1 AV. CLAUDE TREBIGNAUD,6.12,,unmatched,,,,
+75015009,PARIS,QUAI D'ISSY LES MOULINEAUX,6.22,Total Access,recognised,node/25213384,brand=Total Access | operator=Total | name=Relais Total Du Pont Aval,43,1
+94150001,Rungis,Rue de Rouen,6.24,,unmatched,,,,
+94515001,RUNGIS,2 Rue du Jour,6.24,Engie,raw,node/3699704050,brand=Engie | operator=Engie | name=Station ENGIE Gaz Naturel Véhicule GNC / bioGNC,27,
+75012008,Paris,BD PERIPHERIQUE EXTERIEUR,6.27,Avia,recognised,way/308771053,brand=Avia | name=Avia,175,1
+75012022,PARIS,BD PERIPHERIQUE INTERIEUR PORTE DE VINCENNES,6.31,Avia,recognised,way/308771053,brand=Avia | name=Avia,159,1
+75012024,PARIS,BD PERIPHERIQUE INTERIEUR PORTE DE VINCENNES,6.31,Avia,recognised,way/308771053,brand=Avia | name=Avia,157,1
+75012025,PARIS,BD PERIPHERIQUE EXTERIEUR PORTE DE VINCENNES,6.31,Avia,recognised,way/308771053,brand=Avia | name=Avia,159,1
+75012026,PARIS,BD PERIPHERIQUE INTERIEUR PORTE DE VINCENNES,6.32,Avia,recognised,way/308771053,brand=Avia | name=Avia,157,1
+92130003,Issy-les-Moulineaux,91 Avenue de Verdun,6.33,,unmatched,,,,
+75016025,Paris,99 Avenue de Versailles,6.36,TotalEnergies,recognised,node/3286282647,brand=TotalEnergies | name=Total,36,1
+75016014,PARIS,1 Avenue du Président Kennedy,6.37,,unmatched,,,,
+75016013,PARIS,99 Avenue de Versailles,6.4,TotalEnergies,recognised,node/3286282647,brand=TotalEnergies | name=Total,22,1
+92330001,Sceaux,77 AV EDOUARD DEPREUX,6.4,Esso,recognised,node/2692712199,brand=Esso | name=Esso,17,1
+94700010,Maisons-Alfort,135 av général leclerc,6.54,TotalEnergies,recognised,way/121000025,brand=Total | operator=Total | name=Total,8,
+94600001,CHOISY-LE-ROI,33 Avenue de Lugo,6.69,TotalEnergies,recognised,way/66153778,brand=TotalEnergies | name=Total Le Lugo,66,1
+94588001,RUNGIS,AVENUE CHARLES LINDBERGH,6.7,,unmatched,,,,
+94594001,Rungis,AVENUE DU VIADUC,6.71,Esso,recognised,way/126105387,brand=Esso | operator=Esso | name=Esso,49,1
+94150007,Rungis,ROUTE NATIONALE 186,6.72,Esso,recognised,way/126105387,brand=Esso | operator=Esso | name=Esso,2,1
+75008004,Paris,18 Avenue des Champs-Élysées,6.75,,unmatched,,,,
+94600008,Choisy-le-Roi,33 AVENUE DE LUGO,6.75,TotalEnergies,recognised,way/66153778,brand=TotalEnergies | name=Total Le Lugo,2,1
+94600009,Choisy-le-Roi,33 AVENUE DE LUGO,6.75,TotalEnergies,recognised,way/66153778,brand=TotalEnergies | name=Total Le Lugo,34,1
+94700004,Maisons-Alfort,172 Rue Jean Jaurès,6.76,,unmatched,,,,
+94150002,Rungis,ROUTE NATIONALE 186,6.81,Esso,recognised,way/126105403,brand=Esso | operator=Esso | name=Esso,12,1
+75020011,Paris,Avenue Benoît Frachon,6.84,,unmatched,,,,
+94651001,Thiais,334 THIAIS SUD C.C belle 2PINE,6.86,Esso,recognised,way/162941656,brand=Esso | name=Esso,14,1
+75020003,PARIS,AVENUE BENOIT FRACHON,6.91,,unmatched,,,,
+75020009,PARIS,AVENUE BENOIT FRACHON,6.91,,unmatched,,,,
+94700001,MAISONS-ALFORT,135 Avenue du Général Leclerc,6.91,,unmatched,,,,
+75016015,Paris,26 Avenue Paul Doumer,6.95,Esso,recognised,node/267652178,brand=Esso | name=Esso Paris Paul Doumer,11,1
+75008008,PARIS,face au 35 bd malesherbes,7.01,,unmatched,,,,
+92290004,CHâTENAY-MALABRY,15 Avenue de la Division Leclerc,7.02,,unmatched,,,,
+75016007,PARIS,105 Boulevard Murat,7.05,TotalEnergies,recognised,node/993642116,brand=Total | name=Total Porte Saint-Cloud,236,1
+94512001,RUNGIS,Boulevard FRULEG,7.07,,unmatched,,,,
+92140006,Clamart,6 Avenue Claude Trebignaud,7.11,TotalEnergies,recognised,way/71877009,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies,21,1
+92140018,Clamart,6 AVENUE CLAUDE TREBIGNAUD,7.11,TotalEnergies,recognised,way/71877009,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies,1,1
+92140001,CLAMART,6 Avenue Claude Trebignaud,7.12,TotalEnergies,recognised,way/71877009,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies,16,1
+93100006,MONTREUIL,280 RUE DE PARIS,7.13,,unmatched,,,,
+92350001,LE PLESSIS-ROBINSON,176 Avenue de la Résistance,7.16,,unmatched,,,,
+92100004,Boulogne-Billancourt,263 Boulevard Jean Jaurès,7.17,BP,recognised,node/7532092312,brand=BP | name=BP,36,1
+75016008,PARIS,2 Avenue de la Porte de Saint-Cloud,7.2,TotalEnergies,recognised,node/993642116,brand=Total | name=Total Porte Saint-Cloud,31,1
+94150006,RUNGIS,AVENUE CHARLES LINDBERGH,7.2,TotalEnergies,recognised,way/126130093,brand=TotalEnergies | operator=Total Energies | name=Total Access - Relais Rungis Lindbergh,1,
+75020002,PARIS,"170,174  Rue de Bagnolet",7.22,TotalEnergies,recognised,node/471629646,brand=Total | operator=Total | name=Total,62,1
+75008002,PARIS,PARKING GEORGE 5/AV CH.ELYSEES,7.23,TotalEnergies,recognised,node/3286282651,brand=TotalEnergies | name=TotalEnergies,88,1
+75013009,PARIS,2/4 PLACE DU DOCTEUR YERSIN,7.3,Wins,raw,node/1997748867,brand=Wins | name=Wins,192,
+75020016,PARIS,217 BD MARECHAL DAVOUT,7.3,TotalEnergies,recognised,node/837837342,brand=Total | name=Total Davout,3,
+75016003,Paris,7 Boulevard Murat,7.31,Esso,recognised,node/3286282648,brand=Esso | name=Esso,68,1
+94300001,VINCENNES,44 Avenue de Paris,7.38,,unmatched,,,,
+94600004,CHOISY-LE-ROI,55 Avenue Victor Hugo,7.38,,unmatched,,,,
+94600006,CHOISY LE ROI,55 AVENUE VICTOR HUGO,7.38,,unmatched,,,,
+92290007,Châtenay-Malabry,151 AVENUE DIVISION LECLERC,7.41,,unmatched,,,,
+92290005,CHâTENAY-MALABRY,151 Avenue de la Division Leclerc,7.43,,unmatched,,,,
+75020004,Paris,6 Avenue de la Porte de Bagnolet,7.45,BP,recognised,node/648114671,brand=BP | operator=BP | name=BP,2,
+92140002,Clamart,320 Avenue du Général de Gaulle,7.55,TotalEnergies,recognised,node/25212741,brand=Total | operator=Total | name=Total,101,1
+93170003,Bagnolet,44-48 avenue de la République,7.55,TotalEnergies,recognised,way/81613605,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies,2,1
+75020007,Paris,22 Rue Étienne Marey,7.57,Indépendant,raw,node/3286430496,brand=Indépendant,16,
+93170001,Bagnolet,44 Avenue de la République,7.57,TotalEnergies,recognised,way/81613605,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies,81,1
+75019001,Paris,152 Boulevard de la Villette,7.66,TotalEnergies,recognised,node/25214653,brand=TotalEnergies | operator=Total | name=Relais des Chaufourniers,24,
+75019017,PARIS,152-162 BLD DE LA VILLETTE,7.66,TotalEnergies,recognised,node/25214653,brand=TotalEnergies | operator=Total | name=Relais des Chaufourniers,24,1
+75016005,PARIS,4 Avenue Foch,7.71,Eni,recognised,node/3286282652,brand=Eni | name=ENI,70,1
+75016016,Paris,4 Avenue Foch,7.71,Eni,recognised,node/3286282652,brand=Eni | name=ENI,69,1
+75016020,PARIS,4 AVENUE FOCH,7.76,Eni,recognised,node/3286282652,brand=Eni | name=ENI,55,1
+75019019,Paris 19e Arrondissement,152-162 boulevard de la Villette,7.76,TotalEnergies,recognised,node/25214653,brand=TotalEnergies | operator=Total | name=Relais des Chaufourniers,106,1
+94537001,ORLY,1 Rue des Lances,7.8,TotalEnergies,recognised,node/1163509860,brand=TotalEnergies | name=TotalEnergies Access - Relais du Bas Marin,63,1
+75016019,PARIS,115 AVENUE MALAKOFF,7.84,Eni,recognised,node/9286155846,brand=Eni | name=Eni,35,
+93100018,Montreuil,86 rue de paris,7.87,TotalEnergies,recognised,node/9415215813,brand=TotalEnergies | name=TotalEnergies,3,1
+93100019,Montreuil,86 rue de Paris,7.87,TotalEnergies,recognised,node/9415215813,brand=TotalEnergies | name=TotalEnergies,2,1
+93100001,MONTREUIL,86 Rue de Paris,7.91,TotalEnergies,recognised,node/9415215813,brand=TotalEnergies | name=TotalEnergies,51,1
+75020006,PARIS,101 Boulevard Mortier,7.93,TotalEnergies,recognised,node/9286157487,brand=Total | name=Total,43,
+75020015,Paris,101 BOULEVARD MORTIER,7.96,TotalEnergies,recognised,node/3286430497,brand=Total | name=Total Mortier,4,1
+75017002,Paris,100 Rue de Courcelles,7.97,,none,node/4086291206,,86,
+96600001,Choisy-le-Roi,16 Avenue de Newburn,7.97,,unmatched,,,,
+75010007,Paris,25 BOULEVARD DE LA CHAPELLE,7.98,Avia,recognised,way/1415601731,brand=Avia | name=Avia,220,1
+94310003,ORLY,106 Avenue de la Victoire,8.01,TotalEnergies,recognised,node/2120929524,brand=Total | name=Total,36,1
+94003001,CRéTEIL,A 86 - AIRE DE CARREFOUR POMPADO,8.09,,none,node/13096140647,,8,
+94000002,CRéTEIL,AUTOROUTE A 86 CARRE.POMPADOUR,8.12,TotalEnergies,recognised,node/7947999871,brand=TotalEnergies | operator=Total | name=Total Énergies,29,1
+92100002,BOULOGNE-BILLANCOURT,29 Avenue André Morizet,8.13,TotalEnergies,recognised,node/6390553787,brand=Total | name=Total Excellium,7,1
+94000013,Créteil,Route de Choisy - RN186,8.2,TotalEnergies,recognised,node/325766149,brand=TotalEnergies | operator=Total | name=Total,106,
+94000003,CRéTEIL,Route de Choisy,8.22,Esso,recognised,node/4035298741,brand=Esso | name=Esso,123,1
+75019005,PARIS,Boulevard Périphérique EXTERIEUR,8.23,,unmatched,,,,
+94000001,CRéTEIL,AV DU GENERAL DE GAULLE,8.24,,unmatched,,,,
+75853002,PARIS,Place de la Porte-Maillot,8.4,,unmatched,,,,
+94542002,ORLY,AEROPORT DE PARIS - ORLY AEROGARE,8.47,,unmatched,,,,
+75019002,Paris,121 Rue Manin,8.52,TotalEnergies,recognised,node/2931788253,brand=Total | name=Total,8,1
+75019006,PARIS,Boulevard Périphérique INTERIEUR,8.53,,unmatched,,,,
+92100005,Boulogne-Billancourt,19/21 AV. J.B. CLEMENT,8.55,,unmatched,,,,
+75017016,PARIS,6 A 8 AV DE LA PORTE DE CLICHY,8.65,,unmatched,,,,
+92360004,MEUDON,1 Avenue de Villacoublay,8.66,,unmatched,,,,
+75017009,Paris,37 Boulevard Gouvion-Saint-Cyr,8.79,,unmatched,,,,
+92190002,MEUDON,"97, route des Gardes",8.82,,unmatched,,,,
+92100009,BOULOGNE-BILLANCOURT,108 Avenue André Morizet,8.83,TotalEnergies,recognised,node/1004498944,brand=TotalEnergies | name=TotalEnergies,81,1
+93100005,MONTREUIL,1 Rue Jean Lolive,8.85,,unmatched,,,,
+94340003,Joinville-le-Pont,8 Boulevard de l'Europe,8.9,BP,recognised,way/787158896,brand=BP | name=BP,63,1
+92100006,Boulogne-Billancourt,135 Route de la Reine,8.91,TotalEnergies,recognised,node/1004498944,brand=TotalEnergies | name=TotalEnergies,139,1
+92200003,NEUILLY-SUR-SEINE,31 Avenue du Roule,8.94,Esso,recognised,node/3240835095,brand=Esso | name=Esso,16,1
+94340004,JOINVILLE-LE-PONT,39 Rue Chapsal,8.94,Esso,recognised,way/85049034,brand=Esso | name=Esso,16,1
+94340005,Joinville-le-Pont,39 Rue Chapsal,8.94,Esso,recognised,way/85049034,brand=Esso | name=Esso,20,1
+94340002,Joinville-le-Pont,17 Boulevard de l'Europe,8.97,BP,recognised,way/787158896,brand=BP | name=BP,90,1
+75018008,Paris,203 Rue Championnet,9.0,,unmatched,,,,
+94340001,JOINVILLE-LE-PONT,2 Boulevard du Maréchal Leclerc,9.01,,unmatched,,,,
+94000007,CRETEIL,"63, Avenue du Général de Gaulle",9.13,Carrefour,recognised,node/344473799,brand=Carrefour | name=Carrefour,117,1
+75017001,PARIS,190 Avenue de Clichy,9.16,Total Access,recognised,node/2377881055,brand=Total Access | operator=TotalEnergies | name=TotalEnergies,24,1
+92160002,ANTONY,100 Avenue du Président John F. Kennedy,9.16,TotalEnergies,recognised,way/221548422,brand=TotalEnergies | name=Total,18,1
+92160005,Antony,100 Avenue du Président John F. Kennedy,9.17,TotalEnergies,recognised,way/221548422,brand=TotalEnergies | name=Total,21,1
+93260006,Les Lilas,238 Rue de Paris,9.17,,unmatched,,,,
+92360002,MEUDON,38 Avenue du Maréchal de Lattre de Tassigny,9.18,,unmatched,,,,
+75018009,PARIS,Rue de la Chapelle,9.22,,unmatched,,,,
+92360005,Meudon-la-Forêt,"38, AVENUE DU DELATTRE DE TASSIGNY",9.23,,unmatched,,,,
+94120003,FONTENAY-SOUS-BOIS,RUE GENERAL DE GAULLE,9.23,,unmatched,,,,
+75019010,Paris,234 Rue de Crimée,9.24,TotalEnergies,recognised,node/3286386321,brand=TotalEnergies | name=TotalEnergies,114,1
+75018001,PARIS,80 Rue de la Chapelle,9.26,,unmatched,,,,
+75018011,PARIS,80 Rue de la Chapelle,9.26,,unmatched,,,,
+75019007,Paris,PLACE DE LA PORTE DE PANTIN,9.28,,unmatched,,,,
+75017014,Paris,6 Avenue de la Porte de Clichy,9.44,,unmatched,,,,
+75017007,PARIS,37 Avenue de la Porte de Clichy,9.51,,unmatched,,,,
+75018005,Paris,30 Avenue de la Porte de Saint-Ouen,9.59,TotalEnergies,recognised,way/152205005,brand=TotalEnergies | name=Relais Saint-Ouen Bichat,86,1
+75018007,PARIS,30 Avenue de la Porte de Clignancourt,9.64,TotalEnergies,recognised,way/1450226286,brand=TotalEnergies | name=TotalEnergies - Porte de Clignancourt,9,1
+75018010,PARIS,30 Avenue de la Porte de Clignancourt,9.64,TotalEnergies,recognised,way/1450226286,brand=TotalEnergies | name=TotalEnergies - Porte de Clignancourt,9,1
+92200001,Neuilly-sur-Seine,Parking mairie,9.65,TotalEnergies,recognised,node/255003455,brand=Total | name=Total,115,1
+75017008,Paris,21 Avenue de la Porte de Saint-Ouen,9.71,TotalEnergies,recognised,way/152205005,brand=TotalEnergies | name=Relais Saint-Ouen Bichat,84,1
+75017020,PARIS 17E ARRONDISSEMENT,17-23 AVENUE DE LA PORTE DE ST OUEN,9.72,TotalEnergies,recognised,way/152205005,brand=TotalEnergies | name=Relais Saint-Ouen Bichat,58,1
+78140006,Vélizy-Villacoublay,2 Avenue de l'Europe,9.73,,unmatched,,,,
+75018003,Paris,AVENUE PORTE DE LA CHAPELLE,9.75,,unmatched,,,,
+78140004,VéLIZY-VILLACOUBLAY,RTE 18 VAL DE GRACE,9.76,Shell,recognised,node/25213982,brand=Shell | operator=Shell | name=Station Shell,4,1
+93100007,MONTREUIL,16 Boulevard Aristide Briand,9.76,Esso,recognised,node/277386211,brand=Esso | operator=Esso | name=Esso,36,
+92310002,SEVRES,AV DE L EUROPE,9.77,,unmatched,,,,
+94100001,Saint-Maur-des-Fossés,29 Boulevard de Créteil,9.81,Carrefour,recognised,node/7522692089,brand=Carrefour | name=Carrefour des Nations,12,
+92310001,Sèvres,2 Avenue de l'Europe,9.82,,unmatched,,,,
+93260004,Les Lilas,238 Avenue Lénine,9.83,TotalEnergies,recognised,way/73428044,brand=TotalEnergies | operator=Total | name=Total Access,20,
+94100012,Saint-Maur-des-Fossés,29 bvd de créteil,9.86,Carrefour,recognised,node/7522692089,brand=Carrefour | name=Carrefour des Nations,56,1
+92110003,CLICHY,10 Boulevard du Général Leclerc,9.88,TotalEnergies,recognised,node/6329691790,brand=Total | operator=Total,37,1
+92110007,CLICHY,"10, Bd du Général Lerclerc",9.88,TotalEnergies,recognised,node/6329691790,brand=Total | operator=Total,34,1
+93500004,PANTIN,112 Avenue Jean Lolive,10.01,,unmatched,,,,
+93500007,PANTIN,112 AVENUE JEAN LOLIVE,10.01,,unmatched,,,,
+92210001,SAINT-CLOUD,65 Quai Marcel Dassault,10.05,TotalEnergies,recognised,node/25209909,brand=TotalEnergies | operator=Total Access | name=Relais Saint-Cloud Dassault,55,1
+93230006,romainville,22 AVENUE LENINE,10.05,TotalEnergies,recognised,node/476757242,brand=Total | operator=Total | name=Relais des Fontaines,54,1
+93230003,ROMAINVILLE,22 Avenue Lénine,10.06,TotalEnergies,recognised,node/476757242,brand=Total | operator=Total | name=Relais des Fontaines,45,1
+93230004,Romainville,22 Avenue Lénine,10.06,TotalEnergies,recognised,node/476757242,brand=Total | operator=Total | name=Relais des Fontaines,48,1
+94120001,Fontenay-sous-Bois,258 Avenue de la République,10.09,TotalEnergies,recognised,node/1788397865,brand=Total | name=Total,29,
+92300007,Levallois-Perret,106 Rue du Président Wilson,10.13,BP,recognised,node/4294514704,brand=BP | name=Station BP Levallois Président Wilson,25,1
+94100010,Saint-Maur-des-Fossés,57 BD DE CRETEIL,10.14,BP,recognised,node/1123183347,brand=BP | name=BP,0,1
+92300002,Levallois-Perret,162 RUE VICTOR HUGO,10.2,,none,node/14136653074,,16,1
+92300011,Levallois-Perret,162 RUE VICTOR HUGO,10.23,Esso,recognised,node/652862411,brand=ESSO | name=ESSO,2,
+92300008,LEVALLOIS-PERRET,162 Rue Victor Hugo,10.26,Esso,recognised,node/652862411,brand=ESSO | name=ESSO,27,1
+92300010,Levallois-Perret,162 RUE VICTOR HUGO,10.26,Esso,recognised,node/652862411,brand=ESSO | name=ESSO,34,1
+92300012,LEVALLOIS PERRET,162 RUE VICTOR HUGO,10.26,Esso,recognised,node/652862411,brand=ESSO | name=ESSO,34,1
+94120011,Fontenay-sous-Bois,258 AVENUE DE LA REPUBLIQUE,10.3,,unmatched,,,,
+93100004,Montreuil,151 Rue de la Nouvelle-France,10.35,BP,recognised,node/8125041945,brand=BP | name=Esso,69,1
+91300015,MASSY,Avenue du Maréchal Leclerc,10.38,,unmatched,,,,
+92210002,Saint-Cloud,35 Boulevard de la République,10.4,BP,recognised,node/2415333560,brand=BP,27,1
+92210006,SAINT-CLOUD,35 Boulevard de la République,10.4,BP,recognised,node/2415333560,brand=BP,27,1
+93100010,Montreuil,146 Boulevard Théophile Sueur,10.43,BP,recognised,node/8125041945,brand=BP | name=Esso,175,1
+92800001,PUTEAUX,42 Quai de Dion-Bouton,10.46,Esso,recognised,node/272631884,brand=Esso | name=Esso,22,
+93400001,Saint-Ouen,56 AVENUE MICHELET,10.53,TotalEnergies,recognised,node/3336875296,brand=TotalEnergies | name=TotalEnergies,41,1
+91300008,MASSY,VOIE EXPRESS CD 117,10.54,,unmatched,,,,
+91300010,MASSY,117 Route de Palaseau,10.54,,unmatched,,,,
+93400013,Saint-Ouen,56 Avenue Michelet,10.57,TotalEnergies,recognised,node/3336875296,brand=TotalEnergies | name=TotalEnergies,1,1
+94290006,Villeneuve-le-Roi,24 Avenue de la République,10.69,,unmatched,,,,
+92110005,CLICHY,143/145 boulevard jean jaures,10.8,Total Access,recognised,node/281969443,brand=Total Access | operator=Total | name=Total Access Pont de Clichy,85,1
+92150004,SURESNES,131 Boulevard Henri Sellier,10.81,TotalEnergies,recognised,way/70962877,brand=TotalEnergies | name=Total,78,1
+91300017,MASSY,CD 117 Route de Palaiseau,10.82,,unmatched,,,,
+92150002,SURESNES,131 Boulevard Henri Sellier,10.82,TotalEnergies,recognised,way/70962877,brand=TotalEnergies | name=Total,170,1
+93500006,Pantin,130 Avenue du Général Leclerc,10.83,Total Access,recognised,way/73118279,brand=Total Access | name=Total Access,19,1
+92150005,Suresnes,138 Boulevard Henri Sellier,10.84,BP,recognised,node/3046172614,brand=BP | operator=BP | name=Esso,22,1
+92150009,Suresnes,138 BOULEVARD HENRI SELLIER,10.85,BP,recognised,node/3046172614,brand=BP | operator=BP | name=Esso,11,1
+94130001,Nogent-sur-Marne,128 Boulevard de Strasbourg,10.87,TotalEnergies,recognised,node/1199989949,brand=Total | operator=Total | name=Total,53,1
+93130002,Noisy-le-Sec,5 RUE DE LA CHASSE,10.88,BP,recognised,way/26334246,brand=BP | operator=BP | name=BP,6,
+92400006,COURBEVOIE,41 Quai du Président Paul Doumer,10.89,TotalEnergies,recognised,node/5644334327,brand=Total | name=Total,41,1
+93400007,Saint-Ouen,23 Boulevard Victor Hugo,10.9,,unmatched,,,,
+94190005,VILLENEUVE-SAINT-GEORGES,232 Rue de Paris,10.93,TotalEnergies,recognised,node/25210897,brand=Total | operator=Total Energy | name=Esso,5,1
+92370001,CHAVILLE,484 Avenue Roger Salengro,10.95,,unmatched,,,,
+92370002,CHAVILLE,484 RUE ROGER SALENGRO,10.95,,unmatched,,,,
+94100008,SAINT-MAUR-DES-FOSSéS,64 Avenue Foch,10.99,Avia,recognised,way/1493223079,brand=Avia | name=Avia,27,1
+94500012,Champigny-sur-Marne,97 AVENUE DU GENERAL DE GAULLE,11.0,Esso,recognised,node/25209770,brand=Esso | operator=Esso | name=Esso,4,1
+94500013,Champigny-sur-Marne,97 avenue du Général de Gaulle,11.0,Esso,recognised,node/25209770,brand=Esso | operator=Esso | name=Esso,2,1
+93300007,AUBERVILLIERS,62 avenue de la Republique,11.02,TotalEnergies,recognised,node/1432006008,brand=Total,88,1
+93210002,SAINT DENIS,207 AVENUE DU PRESIDENT WILSON,11.05,TotalEnergies,recognised,node/25179467,brand=TotalEnergies | operator=Total | name=TotalEnergies,119,1
+93300008,AUBERVILLIERS,55 Rue de la Commune de Paris,11.06,Auchan,recognised,node/5001273502,brand=Auchan | name=Auchan,116,1
+92380004,Garches,173 Rue de la Porte Jaune,11.07,Esso,recognised,node/2677682330,brand=Esso | name=ESSO Garches Porte Jaune,19,1
+92380005,Garches,173 Rue de la Porte Jaune,11.07,Esso,recognised,node/2677682330,brand=Esso | name=ESSO Garches Porte Jaune,19,1
+92380006,Garches,173-179 RUE DE LA PORTE JAUNE,11.09,Esso,recognised,node/2677682330,brand=Esso | name=ESSO Garches Porte Jaune,13,1
+93100009,Montreuil,48 Boulevard Théophile Sueur,11.1,TotalEnergies,recognised,way/81856304,brand=TotalEnergies | name=Total Access,12,1
+94190003,Villeneuve-Saint-Georges,12 Avenue du Président Wilson,11.17,Intermarché,recognised,node/965484034,brand=Intermarché | operator=Groupement des Mousquetaires | name=Intermarché,30,
+91430002,Igny,Route Nationale 444,11.18,,unmatched,,,,
+92400010,COURBEVOIE,1 Rue de Strasbourg,11.18,,unmatched,,,,
+92400015,COURBEVOIE,1 RUE DE STRASBOURG,11.18,,unmatched,,,,
+94120008,Fontenay-sous-Bois,Place du Général de Gaulle,11.22,BP,recognised,way/544479741,brand=BP | name=Esso,2,1
+93300002,Aubervilliers,126 Avenue Victor Hugo,11.24,Esso,recognised,node/1455100868,brand=Esso | name=Esso,45,1
+94120007,Fontenay-sous-Bois,RUE PT GAL DE GAULLE,11.25,BP,recognised,way/544479741,brand=BP | name=Esso,40,1
+92400001,COURBEVOIE,47 Boulevard de Verdun,11.36,Total Access,recognised,way/82250343,brand=Total Access | operator=Total | name=Total Access,48,1
+93200005,SAINT-DENIS,227 Boulevard Anatole France,11.39,,unmatched,,,,
+92400003,COURBEVOIE,53 Rue de l'Alma,11.4,TotalEnergies,recognised,node/1211057208,brand=Total | name=Total - Relais de l'Alma,34,1
+92400021,COURBEVOIE,RUE BAUDIN PLACE CHARRAS,11.41,TotalEnergies,recognised,node/1211057208,brand=Total | name=Total - Relais de l'Alma,218,1
+92400014,Courbevoie,Rue Baudin,11.43,,unmatched,,,,
+91550001,PARAY-VIEILLE-POSTE,71 Avenue de Fontainebleau,11.45,Carrefour,recognised,way/70228354,brand=Carrefour | operator=Carrefour | name=Carrefour,118,1
+93400012,Saint-Ouen,41 RUE ALBERT DHALENNE,11.46,,unmatched,,,,
+93400009,SAINT-OUEN,41 Rue Albert Dhalenne,11.47,,unmatched,,,,
+93400008,SAINT-OUEN,41 Rue Albert Dhalenne,11.48,,unmatched,,,,
+94380001,BONNEUIL SUR MARNE,Avenue Jean Rostand,11.52,TotalEnergies,recognised,way/106884051,brand=TotalEnergies | name=TotalEnergies,76,1
+92600005,ASNIèRES-SUR-SEINE,39 Rue Pierre Brossolette,11.56,,unmatched,,,,
+93130001,Noisy-le-Sec,20 Rue Jules Auffret,11.56,Total Access,recognised,way/84114319,operator=Total Access | name=Relais Brément,65,1
+93130008,Noisy-le-Sec,20 Rue Jules Auffret,11.56,Total Access,recognised,way/84114319,operator=Total Access | name=Relais Brément,65,1
+92400002,COURBEVOIE,72 BD DE VERDUN,11.64,TotalEnergies,recognised,way/82250476,brand=Total | name=TotalEnergies,29,1
+92000011,Nanterre,36 Route des Fusillés de la Résistance 1940-1944,11.72,BP,recognised,node/887165191,brand=BP | operator=BP | name=BP,49,
+91300012,Massy,180 Rue de Paris,11.75,,unmatched,,,,
+91430004,Igny,ROUTE NATIONALE 444,11.76,BP,recognised,node/199040487,brand=BP | operator=BP | name=BP,40,
+94460003,Valenton,23 Rue Gabriel Péri,11.77,,unmatched,,,,
+91300001,MASSY,180 Rue de Paris,11.78,,unmatched,,,,
+91300018,MASSY,180 RUE DE PARIS,11.81,,unmatched,,,,
+93130010,NOISY LE SEC,107 RUE DE BREMENT,11.81,,unmatched,,,,
+93130004,Noisy-le-Sec,107 Rue de Brément,11.82,BP,recognised,node/476760599,brand=BP | operator=BP | name=BP,47,1
+93300004,Aubervilliers,195 Avenue Jean Jaurès,11.82,,unmatched,,,,
+94290009,Villeneuve-le-Roi,31 Avenue le Foll,11.82,,unmatched,,,,
+91300021,MASSY,VOIE EXPRESS CD 117,11.86,BP,recognised,way/70667688,brand=BP | operator=BP | name=Station BP Igny Ouest,1,1
+78140005,VéLIZY-VILLACOUBLAY,A 86 - AIRE DE VELIZY OUEST,11.87,,unmatched,,,,
+91300002,MASSY,Route de Palaiseau,11.91,Total Access,recognised,node/1118670880,brand=Total Access | operator=Total | name=TotalEnergies,50,1
+91380006,Chilly-Mazarin,Route de Longjumeau,11.91,,unmatched,,,,
+91380008,CHILLY-MAZARIN,Route de Longjumeau,11.98,,unmatched,,,,
+92380003,GARCHES,173 179 RUE DE LA PORTE JAUNE,11.98,,unmatched,,,,
+93000007,Bobigny,19 Avenue Jean Jaurès,11.98,Esso,recognised,node/2284410420,brand=Esso | name=Esso,19,
+94210001,Saint-Maur-des-Fossés,31 Avenue du Bac,12.02,,unmatched,,,,
+92600003,ASNIèRES-SUR-SEINE,272 Avenue des Gresillons,12.03,TotalEnergies,recognised,way/31964247,brand=TotalEnergies | operator=TotalEnergies | name=Les Grésillons,42,1
+92400007,COURBEVOIE,133 Boulevard de Verdun,12.04,TotalEnergies,recognised,way/81358613,brand=TotalEnergies | name=TotalEnergies,53,
+91200005,Athis-Mons,38 Avenue de Morangis,12.07,BP,recognised,node/2296412775,brand=BP | name=BP,25,1
+92400019,COURBEVOIE,133 BOULEVARD DE VERDUN,12.07,TotalEnergies,recognised,way/81358613,brand=TotalEnergies | name=TotalEnergies,87,1
+94450001,LIMEIL-BREVANNES,1bis AVENUE Gabriel peri,12.11,Total Access,recognised,node/5592636862,brand=Total Access | name=Total Access,96,1
+92000022,NANTERRE,265 AV GEORGES CLEMENCEAU,12.16,BP,recognised,node/887164229,brand=BP | operator=BP | name=BP,7,1
+92250001,La Garenne-Colombes,10 Boulevard de la République,12.24,,unmatched,,,,
+93000009,Bobigny,53 Avenue Henri Barbusse,12.25,,unmatched,,,,
+92230007,GENNEVILLIERS,113 Avenue Laurent Cély,12.28,,unmatched,,,,
+92500002,RUEIL-MALMAISON,119 Avenue du Président Pompidou,12.29,TotalEnergies,recognised,node/1168835124,brand=TotalEnergies | operator=SARL GONCALVES | name=TotalEnergies,33,1
+93561001,ROSNY-SOUS-BOIS,Avenue du Général de Gaulle,12.3,,unmatched,,,,
+93110002,Rosny-sous-Bois,24 Boulevard Gabriel Péri,12.34,TotalEnergies,recognised,way/144174294,brand=Total | operator=Total | name=Relais Total des Soudoux,15,1
+78140002,Vélizy-Villacoublay,27 Avenue Louis Bréguet,12.36,Esso,recognised,node/7532234367,brand=Esso | name=Esso,31,1
+93110004,Rosny-sous-Bois,12 Boulevard Gabriel Péri,12.38,TotalEnergies,recognised,way/144174294,brand=Total | operator=Total | name=Relais Total des Soudoux,35,1
+94500015,Champigny-sur-Marne,14 AV DU GENERAL DE GAULLE,12.45,,unmatched,,,,
+94500003,Champigny-sur-Marne,141 Avenue du Général Leclerc,12.46,TotalEnergies,recognised,way/513304254,brand=Total | operator=Total | name=Total Fouchette,47,1
+92230009,GENNEVILLIERS,111 Avenue Gabriel Péri,12.51,Avia,recognised,way/63962745,brand=Avia,19,
+92250003,La Garenne-Colombes,10 Boulevard de la République,12.53,,unmatched,,,,
+92600004,Asnières-sur-Seine,81 Rue des Bas,12.54,,unmatched,,,,
+92000012,NANTERRE,182 Rue Paul Vaillant-Couturier,12.58,Total Access,recognised,node/1156622406,brand=Total Access | name=Total Access,15,1
+92000025,nanterre,141 rue paul vaillant couturier,12.68,Total Access,recognised,node/1156622524,brand=Total Access | name=Total Access,3,1
+92000027,Nanterre,141 rue Paul Vaillant Couturier,12.68,Total Access,recognised,node/1156622524,brand=Total Access | name=Total Access,2,1
+92000028,Nanterre,141 Rue Paul Vaillant Couturier,12.68,Total Access,recognised,node/1156622524,brand=Total Access | name=Total Access,6,1
+92000002,NANTERRE,141 Rue Paul Vaillant-Couturier,12.72,Total Access,recognised,node/1156622524,brand=Total Access | name=Total Access,40,1
+92500001,RUEIL-MALMAISON,40 Avenue du 18 Juin 1940,12.79,TotalEnergies,recognised,node/3149395128,brand=TotalEnergies | name=TotalEnergies,15,1
+94370001,Sucy-en-Brie,63 Rue du Général Leclerc,12.87,Total Access,recognised,way/63498661,brand=Total Access | name=Total Access,34,1
+92000016,NANTERRE,141 RUE PAUL VAILLANT COUTURIER,12.89,Total Access,recognised,node/1156622524,brand=Total Access | name=Total Access,222,1
+78220001,Viroflay,146 Avenue du Général Leclerc,12.97,,unmatched,,,,
+78220002,Viroflay,146 Avenue du Général Leclerc,12.97,,unmatched,,,,
+92500008,Rueil-Malmaison,246 Route de l'Empereur,12.99,Esso,recognised,node/6153152496,brand=Esso | name=Esso,100,1
+78350001,Jouy-en-Josas,AUTOROUTE A 86,13.06,Total Access,recognised,way/1179753490,brand=Total Access | name=Total Access,15,1
+93130005,NOISY-LE-SEC,138 Rue de Paris,13.07,Esso,recognised,way/84107198,brand=Esso | name=Esso,44,1
+93120002,LA COURNEUVE,AUT A 1,13.13,,unmatched,,,,
+93000001,Bobigny,300 Avenue Paul Vaillant-Couturier,13.15,Esso,recognised,node/1254122680,brand=Esso | name=Esso,69,
+91160004,CHAMPLAN,RTE N 188 DEVIEE,13.16,Avia,recognised,way/259650795,brand=Avia | name=Avia Xpress,152,1
+93000003,BOBIGNY,54-60 Avenue Louis Aragon,13.22,Total Access,recognised,node/3337646100,brand=Total Access | name=Total Access,68,1
+93000008,Bobigny,54 Avenue Louis Aragon,13.22,Total Access,recognised,node/3337646100,brand=Total Access | name=Total Access,65,1
+91570001,Bièvres,PLAINE DE FAVREUSE,13.26,TotalEnergies,recognised,node/199054408,brand=TotalEnergies | name=TotalEnergies,131,1
+92420003,VAUCRESSON,BD REPUBLIQUE ZAC PEPINIERE,13.35,Super U,recognised,node/666480630,brand=Super U | operator=Super U | name=Super U,168,1
+94370007,SUCY-EN-BRIE,13 Rue Maurice Berteaux,13.41,TotalEnergies,recognised,node/5000200656,brand=Total | name=Total,57,1
+94370006,SUCY-EN-BRIE,13 Rue Maurice Berteaux,13.43,TotalEnergies,recognised,node/5000200656,brand=Total | name=Total,18,
+92700022,COLOMBES,64 BOULEVARD CHARLES DE GAULLE,13.48,Esso,recognised,way/79432214,brand=Esso | name=Esso,2,1
+92700014,COLOMBES,64 Boulevard Charles de Gaulle,13.49,Esso,recognised,way/79432214,brand=Esso | name=Esso,10,1
+93700002,Drancy,35 Avenue Henri Barbusse,13.55,TotalEnergies,recognised,node/2783229150,brand=Total | name=Relais de Drancy,17,1
+92000005,Nanterre,57 Avenue du Maréchal Joffre,13.56,,unmatched,,,,
+91120003,PALAISEAU,"99, avenue du Général Leclerc",13.59,,unmatched,,,,
+92700015,COLOMBES,38 avenue Henri Barbusse,13.62,,unmatched,,,,
+93330003,NEUILLY-SUR-MARNE,9 Boulevard du Maréchal Foch,13.65,TotalEnergies,recognised,way/145455019,brand=Total | name=Total,27,1
+92230002,GENNEVILLIERS,37 Avenue Lucien Lanternier,13.68,,unmatched,,,,
+92500005,Rueil-Malmaison,22 Avenue Paul Doumer,13.68,,unmatched,,,,
+93200007,Saint-Denis,112 Avenue Paul Vaillant-Couturier,13.68,BP,recognised,node/3336875297,brand=BP | name=BP,30,1
+91270001,Vigneux-sur-Seine,54 Avenue Henri Barbusse,13.75,Esso,recognised,way/145737296,brand=Esso | name=Esso,12,1
+92700002,Colombes,16 Avenue de Stalingrad,13.76,,unmatched,,,,
+94500004,Champigny-sur-Marne,135 Avenue Marx Dormoy,13.77,,unmatched,,,,
+91120002,VILLEBON-SUR-YVETTE,CHEMIN DE BRIIS,13.79,TotalEnergies,recognised,way/972593541,brand=TotalEnergies | name=Total Access,33,1
+91140001,VILLEBON-SUR-YVETTE,Chemin de Briis,13.79,TotalEnergies,recognised,way/972593541,brand=TotalEnergies | name=Total Access,38,1
+93330001,NEUILLY-SUR-MARNE,3 BD DU MARECHAL FOCH,13.8,TotalEnergies,recognised,way/145455019,brand=Total | name=Total,172,1
+92000008,NANTERRE,AVENUE VLADIMIR LENINE,13.85,,unmatched,,,,
+92700018,COLOMBES,44 50 BD DE VALMY,13.97,,unmatched,,,,
+92700021,Colombes,44 50 BD DE VALMY,13.97,,unmatched,,,,
+93330002,Neuilly-sur-Marne,29 Boulevard du Maréchal Foch,14.0,Total Access,recognised,node/1352863213,brand=Total Access | name=Total Access,51,1
+92420001,Vaucresson,BD REPUBLIQUE,14.01,,unmatched,,,,
+94430002,Chennevières-sur-Marne,2 Route de la Libération,14.01,,unmatched,,,,
+94470004,BOISSY-SAINT-LéGER,ZAC DE BOISSY RN 19,14.01,,unmatched,,,,
+94471001,BOISSY-SAINT-LéGER,92 centre commercial Boissy 2,14.01,,unmatched,,,,
+92000001,NANTERRE,77 Avenue Vladimir Illitch Lénine,14.04,TotalEnergies,recognised,node/581704882,brand=TotalEnergies | name=TotalEnergies,36,1
+92000017,NANTERRE,84-90 AVENUE LENINE,14.05,TotalEnergies,recognised,node/581704882,brand=TotalEnergies | name=TotalEnergies,10,1
+78000002,Versailles,60 Boulevard de la République,14.08,Esso,recognised,node/1430980483,brand=Esso | name=Esso,34,1
+93250005,Villemomble,41 Avenue de Rosny-sous-Bois,14.08,Societe Regionale De Distribution,raw,node/5001273506,brand=Societe Regionale De Distribution | operator=Societe Regionale De Distribution | name=Station-service,48,
+93700001,Drancy,274 Avenue Jean Jaurès,14.08,Esso,recognised,node/1249118712,brand=Esso | name=Esso,13,
+93700006,DRANCY,274 avenue Jean-Jaures,14.08,Esso,recognised,node/1249118712,brand=Esso | name=Esso,15,1
+78000018,Versailles,60 Boulevard de la République,14.09,Esso,recognised,node/1430980483,brand=Esso | name=Esso,40,1
+94470005,Boissy-Saint-Léger,Avenue du Général Leclerc,14.14,Avia,recognised,node/748713162,brand=Avia | name=Avia,42,1
+92700019,COLOMBES,14 BD EDGAR QUINET,14.15,,unmatched,,,,
+93250008,Villemomble,32 Avenue de Rosny-sous-Bois,14.19,BP,recognised,node/25209725,operator=BP | name=Carrefour city,15,1
+92500004,RUEIL-MALMAISON,155 Avenue Paul Doumer,14.21,Avia,recognised,node/1824376907,brand=Avia | name=Avia,125,
+78000004,Versailles,15 Rue du Général Pershing,14.22,TotalEnergies,recognised,way/165763302,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies,101,1
+92500016,Rueil-Malmaison,155 RUE PAUL DOUMER,14.23,,unmatched,,,,
+78000019,VERSAILLES,15 AV DU GENERAL PERSHING,14.24,TotalEnergies,recognised,way/165763302,brand=TotalEnergies | operator=TotalEnergies | name=TotalEnergies,67,
+93200001,Saint-Denis,139 Rue Gabriel Péri,14.32,,unmatched,,,,
+93250004,Villemomble,8 Avenue de Rosny-sous-Bois,14.32,Esso,recognised,way/350359677,brand=Esso | operator=Esso | name=Esso du Chalet,24,
+92700006,Colombes,143 Avenue de Stalingrad,14.45,,unmatched,,,,
+91360001,ÉPINAY-SUR-ORGE,LIAISON CD 25 A CD 17  ROUTE DE CORBEIL,14.47,,unmatched,,,,
+93140001,Bondy,175 Avenue Gallieni,14.61,BP,recognised,node/5617399763,brand=BP,26,1
+91210003,Draveil,108 Boulevard du Général de Gaulle,14.65,TotalEnergies,recognised,way/62809803,brand=Total | name=Total,176,1
+91210005,DRAVEIL,108 AV DU GENERAL DE GAULLE,14.65,TotalEnergies,recognised,way/62809803,brand=Total | name=Total,178,1
+94430001,Chennevières-sur-Marne,79 Rue des Fusillés de Châteaubriant,14.65,Total Access,recognised,node/748721858,brand=Total Access | name=Total Access,29,1
+94430006,Chennevières-sur-Marne,79 Rue des Fusillés de Châteaubriant,14.65,Total Access,recognised,node/748721858,brand=Total Access | name=Total Access,34,1
+92000009,NANTERRE,47 BLD DU HAVRE,14.69,Total Access,recognised,way/76696555,brand=Total Access | operator=Total | name=Relais du Pont de Bezons,169,1
+94450003,Limeil-Brévannes,RN19,14.74,,unmatched,,,,
+78170001,LA CELLE-SAINT-CLOUD,10 Route des Puits,14.78,,unmatched,,,,
+92700020,COLOMBES,AUTOROUTE A 86 - LA PRAIRIE,14.81,,unmatched,,,,
+91600001,Savigny-sur-Orge,35 Rue Henri Dunant,14.84,TotalEnergies,recognised,node/5204613516,brand=TotalEnergies | name=Total,14,1
+78000003,VERSAILLES,71 Rue des Chantiers,14.89,Total Access,recognised,way/74620040,brand=Total Access | operator=Total | name=Total Access,47,1
+94350001,Villiers-sur-Marne,75 Rue de Noisy,14.89,Esso,recognised,node/8124908363,brand=Esso | name=Esso,103,
+94350002,VILLIERS-SUR-MARNE,75 Rue de Noisy,14.89,Esso,recognised,node/8124908363,brand=Esso | name=Esso,103,1
+92700005,COLOMBES,AUT A 86  AIRE DE LA PRAIRIE,14.9,,unmatched,,,,
+91600003,Savigny-sur-Orge,14 Rue Henri Dunant,15.0,TotalEnergies,recognised,node/5204613516,brand=TotalEnergies | name=Total,197,1

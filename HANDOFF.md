@@ -8,7 +8,7 @@ published on top. Nothing mid-operation; the Mac checkout equals `origin/main`.
 Two reports built from the French `prix-carburants` open data, in one repo:
 
 - `README.md` — the three-city report (Castanet-Tolosan, Lyon, Gentilly).
-- `dashboard/benzine-prices.html` — the interactive Castanet dashboard (v1.12).
+- `dashboard/benzine-prices.html` — the interactive Castanet dashboard (v1.13).
 - `castanet/README.md` — the dashboard as static Markdown, for GitHub.
 
 ## Where it lives
@@ -52,10 +52,10 @@ Both reports count dry pumps with `common.dry_series`.
 | Nearest 2,250 € pump | 5.1 km | 2.6 km | 1.2 km |
 
 France: 22.4 % of diesel stations at the ceiling in the 30-day archive.
-Dashboard: 14 of 61 local diesel posts at 2,250 €, 2 of them flagged dry; nearest
+Dashboard: 14 of 61 local diesel posts at 2.250 €, 2 of them flagged dry; nearest
 in stock 6.6 km (Portet-sur-Garonne); Total group on the cap for 46 days, since
 3 Sept; uncapped stations falling 1.8 ¢/week; dry table 40 (58 a day earlier, 62
-a week earlier), all local stations 46. Diesel turned down after a 22 Sept peak
+a week earlier), all local stations 47, the same as the three-city count. Diesel turned down after a 22 Sept peak
 of 2.381.
 
 ## Changes on 2026-10-12
@@ -101,6 +101,19 @@ words in the prose had drifted from the computed numbers. Fixed:
 - `dry_pct_now` guarded; `castanet_md.py` places weekday rows by `dow`; town
   names like "LABèGE" title-cased; "1 days".
 
+Second round, the same day:
+
+- Brands are matched for every archive station (`stations.csv`), live ones
+  first so an old id never takes a brand from today's site. 39 Castanet ids
+  gained a brand; no live station changed. The split moves one station, in
+  2025 only.
+- The dashboard's `dry_all` counts the 110 archive stations, as the
+  three-city report does: 47 in both (was 46 against 47), peak 85 (was 79).
+- SP95 is in `config.CEILING`; `ceilings_now.py` and `snapshot_churn.py`
+  import it instead of keeping copies.
+- The Markdown reports and figures write the cap with a decimal point,
+  "2.250 €", like every other price. The dashboard keeps decimal commas.
+
 Checked in `~/bz-test` on poptiplex (same archives, `make build`, diffed
 against `dab378c`): only the intended text, `weekday.png`, the HTML and
 `report_data.json` changed, plus a routine Lyon OSM refresh.
@@ -120,23 +133,14 @@ From the 2026-10-20 critics, ranked by value; none is fixed yet.
   shares and `meta.nat_n` read the forward-filled day; trend reads the observed
   one. Removing the filled day in `agg.py`/`capshare.py` would end the class.
   "Dry now" also counts back from different days in the two reports.
-- **Brands match only the instant feed's 71 stations**, so 39 archive stations
-  have no brand and count as "other"; dashboard `dry_all` uses the same 71.
-  Matching `stations.csv` closes the 110 / 71 gap and the dry 78 / 77 gap.
-- **SP95 is capped in the data** (9.6 % of posts at 1.990) and in the
-  template's `CEIL_OF`, but missing from `config.CEILING`; `ceilings_now.py`
-  and `tools/snapshot_churn.py` keep private copies.
 - **The three outputs disagree on counts**: Total-group stations 17 (split)
   against 21 (brands); "stations on the cap" includes non-Total ones; dry
-  pairs 47 against table 40.
-- **Decimal separator**: the Markdown reports write prices "2.344 €/L" and the
-  cap "2,250 €" in one sentence; the dashboard uses decimal commas with
-  comma thousands ("9,431"). Needs a decision, not a fix.
+  pairs 47 against table 40 (the table covers only Total and its rivals).
+- The dashboard mixes decimal commas with comma thousands ("9,431").
 - Remaining fixed prose in `castanet_md.py`: "Monday looks cheapest and Sunday
-  dearest", "bound again since early September", the split-chart and dry-chart
-  annotations ("2,250 € ceiling", "8 Apr 2026").
+  dearest", "bound again since early September", the dry-chart annotation ("8 Apr 2026").
 - Guards: an empty brand group in `build_report` split, `capped[0]` print,
-  divisions in `ceilings_now.py:46`; publish's rsync runs outside the lock.
+  publish's rsync runs outside the lock.
 - Reader ideas: lead the dashboard with the nearest 2.250 € pumps not flagged
   dry, with the age of the stock flag; put `stations_map.png` in the Castanet
   outputs; start `ceiling_share.png` at March 2026; mark the provisional tail

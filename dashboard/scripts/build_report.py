@@ -223,7 +223,10 @@ while d <= OBS_END:
     dry_days.append(d); d += timedelta(days=1)
 
 dry_table = dry_series(INTERVALS, dry_days, DRY_WINDOW, {s["id"] for s in total_st + rival_st})
-dry_all = dry_series(INTERVALS, dry_days, DRY_WINDOW, {s["id"] for s in stations})
+# Every archive station within the radius, as the three-city report counts them:
+# the 71 in today's feed missed outages at sites that have since left it.
+ARCHIVE_IDS = {r["id"] for r in csv.DictReader(open(f"{CITY}/stations.csv"))}
+dry_all = dry_series(INTERVALS, dry_days, DRY_WINDOW, ARCHIVE_IDS)
 # non-Total stations that also sit exactly on the diesel ceiling
 cap_others = [{"brand": st["brand"] or "", "ville": st["ville"], "dist": st["dist"]}
               for st in stations

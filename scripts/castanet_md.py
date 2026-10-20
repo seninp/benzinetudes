@@ -21,6 +21,8 @@ from config import CEILING, CITIES
 
 CAST = CITIES[0]["color"]             # Castanet's colour in the three-city report
 FREE = "#eb6834"                      # the free (uncapped) cohort
+CAP_D = f"{CEILING['Gazole']:.3f}"    # decimal point throughout, the cap included
+CAP_P = f"{CEILING['E10']:.3f}"
 
 
 # ---- load ------------------------------------------------------------------
@@ -69,7 +71,7 @@ fig, ax = plt.subplots(figsize=(9.5, 4.4))
 ax.plot(sdays, oth, color=FREE, lw=2, label="every other brand")
 ax.plot(sdays, tot, color=CAST, lw=2, label="Total-group (TotalEnergies, Total Access)")
 ax.axhline(sp["level"], color=BASE, lw=1, ls=":")
-ax.annotate("2,250 € ceiling", (sdays[min(300, len(sdays) - 1)], sp["level"]), xytext=(0, 5),
+ax.annotate(f"{CAP_D} € ceiling", (sdays[min(300, len(sdays) - 1)], sp["level"]), xytext=(0, 5),
             textcoords="offset points", color=MUTED, fontsize=9)
 tl = tot[~np.isnan(tot)]; ol = oth[~np.isnan(oth)]
 end_label(ax, sdays[-1], tl[-1], f"{tl[-1]:.3f}", CAST)
@@ -210,8 +212,6 @@ st = D["cap_story"]
 cap = D["cap"]
 gz = D["ceilings"]["Gazole"]
 ev = sp["cap_evidence"]
-CAP_D = eur(CEILING["Gazole"]).replace(".", ",")      # the ceiling keeps its French form
-CAP_P = eur(CEILING["E10"]).replace(".", ",")
 cap_day_s = f"{cap_day.day} {cap_day:%B %Y}"
 pre = sp.get("pre_cap")
 pre_s = (f" (on {pre['day']} the Total-group stations were the "
@@ -351,8 +351,8 @@ Five properties of this feed are invisible in the files themselves:
 
 1. **No brand field exists** — not in the annual archives, not in the instant
    feed. Brands come from OpenStreetMap (`amenity=fuel` via Overpass), matched by
-   position within 250 m; all {sp['total_n']} Total-group sites here matched, so
-   an unmatched station is counted as "other" in the split.
+   position within 250 m, for every station the archive lists here, old ids
+   included; an unmatched station is counted as "other" in the split.
 2. **A missing price means "not reported", never "not sold".** Capped stations
    report per fuel intermittently and always return at exactly the ceiling, so
    any snapshot ceiling share is a lower bound; the 30-day archive share is the

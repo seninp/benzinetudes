@@ -3,9 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="1.12">
+<meta name="version" content="1.13">
 <meta name="last-updated" content="2026-10-20">
 <!-- Changelog
+  1.13 (2026-10-20) The dry count covers every archive station within the radius, 110, not
+      the 71 in today's feed, so it matches the three-city report: 47 now (was 46) and a
+      peak of 85 on 6 April (was 79); outages at stations that later left the feed were
+      missing. Brands are matched for the same 110, so an old id of a Total site counts
+      as Total in the split; this moves one station in 2025 only. SP95 is a capped fuel.
   1.12 (2026-10-20) The trend verbs follow the data. Before, the short answer opened "Rising"
       and section 3 was titled "Rising everywhere except on the cap" whatever the slope, so
       the 17 Oct build read "climbing at -2,2 centimes a week" while diesel fell; both now
@@ -465,7 +470,7 @@
     <p class="sub" id="subtitle"></p>
   </div>
   <div class="pill">
-    <span id="vpill">v1.12 · 2026-10-20</span>
+    <span id="vpill">v1.13 · 2026-10-20</span>
     <button id="theme">Dark</button>
   </div>
 </header>

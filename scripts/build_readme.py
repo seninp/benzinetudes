@@ -57,7 +57,7 @@ end = compare["end"]
 today = date.today().isoformat()
 
 KM = f"{RADIUS_KM:g} km"
-CAP = f"{DIESEL_CAP:.3f} €".replace(".", ",")
+CAP = f"{DIESEL_CAP:.3f} €"
 
 L = []
 add = L.append
@@ -161,8 +161,8 @@ so a dash never proves the fuel is missing:
         dry = ", ".join(r["dry"]) if r["dry"] else ""
         add(f"| {r['dist']:.2f} | {r['brand'] or '?'} | {r['adresse'].title()}, {ville(r['ville'])} "
             f"| {cells[0]} | {cells[1]} | {cells[2]} | {dry} |")
-    add("\n<sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2.250 €, "
-        "petrol 1.990 €). Brand `?` — no OSM match within 250 m; a trailing `?` — "
+    add(f"\n<sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel {CAP}, "
+        f"petrol {CEILING['E10']:.3f} €). Brand `?` — no OSM match within 250 m; a trailing `?` — "
         "two stations share one OSM feature.</sub>\n")
 
 add(f"""## Reading the data

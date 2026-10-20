@@ -6,7 +6,11 @@ inconsistently: brand/operator/name disagree, and some brand tags are junk
 (one Total station is tagged brand=kai). So each of the three tags is tried in
 turn and the first *recognised* one wins, rather than the first non-empty one.
 
-Usage: brands.py <osm_fuel.json> <stations_now.csv> <out.csv>
+Usage: brands.py <osm_fuel.json> <stations_now.csv> <stations.csv> <out.csv>
+
+Both station lists are matched: the instant feed's live sites, then every other
+archive station. The archive holds old ids of today's sites, and a station
+without a brand counts as "other" in the Total split.
 """
 import csv, json, re, sys
 from common import haversine_km
@@ -78,7 +82,7 @@ def brand_of(tags):
             return f.strip(), "raw"
     return "", "none"
 
-def main(osm_path, st_path, out_path):
+def main(osm_path, st_path, archive_path, out_path):
     pts = []
     for e in json.load(open(osm_path))["elements"]:
         c = e.get("center") or ({"lat": e["lat"], "lon": e["lon"]} if "lat" in e else None)
@@ -90,8 +94,11 @@ def main(osm_path, st_path, out_path):
                     "osm": f"{e['type']}/{e['id']}",
                     "tags": " | ".join(f"{k}={t[k]}" for k in ("brand","operator","name") if t.get(k))})
 
+    live = list(csv.DictReader(open(st_path)))
+    ids = {r["id"] for r in live}
+    archive_only = [r for r in csv.DictReader(open(archive_path)) if r["id"] not in ids]
     rows, used = [], set()
-    for r in csv.DictReader(open(st_path)):
+    for r in live + archive_only:
         la, lo = float(r["lat"]), float(r["lon"])
         best, bd = None, 1e9
         for i, p in enumerate(pts):
@@ -107,18 +114,19 @@ def main(osm_path, st_path, out_path):
                      "source": best["how"] if ok else "unmatched",
                      "osm": best["osm"] if ok else "",
                      "osm_tags": best["tags"] if ok else "",
-                     "match_m": round(bd) if ok else ""})
+                     "match_m": round(bd) if ok else "", "live": r["id"] in ids})
     # Some pairs of stations sit within ~100 m of one another (motorway aires with
     # two sides, twin sites on one street) and OSM maps only one of them. Both then
     # match the same feature, so the brand is inferred rather than observed for the
-    # further one; flag it instead of presenting it as certain.
+    # further one; flag it instead of presenting it as certain. A live station
+    # beats an archive-only one, which is usually the same site's old id.
     claims = {}
     for r in rows:
         if r["osm"]:
             claims.setdefault(r["osm"], []).append(r)
     for osm, rs in claims.items():
         if len(rs) > 1:
-            nearest = min(rs, key=lambda r: r["match_m"])
+            nearest = min(rs, key=lambda r: (not r["live"], r["match_m"]))
             for r in rs:
                 r["shared"] = "" if r is nearest else "1"
     for r in rows:
@@ -126,15 +134,16 @@ def main(osm_path, st_path, out_path):
 
     with open(out_path, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["id","ville","adresse","dist_km","brand",
-                                          "source","osm","osm_tags","match_m","shared"])
+                                          "source","osm","osm_tags","match_m","shared"],
+                           extrasaction="ignore")
         w.writeheader()
         for r in rows:
             w.writerow(r)
     named = sum(1 for r in rows if r["brand"])
-    print(f"{named}/{len(rows)} stations matched to a brand within {MATCH_M} m "
+    print(f"{named}/{len(rows)} stations ({len(ids)} live) matched to a brand within {MATCH_M} m "
           f"({sum(1 for r in rows if r['source']=='raw')} kept a raw OSM tag, "
           f"{sum(1 for r in rows if r['shared'])} share a feature with a closer station)",
           file=sys.stderr)
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    main(*sys.argv[1:5])

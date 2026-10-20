@@ -124,3 +124,116 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 69210009,LENTILLY,RN 7 LE GRAND CHEMIN,14.6,Avia,recognised,node/1275639637,brand=Avia | operator=Avia | name=Avia,15,
 1390009,MIONNAY,AIRE DE MIONNAY EST CHATANAYAUTOROUTE A 46,14.62,Eni,recognised,way/78170655,brand=Eni | name=Eni,6,
 69360018,SEREZIN DU RHONE,A7 AIRE DE SEREZIN DU RHONE,14.85,Avia,recognised,node/4332360356,brand=Avia | operator=Avia | name=Avia,39,
+69003009,LYON,258 Rue Garibaldi,1.74,Avia,recognised,way/361557395,brand=Avia | operator=Avia | name=Avia,48,1
+69004009,LYON,97 Rue Denfert-Rochereau,1.74,Eni,recognised,node/2687558383,brand=Eni | operator=Agip | name=Eni,11,1
+69004011,LYON,97 Rue Denfert-Rochereau,1.74,Eni,recognised,node/2687558383,brand=Eni | operator=Agip | name=Eni,9,1
+69004010,Lyon,71 Boulevard des Canuts,2.0,,unmatched,,,,
+69004015,LYON,71 BOULEVARD DES CANUTS,2.01,,unmatched,,,,
+69007003,LYON,344 Rue Garibaldi,2.21,TotalEnergies,recognised,node/2991412272,brand=TotalEnergies | operator=TotalEnergies | name=Relais Garibaldi,34,
+69007007,LYON,344 RUE GARIBALDI,2.21,TotalEnergies,recognised,node/2991412272,brand=TotalEnergies | operator=TotalEnergies | name=Relais Garibaldi,34,1
+69100013,Villeurbanne,Boulevard de la Bataille de Stalingrad,2.4,Esso,recognised,node/5092868372,brand=Esso | name=Esso,42,1
+69009006,LYON,40 Rue Sergent Michel Berthet,2.45,,unmatched,,,,
+69100017,VILLEURBANNE,47 Cours Émile Zola,2.49,Esso,recognised,node/1348027494,brand=Esso | name=Esso,40,1
+69009005,LYON,Avenue Barthélemy Buyer,2.56,Total Access,recognised,node/3135247243,brand=Total Access | name=Total Access,23,1
+69004019,LYON,55 BIS QUAI GILLET,2.59,Eni,recognised,node/3135242210,brand=Eni | name=Eni,1,1
+69004008,Lyon,55 BIS QUAI GILLET,2.64,Eni,recognised,node/3135242210,brand=Eni | name=Eni,53,1
+69004018,Lyon,55 BIS QUAI GILLET,2.64,Eni,recognised,node/3135242210,brand=Eni | name=Eni,53,1
+69005003,LYON,32 Avenue du Point du Jour,2.66,,unmatched,,,,
+69300003,CALUIRE-ET-CUIRE,34 Rue Pasteur,2.7,TotalEnergies,recognised,node/1896604910,brand=Total | name=Total,20,1
+69007002,LYON,44 Avenue Leclerc,3.02,Avia,recognised,node/408053118,brand=Avia | name=Avia,100,1
+69003005,LYON,59/61 Cours Albert Thomas,3.04,Avia,recognised,node/249331849,brand=Avia | operator=Avia | name=Avia,32,1
+69003011,LYON,59/61 COURS ALBERT THOMAS,3.04,Avia,recognised,node/249331849,brand=Avia | operator=Avia | name=Avia,32,1
+69003010,LYON,65 Cours Albert Thomas,3.08,Avia,recognised,node/249331849,brand=Avia | operator=Avia | name=Avia,28,1
+69100012,Villeurbanne,72 Cours Tolstoï,3.16,Esso,recognised,way/84590940,brand=Esso | operator=Esso | name=Esso,30,1
+69100027,VILLEURBANNE,72 COURS TOLSTOI,3.19,Esso,recognised,way/84590940,brand=Esso | operator=Esso | name=Esso,7,1
+69100015,Villeurbanne,Boulevard du 11 Novembre 1918,3.2,Esso,recognised,way/85022941,brand=Esso | name=ESSO,33,1
+69007005,LYON,112 Rue de Gerland,3.22,TotalEnergies,recognised,node/944083020,brand=TotalEnergies | name=TotalEnergies Raclet,36,1
+69009001,Lyon,111 Rue Marietton,3.5,TotalEnergies,recognised,node/3303361961,brand=TotalEnergies | name=Total,163,1
+69002005,Lyon,84 Quai Perrache,3.53,Esso,recognised,way/806804022,brand=Esso | name=Esso,15,1
+69002001,Lyon,84 Quai Perrache,3.54,Esso,recognised,way/806804022,brand=Esso | name=Esso,6,1
+69100023,VILLEURBANNE,47 COURS EMILE ZOLA,3.56,,unmatched,,,,
+69100026,VILLEURBANNE,47 COURS EMILE ZOLA,3.56,,unmatched,,,,
+69370003,St didier au mont d or,107 route de saint cyr,3.67,TotalEnergies,recognised,node/1566655390,brand=Total | name=Relais Saint-Didier,1,1
+69110003,Sainte-Foy-lès-Lyon,28 Avenue Maurice JARROSSON,3.81,Intermarché,recognised,node/1908196728,brand=Intermarché,117,1
+69300008,Caluire-et-Cuire,Montée des Soldats,3.93,TotalEnergies,recognised,way/50825861,brand=TotalEnergies | operator=SARL MD Rhône | name=Relais des Soldats,33,1
+69300012,Caluire-et-Cuire,MONTEE DES SOLDATS,3.95,TotalEnergies,recognised,way/50825861,brand=TotalEnergies | operator=SARL MD Rhône | name=Relais des Soldats,62,1
+69008005,LYON,131 Rue Marius Berliet,3.96,Total Access,recognised,node/34991534,brand=Total Access | name=Total Access,198,1
+69160002,TASSIN-LA-DEMI-LUNE,49 Avenue Victor Hugo,4.02,Avia,recognised,node/1459055367,brand=Avia | name=Avia,23,1
+69100018,VILLEURBANNE,72 Cours Tolstoï,4.08,Carrefour,recognised,node/729766205,brand=Carrefour | operator=Carrefour | name=Carrefour,250,1
+69100019,VILLEURBANNE,47 Cours Émile Zola,4.08,Carrefour,recognised,node/729766205,brand=Carrefour | operator=Carrefour | name=Carrefour,250,1
+69007004,LYON,Avenue Tony Garnier,4.19,TotalEnergies,recognised,node/25214045,brand=TotalEnergies | name=Total Access,56,1
+69007001,LYON,81 Avenue Tony Garnier,4.23,Total Access,recognised,node/571833146,brand=Total Access | operator=Total | name=Total Access,46,1
+69007010,LYON,56 Avenue Tony Garnier,4.23,TotalEnergies,recognised,node/25214045,brand=TotalEnergies | name=Total Access,2,1
+69160001,TASSIN-LA-DEMI-LUNE,35 AVENUE GENERAL BROSSET,4.31,Auchan,recognised,node/252155883,brand=Auchan | operator=Auchan | name=Auchan,33,1
+69005001,LYON,163 Rue Joliot-Curie,4.44,Eni,recognised,node/2308064621,brand=Eni | operator=Eni | name=Eni,67,1
+69008002,LYON,86 Avenue Jean Mermoz,4.94,Total Access,recognised,node/268130821,brand=Total Access | operator=Total | name=Relais Total Lyon Mermoz,11,1
+69008006,LYON,86 avenue Jean Mermoz,4.94,Total Access,recognised,node/268130821,brand=Total Access | operator=Total | name=Relais Total Lyon Mermoz,11,1
+69008009,Lyon,86 avenue jean mermoz,4.94,Total Access,recognised,node/268130821,brand=Total Access | operator=Total | name=Relais Total Lyon Mermoz,11,1
+69100016,VILLEURBANNE,Rue Léon Blum,5.09,Eni,recognised,node/1789602613,brand=Eni | name=Eni Villeurbanne Blum,25,1
+69100024,Villeurbanne,112B RUE LEON BLUM,5.09,Eni,recognised,node/1789602613,brand=Eni | name=Eni Villeurbanne Blum,27,1
+69008004,LYON,105 Avenue Jean Mermoz,5.1,Total Access,recognised,node/268130821,brand=Total Access | operator=Total | name=Relais Total Lyon Mermoz,176,1
+69190005,Saint-Fons,Boulevard Pierre Sémard,5.34,,unmatched,,,,
+69500003,BRON,16 Avenue Franklin Roosevelt,5.36,TotalEnergies,recognised,node/1124760838,brand=TotalEnergies | operator=Total | name=Total Access,32,1
+69500010,Bron,16 AV FRANKLIN ROOSEVELT,5.37,TotalEnergies,recognised,node/1124760838,brand=TotalEnergies | operator=Total | name=Total Access,21,1
+69500001,BRON,209 bd Pinel,5.43,,unmatched,,,,
+69410004,CHAMPAGNE-AU-MONT-D'OR,3 Avenue du Général de Gaulle,5.6,TotalEnergies,recognised,way/866399023,brand=TotalEnergies | name=Total Access,25,1
+69410005,Champagne-au-Mont-d'Or,4 Avenue du Général de Gaulle,5.6,TotalEnergies,recognised,way/866399023,brand=TotalEnergies | name=Total Access,16,1
+69130004,ECULLY,11 Avenue Guy de Collongue,5.65,TotalEnergies,recognised,node/1462134678,brand=TotalEnergies | operator=Total | name=TotalEnergies,70,1
+69500002,BRON,"248, Route de Genas",5.72,Intermarché,recognised,node/280706506,brand=Station service intermarché | operator=Casino | name=Station service intermarché,165,1
+69110001,SAINTE-FOY-LèS-LYON,27 Avenue de l'Aqueduc de Beaunant,5.81,TotalEnergies,recognised,node/4937644556,brand=TotalEnergies | name=TotalEnergies,81,
+69500006,Bron,296 Route de Genas,5.87,Intermarché,recognised,node/280706506,brand=Station service intermarché | operator=Casino | name=Station service intermarché,58,1
+69500004,BRON,BD LAURENT BONNEVAY,5.89,,unmatched,,,,
+69100002,VILLEURBANNE,283 Route de Genas,6.17,TotalEnergies,recognised,node/280707135,brand=TotalEnergies | operator=Total | name=Total,22,1
+69120010,Vaulx-en-Velin,Avenue Gabriel Péri - Rue P.Teste,6.17,Eni,recognised,node/7504049967,brand=Eni | name=Eni,21,1
+69120004,VAULX-EN-VELIN,AVE GABRIEL PERI/ RUE P.TESTE,6.18,Eni,recognised,node/7504049967,brand=Eni | name=Eni,20,1
+69190007,Saint-Fons,"RN 383, BRD PIERRE SEMARD",6.36,BP,recognised,node/5567701628,brand=BP | name=BP Saint-Fons - P. Herriot,10,1
+69370001,SAINT-DIDIER-AU-MONT-D'OR,107 ROUTE DE ST CYR,6.43,,unmatched,,,,
+69672001,Bron,142 Avenue Franklin Roosevelt,6.58,Intermarché,recognised,way/124870782,brand=Intermarché | name=Intermarché,58,1
+69270001,FONTAINES-SUR-SAôNE,46 Avenue des Marronniers,6.62,TotalEnergies,recognised,node/2105391183,brand=TotalEnergies | name=TotalEnergies,93,1
+69270003,Fontaines-sur-Saône,46 Avenue des Marronniers,6.68,TotalEnergies,recognised,node/2105391183,brand=TotalEnergies | name=TotalEnergies,26,1
+69140004,RILLIEUX-LA-PAPE,1880 Route de Strasbourg,6.79,,unmatched,,,,
+69140007,Rillieux-la-Pape,1880 route de strasbourg,6.79,,unmatched,,,,
+69260010,CHARBONNIERES-LES-BAINS,80 ROUTE DE PARIS,6.79,Eni,recognised,node/1694646525,brand=Eni | operator=ENI | name=Eni,2,1
+69570003,Dardilly,AIRE DE DARDILLY,6.79,Engie,raw,node/13120292128,brand=Engie,102,
+69260004,CHARBONNIèRES-LES-BAINS,51 Route de Paris,7.0,Eni,recognised,node/1820529489,brand=Eni | operator=Eni | name=Eni Charbonnières Est,92,1
+69570001,Dardilly,AUTOROUTE A6 AIRE DE DARDILLY,7.04,TotalEnergies,recognised,node/25212791,brand=TotalEnergies | operator=Total | name=Total Access,143,1
+69260008,CHARBONNIERES,51-55 ROUTE DE PARIS,7.06,Eni,recognised,node/1820529489,brand=Eni | operator=Eni | name=Eni Charbonnières Est,14,1
+69190004,SAINT-FONS,RN 383 BRD PIERRE SEMARD,7.08,,unmatched,,,,
+69120001,Vaulx-en-Velin,57 Avenue de Bohlen,7.09,TotalEnergies,recognised,way/148616489,brand=Total | name=Total,36,1
+69310002,PIERRE-BéNITE,BOULEVARD DE L EUROPE,7.25,,unmatched,,,,
+69230004,SAINT-GENIS-LAVAL,66 Avenue Georges Clemenceau,7.59,Esso,recognised,node/1036270729,brand=Esso | operator=Carrefour Express | name=Esso,24,1
+69230003,SAINT-GENIS-LAVAL,66 Avenue Georges Clemenceau,7.61,Esso,recognised,node/1036270729,brand=Esso | operator=Carrefour Express | name=Esso,39,1
+69570004,DARDILLY,AUTOROUTE A6,7.7,,unmatched,,,,
+69320004,Feyzin,Chemin départemental 12,9.05,,unmatched,,,,
+69320005,Feyzin,Chemin départemental 12,9.13,,unmatched,,,,
+69200002,Vénissieux,Route de Corbas,9.31,TotalEnergies,recognised,node/3100755985,brand=Total | name=Total,21,1
+69800005,SAINT-PRIEST,ROUTE DE LYON,9.5,TotalEnergies,recognised,node/3135247241,brand=Total | name=Relais Saint-Priest les Brigoudes,39,1
+69320002,FEYZIN,CD-12,9.71,,unmatched,,,,
+69320007,FEYZIN,CD 12,9.94,,unmatched,,,,
+69320006,FEYZIN,CD 12,10.05,,unmatched,,,,
+69760001,LIMONEST,403 Route de Bellevue,10.15,TotalEnergies,recognised,node/1488255342,brand=Totalenergies | operator=Totalenergies | name=Totalenergies,71,
+69800003,SAINT-PRIEST,259 Route de Grenoble,10.42,Total Access,recognised,node/1875211955,brand=Total Access | name=Relais Saint-Priest Mi-Plaine,11,1
+69800021,SAINT PRIEST,259 ROUTE DE GRENOBLE,10.42,Total Access,recognised,node/1875211955,brand=Total Access | name=Relais Saint-Priest Mi-Plaine,5,1
+69150003,DECINES,397 AVENUE JEAN JAURES,11.23,TotalEnergies,recognised,node/25212541,brand=TotalEnergies | name=TotalEnergies,25,1
+69800020,St Priest,91 route de Grenoble,11.23,Independent,raw,node/3340189376,brand=Independent,215,1
+69800022,SAINT PRIEST,248 ROUTE DE GRENOBLE,11.26,Independent,raw,node/3340189376,brand=Independent,191,1
+69530001,BRIGNAIS,21 Rue Général de Gaulle,11.39,,unmatched,,,,
+69800009,SAINT-PRIEST,7 Rue de l'Égalité,11.45,Independent,raw,node/3340189376,brand=Independent,9,
+69960004,CORBAS,Avenue du 8 Mai 1945,12.0,,unmatched,,,,
+69960005,Corbas,47 Avenue du 8 Mai 1945,12.0,,unmatched,,,,
+69800002,Saint-Priest,72 Route d'Heyrieux,12.13,TotalEnergies,recognised,way/83943276,brand=TotalEnergies | operator=Total Market | name=TotalEnergies,48,1
+69390003,VOURLES,LES SEPT CHEMINS,12.36,,unmatched,,,,
+69740001,GENAS,22 Route de Lyon,12.38,Esso,recognised,node/7502853216,brand=Esso | name=Esso,14,1
+1600001,MIRIBEL,Rue du Figuier,12.74,Carrefour,recognised,node/7183794921,brand=Carrefour | name=Carrefour,157,1
+69800006,Saint-Priest,119 RTE D'HEYRIEUX,12.89,Esso,recognised,node/25213955,brand=Esso | operator=Esso | name=ESSO Saint-Priest Heyrieux,25,1
+69670001,VAUGNERAY,61 Route de Bordeaux,13.11,Esso,recognised,way/128624686,brand=Esso | name=Esso,60,1
+69800007,SAINT-PRIEST,AUT A 43,13.12,BP,recognised,node/25210081,brand=BP | operator=BP | name=Station Service BP,127,1
+69800008,Saint-Priest,AIRE DE MANISSIEUX,13.25,BP,recognised,node/25213337,brand=BP | operator=BP | name=Station Service BP,38,
+69360002,SAINT-SYMPHORIEN-D'OZON,A 7 - AIRE DE SOLAIZE,13.42,,unmatched,,,,
+69800004,SAINT-PRIEST,91 Route de Grenoble,13.46,Total Access,recognised,node/25178719,brand=Total Access | operator=Total | name=Relais Total de Saint-Hubert,142,1
+69390002,Vourles,LES SEPT CHEMINS RN.86,13.48,TotalEnergies,recognised,node/1325303896,brand=TotalEnergies | name=TotalEnergies,25,1
+1390008,MIONNAY,AIRE DE MIONNAY OUEST SAINT GALMIER,14.28,Shell,recognised,way/971163622,brand=Shell | name=Shell,34,1
+1390004,MIONNAY,AIRE DE MIONNAY OUEST GALMIER A46,14.36,Shell,recognised,way/971163622,brand=Shell | name=Shell,110,1
+69210006,Lentilly,RN7,14.59,Avia,recognised,node/1275639637,brand=Avia | operator=Avia | name=Avia,8,1
+69360009,SAINT-SYMPHORIEN-D'OZON,Avenue du 8 Mai 1945,14.71,,unmatched,,,,
+69360017,SEREZIN DU RHONE,A7 AIRE DE SEREZIN DU RHONE,14.89,Avia,recognised,node/4332360356,brand=Avia | operator=Avia | name=Avia,7,1

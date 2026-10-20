@@ -23,7 +23,7 @@ from the instant feed and are current.
 | Petrol SP98 | **2.205** | 2.239 | +0.007 | +0.434 | 61 |
 | Superethanol E85 | **0.926** | 0.913 | +0.021 | +0.192 | 45 |
 
-<sub>Snapshot of 62 priced stations on 2026-10-20; 26 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
+<sub>Snapshot of 62 priced stations on 2026-10-20; 27 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
 
 ![Diesel and E10: Castanet against the French mean](fig/prices.png?v=7936b80c)
 
@@ -36,25 +36,25 @@ last 28 days local diesel has been flat within the noise (-1.0 ¢/week).
 
 ## The ceiling splits the field
 
-On **8 April 2026** TotalEnergies set a hard **2,250 €/L** ceiling on diesel
-(and **1,990 €** on petrol). The day before, 2% of
+On **8 April 2026** TotalEnergies set a hard **2.250 €/L** ceiling on diesel
+(and **1.990 €** on petrol). The day before, 2% of
 local diesel stations sat exactly on that price; the day after,
 22%. It slackened when the market fell below it in
 the summer — on 2026-07-01 only 0.1% of French
 stations were at the cap — and has bound again since early September. Over the
 last 30 days of the archive **29.9%** of local diesel
-stations posted exactly 2,250 €, against 22.4% nationally.
+stations posted exactly 2.250 €, against 22.4% nationally.
 
 Averaging the whole area hides what the ceiling does, because it acts on only
 some brands. The 17 Total-group stations within 15 km are pinned to
 it and cannot follow the market up; the 50 others are free.
 
-![Diesel within 15 km, Total-group against every other brand](fig/split.png?v=9e58b4ec)
+![Diesel within 15 km, Total-group against every other brand](fig/split.png?v=9f020d17)
 
 The two groups now stand **12.6 centimes** apart — Total-group at
 2.250, everyone else at 2.376 — after moving
 together for a year (on 2026-03-01 the Total-group stations were the *dearer* ones, by 5.7 ¢). The maxima are the proof that
-2,250 € is a cap and not a price they all chose: no Total-group station has posted above it since 2026-07-22 (it was over on 2 of 643 days, the last on 2026-07-21), while the free
+2.250 € is a cap and not a price they all chose: no Total-group station has posted above it since 2026-07-22 (it was over on 2 of 643 days, the last on 2026-07-21), while the free
 brands' dearest diesel reached 2.468 €/L.
 
 The nearest pump on the ceiling and not flagged dry is
@@ -80,11 +80,11 @@ times the whole weekday effect.
 ## The dry count runs ahead
 
 An out-of-stock flag appears in the annual archive before the price story turns.
-The count of station-fuel pairs flagged dry within 15 km peaked at **79** on
-**6 April 2026** — two days before the 2,250 € ceiling appeared — then
-fell back. It sits at 46 now.
+The count of station-fuel pairs flagged dry within 15 km peaked at **85** on
+**6 April 2026** — two days before the 2.250 € ceiling appeared — then
+fell back. It sits at 47 now.
 
-![Out-of-stock flags within 15 km, over time](fig/dry.png?v=3cdb1bae)
+![Out-of-stock flags within 15 km, over time](fig/dry.png?v=dc8d516d)
 
 Read the tail with care: outage flags and their end dates land in the archive a
 day or two late, so the last few days of this line are provisional and revise
@@ -113,7 +113,7 @@ dash never proves the fuel is missing:
 | 6.46 | Esso Express | 105 Route De Narbonne, Toulouse | 2.421 | 2.220 | 2.321 |  |
 | 6.60 | Esso | 68 Route De Revel, Toulouse | 2.399 | 2.239 | 2.359 |  |
 
-<sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2,250 €, petrol 1,990 €). Brand `?` — two stations share one OSM feature.</sub>
+<sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2.250 €, petrol 1.990 €). Brand `?` — two stations share one OSM feature.</sub>
 
 ## By brand
 
@@ -127,8 +127,8 @@ Diesel across the brands that OSM could name, within 15 km:
 | E.Leclerc | 2 | 2.349 | 2.356 | 2.363 |
 | Intermarché | 9 | 2.339 | 2.359 | 2.429 |
 | Auchan | 2 | 2.351 | 2.360 | 2.369 |
+| Carrefour Market | 2 | 2.349 | 2.363 | 2.377 |
 | Super U | 3 | 2.328 | 2.365 | 2.369 |
-| Carrefour Market | 2 | 2.369 | 2.373 | 2.377 |
 | Avia | 6 | 2.399 | 2.399 | 2.439 |
 | Esso | 6 | 2.336 | 2.405 | 2.417 |
 | Esso Express | 4 | 2.250 | 2.413 | 2.421 |
@@ -141,8 +141,8 @@ Five properties of this feed are invisible in the files themselves:
 
 1. **No brand field exists** — not in the annual archives, not in the instant
    feed. Brands come from OpenStreetMap (`amenity=fuel` via Overpass), matched by
-   position within 250 m; all 17 Total-group sites here matched, so
-   an unmatched station is counted as "other" in the split.
+   position within 250 m, for every station the archive lists here, old ids
+   included; an unmatched station is counted as "other" in the split.
 2. **A missing price means "not reported", never "not sold".** Capped stations
    report per fuel intermittently and always return at exactly the ceiling, so
    any snapshot ceiling share is a lower bound; the 30-day archive share is the

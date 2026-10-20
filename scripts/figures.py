@@ -31,7 +31,7 @@ for i in range(1, len(ends)):
 for yy, name, color in ends:
     end_label(ax, days[-1], yy, name, color)
 ax.axhline(CEILING["Gazole"], color=BASE, lw=1, ls=":")
-ax.annotate("TotalEnergies ceiling 2,250 €", (days[240], CEILING["Gazole"]),
+ax.annotate(f"TotalEnergies ceiling {CEILING['Gazole']:.3f} €", (days[240], CEILING["Gazole"]),
             xytext=(0, 5), textcoords="offset points", color=MUTED, fontsize=9)
 ax.set_title("Diesel, mean price within 15 km of each centre  (€/L)", loc="left", pad=12)
 ax.legend(frameon=False, loc="upper left", fontsize=9)
@@ -59,7 +59,7 @@ for c in CITIES:
         first = False
     ax.plot(dd, pct, color=c["color"], lw=2, label=c["name"])
     end_label(ax, dd[-1], pct[-1], f"{pct[-1]:.0f}%", c["color"])
-ax.set_title("Diesel stations posting exactly 2,250 €  (% of stations reporting within 30 days)",
+ax.set_title(f"Diesel stations posting exactly {CEILING['Gazole']:.3f} €  (% of stations reporting within 30 days)",
              loc="left", pad=12)
 ax.legend(frameon=False, loc="upper left", fontsize=9)
 ax.margins(x=0.01)
@@ -160,7 +160,7 @@ for c in CITIES:
                     ("diesel", dict(marker="o", color=SECOND, ms=7.5, mec=SURFACE, mew=1.2,
                                     label="diesel above the ceiling", zorder=4)),
                     ("cap", dict(marker="o", color=c["color"], ms=10, mec=SURFACE, mew=1.6,
-                                 label="diesel at 2,250 €", zorder=5)),
+                                 label=f"diesel at {CEILING['Gazole']:.3f} €", zorder=5)),
                     ("dry", dict(marker="X", color=CRITICAL, ms=11, mec=SURFACE, mew=1.4,
                                  label="diesel dry (flagged ≤ 30 d)", zorder=6))):
         if groups[k]:

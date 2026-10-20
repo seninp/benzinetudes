@@ -9,9 +9,7 @@ snapshot for today's figures and uses the archive only for the diesel history.
 """
 import csv, sys
 import xml.etree.ElementTree as ET
-from config import DIESEL_CAP, PETROL_CAP
-
-CEILING = {"Gazole": DIESEL_CAP, "E10": PETROL_CAP, "SP98": PETROL_CAP, "SP95": PETROL_CAP}
+from config import CEILING
 
 def main(xml_path, out_csv):
     n = {f: 0 for f in CEILING}
@@ -43,7 +41,7 @@ def main(xml_path, out_csv):
         for f in CEILING:
             w.writerow([f, CEILING[f], n[f], at[f], below[f], lowest[f]])
             print(f"  {f:7} n={n[f]:5d} at {CEILING[f]}: {at[f]:5d} "
-                  f"({100*at[f]/n[f]:4.1f}%)  below: {below[f]:4d} ({100*below[f]/n[f]:4.1f}%)  "
+                  f"({100*at[f]/max(1, n[f]):4.1f}%)  below: {below[f]:4d} ({100*below[f]/max(1, n[f]):4.1f}%)  "
                   f"lowest {lowest[f]}", file=sys.stderr)
 
 if __name__ == "__main__":

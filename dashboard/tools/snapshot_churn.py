@@ -7,12 +7,11 @@ at 1,990 EUR on 2026-09-15 while reporting only diesel, E85 and LPG, with no
 stock-outage flag. This measures how much of the feed's petrol coverage moves
 between two consecutive snapshots, and at what price the arrivals report.
 
-Usage: snapshot_churn.py <older.xml> <newer.xml>
+Usage: PYTHONPATH=scripts snapshot_churn.py <older.xml> <newer.xml>
 """
 import sys
 import xml.etree.ElementTree as ET
-
-CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990, "SP95": 1.990}
+from config import CEILING
 FUELS = tuple(CEILING)
 
 def read(path):

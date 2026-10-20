@@ -44,8 +44,12 @@ def sign(x):
         return "—"
     return f"{x:+.3f}"
 
+def pct(x):
+    return f"{x:.1f}%" if x is not None else "—"
+
 def ville(s):
-    return s.title() if s.isupper() else s
+    """Title-case names the feed shouts; 'LABèGE' is not isupper(), so count."""
+    return s.title() if sum(ch.isupper() for ch in s) > sum(ch.islower() for ch in s) else s
 
 compare = json.load(open("data/compare.json"))
 summaries = {c["slug"]: json.load(open(f"data/{c['slug']}/summary.json")) for c in CITIES}
@@ -61,7 +65,7 @@ add = L.append
 add(f"""# Benzinetudes — the French fuel squeeze, city by city
 
 **Three places, one feed, one method. Diesel at every station within {KM} of
-each centre, against the mean of all ~9,600 French stations, with
+each centre, against the mean of all ~{round(compare['nat_n'], -2):,} French stations, with
 TotalEnergies' price ceilings and the out-of-stock flags that precede them.**
 
 The data is the French government's `prix-carburants` open feed. Since March
@@ -97,7 +101,7 @@ for c in compare["cities"]:
     add(f"| [{c['name']}](#{c['slug']}) | {c['n_stations']} | **{c['diesel']:.3f}** "
         f"| {c['diesel'] - compare['nat_diesel']:+.3f} | {sign(c['d30'])} | {sign(c['d365'])} "
         f"| {cap.get('loc_pct', 0):.1f}% ({cap.get('loc_cap', 0)}/{cap.get('loc_n', 0)}) "
-        f"| {c['dry_now']} ({c['dry_pct_now']:.1f}%) | {near_s} |")
+        f"| {c['dry_now']} ({pct(c['dry_pct_now'])}) | {near_s} |")
 add(f"""
 <sub>France mean diesel on {end}: **{compare['nat_diesel']:.3f} €/L**. "Fuel-pairs
 dry" counts station-fuel combinations flagged out of stock, under the rule used
@@ -131,7 +135,7 @@ for c in CITIES:
 {sign(s['d30'])} over 30 days, {sign(s['d365'])} over a year.
 {cap.get('loc_pct', 0):.1f}% of its diesel stations posted exactly {CAP}
 within the last 30 days, and {s['dry_now']} station-fuel pairs
-({s['dry_pct_now']:.1f}% of those active) are flagged dry.""")
+({pct(s['dry_pct_now'])} of those active) are flagged dry.""")
     if near:
         add(f"The nearest pump posting the {CAP} ceiling right now is "
             f"{near['km']:.1f} km away ({near['adresse'].title()}, {ville(near['ville'])}).")

@@ -9,7 +9,7 @@ from collections import defaultdict
 from datetime import date, timedelta
 from common import dry_series
 from config import (CEILING_DAY, CENTER_LAT, CENTER_LON, CENTER_NAME, DIESEL_CAP,
-                    DRY_WINDOW, PETROL_CAP, RADIUS_KM, START, TOTAL_GROUP)
+                    DRY_WINDOW, PETROL_CAP, PIN_TOL, RADIUS_KM, START, TOTAL_GROUP)
 
 # Castanet's aggregates come from the three-city pipeline (../data/castanet/);
 # data/ holds only what the dashboard derives on its own.
@@ -369,8 +369,8 @@ for fuel in TREND_FUELS:
            for k in ("total_mean", "other_mean")}
     pinned = None
     for d in reversed(obs):
-        v = byday[d]["total_mean"]
-        if v and abs(float(v) - level) < 5e-5:
+        v, mx = byday[d]["total_mean"], byday[d]["total_max"]
+        if v and mx and level - PIN_TOL <= float(v) and float(mx) <= level + 5e-5:
             pinned = d
         else:
             break
@@ -392,6 +392,7 @@ for fuel in TREND_FUELS:
         "total_slope": ols_cw({fuel: tm}, fuel, TREND_WIN, end=last),
         "other_slope": ols_cw({fuel: om}, fuel, TREND_WIN, end=last),
     }
+    split[fuel]["other_dir"] = direction(split[fuel]["other_slope"])
     # The claim "this group is capped" needs the maximum, not the mean: a mean can sit
     # on a round number by coincidence, a maximum that never clears it cannot. Report
     # the exceptions rather than claiming "never" -- diesel has two of them in 20 months.
@@ -449,12 +450,16 @@ weekday = {"scope": wk_scope, "dev": {f: wk_dev[wk_scope][f] for f in TREND_FUEL
            "significant": bool(wd and wd[0]["se"] is not None
                                and abs(wd[0]["dev"]) - 1.96 * wd[0]["se"] > MATERIAL_C)}
 # The strongest weekday signal is not the level but when rises land: pick the day
-# whose share of increases is furthest above a coin flip by more than its error.
-ups = [r for r in wk_upd["recent"][wk_fuel] if r["share_up"] is not None and r["weeks"] >= 10]
-up_day = max(ups, key=lambda r: r["share_up"]) if ups else None
+# whose share of increases is furthest above a coin flip, in standard errors of a
+# share. Ranking by the raw share once picked Sunday, 26 rises out of 41 moves,
+# over Tuesday's 487 out of 789.
+for r in wk_upd["recent"][wk_fuel]:
+    k = r["up"] + r["down"]
+    r["z_up"] = round((r["up"] / k - 0.5) / math.sqrt(0.25 / k), 2) if k else None
+ups = [r for r in wk_upd["recent"][wk_fuel] if r["z_up"] is not None and r["weeks"] >= 10]
+up_day = max(ups, key=lambda r: r["z_up"]) if ups else None
 weekday["rise_day"] = up_day
-weekday["rise_day_sig"] = bool(up_day and up_day["se"] is not None
-                               and up_day["share_up"] > 50)
+weekday["rise_day_sig"] = bool(up_day and up_day["z_up"] > 1.96)
 
 # Why the pooled bars must not be published on their own. Split the same station
 # weeks by their own net move and the weekday shape reverses with it: weeks that

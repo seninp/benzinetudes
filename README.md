@@ -1,7 +1,7 @@
 # Benzinetudes — the French fuel squeeze, city by city
 
 **Three places, one feed, one method. Diesel at every station within 15 km of
-each centre, against the mean of all ~9,600 French stations, with
+each centre, against the mean of all ~9,400 French stations, with
 TotalEnergies' price ceilings and the out-of-stock flags that precede them.**
 
 The data is the French government's `prix-carburants` open feed. Since March
@@ -38,7 +38,7 @@ dry" counts station-fuel combinations flagged out of stock, under the rule used
 throughout: an outage counts while it is open and for at most 30 days after it
 began. The share is against pairs active in the price archive.</sub>
 
-![Diesel price history for the three cities against the French mean](outputs/compare/figures/diesel_history.png?v=bdf748af)
+![Diesel price history for the three cities against the French mean](outputs/compare/figures/diesel_history.png?v=48f84c6b)
 
 The ceiling is TotalEnergies'. It appeared on 8 April 2026, vanished in June
 when the market fell below it, and has bound again since early September. How
@@ -74,17 +74,17 @@ so a dash never proves the fuel is missing:
 | km | Brand | Station | Gazole | E10 | SP98 | Dry (≤ 30 d) |
 |---:|---|---|---:|---:|---:|---|
 | 1.11 | Intermarché | Route De Labège, Castanet-Tolosan | 2.355 | 2.089 | 2.229 |  |
-| 2.57 | Intermarché | Avenue De Lauragais - Lieu Dit Condamine, Pompertuzat | 2.369 | 2.109 | 2.239 |  |
+| 2.57 | Intermarché | Avenue De Lauragais - Lieu Dit Condamine, Pompertuzat | 2.359 | 2.099 | 2.229 |  |
 | 2.80 | Intermarché | 1 Rue Louis Braille, Ramonville-Saint-Agne | 2.339 | 2.089 | 2.219 |  |
 | 3.17 | TotalEnergies | 98 Avenue Tolosane, Ramonville Saint Agne | — | — | — | Gazole, SP98, E10, E85 |
 | 3.27 | TotalEnergies | Centre Commercial De L'Autan, Labege | — | — | — |  |
-| 3.89 | Carrefour | Centre Commercial Labege 2, LABèGE | 2.363 | 2.196 | 2.289 |  |
+| 3.89 | Carrefour | Centre Commercial Labege 2, Labège | 2.363 | 2.196 | 2.289 |  |
 | 4.17 | Avia | 53 Av. Tolosane, Ramonville-Saint-Agne | 2.439 | 2.299 | 2.399 |  |
 | 4.63 | Super U | Za De La Balme, Belberaud | 2.328 | 2.079 | 2.208 |  |
 | 5.09 | TotalEnergies | 5 Av De Gameville, Saint-Orens-de-Gameville | **2.250** | **1.990** | **1.990** | Gazole, E10, E85 |
 | 5.34 | Dyneff? | Autoroute A61Aire De Toulouse Sud Nord, Deyme | 2.468 | 2.278 | 2.344 |  |
 | 5.35 | Dyneff | Autoroute A61Aire De Toulouse Sud Sud, Deyme | 2.438 | 2.248 | 2.314 |  |
-| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-De-Gameville | 2.363 | 2.196 | 2.289 |  |
+| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-De-Gameville | 2.363 | 2.169 | 2.265 |  |
 
 <sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2.250 €, petrol 1.990 €). Brand `?` — no OSM match within 250 m; a trailing `?` — two stations share one OSM feature.</sub>
 
@@ -139,7 +139,7 @@ The nearest pump posting the 2,250 € ceiling right now is 1.2 km away (27 Aven
 
 ![Gentilly: diesel and E10 price history against the French mean](outputs/gentilly/figures/prices.png?v=f15e2466)
 
-![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=3d62680b)
+![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=ea993ffc)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -154,7 +154,7 @@ so a dash never proves the fuel is missing:
 | 1.36 | Avia | 91 Avenue Aristide Briand, Montrouge | 2.599 | 2.469 | 2.549 |  |
 | 1.41 | Esso | 20 Avenue Paul Vaillant-Couturier, Arcueil | 2.395 | 2.176 | 2.256 |  |
 | 1.41 | Esso | 231 Rue De Tolbiac, Paris | 2.499 | — | 2.469 | E10 |
-| 1.47 | E.Leclerc | Avenue De Fontainebleau, LE KREMLIN-BICêTRE | 2.419 | 2.179 | 2.269 |  |
+| 1.47 | E.Leclerc | Avenue De Fontainebleau, Le Kremlin-Bicêtre | 2.419 | 2.179 | 2.269 |  |
 | 1.76 | TotalEnergies | 89 Av A. Briand, Arcueil | — | — | — | Gazole, SP95, E10 |
 | 2.21 | ? | Rue Legion Etrangere, Paris | — | — | — | SP98, E10 |
 | 2.34 | Total Access | 181, Boulevard Vincent Auriol, Paris | **2.250** | — | — | SP98, E10 |

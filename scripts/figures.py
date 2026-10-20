@@ -17,7 +17,7 @@ summaries = {c["slug"]: json.load(open(f"data/{c['slug']}/summary.json")) for c 
 # ---- compare: diesel price history --------------------------------------
 fig, ax = plt.subplots(figsize=(9.5, 4.6))
 ax.plot(days, arr(compare["nat_series"]["Gazole"]), color=NAT, lw=1.6, ls=(0, (4, 3)),
-        label="France (mean of ~9,600 stations)")
+        label=f"France (mean of ~{round(compare['nat_n'], -2):,} stations)")
 ends = []
 for c in CITIES:
     s = summaries[c["slug"]]

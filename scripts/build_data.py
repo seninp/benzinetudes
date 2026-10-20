@@ -32,7 +32,8 @@ def main():
     obs_days = [d for d in days if d <= obs_end]
     compare = {"end": end.isoformat(), "start": START.isoformat(),
                "archive_end": obs_end.isoformat(),
-               "nat_diesel": round(nat["Gazole"][end], 3), "cities": []}
+               "nat_diesel": round(nat["Gazole"][end], 3),
+               "nat_n": nat_n["Gazole"].get(obs_end), "cities": []}
     nat_series = {f: [round(nat[f][d], 4) if d in nat[f] else None for d in days]
                   for f in ("Gazole", "E10")}
 

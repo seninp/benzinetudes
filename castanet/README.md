@@ -23,16 +23,16 @@ from the instant feed and are current.
 | Petrol SP98 | **2.205** | 2.239 | +0.007 | +0.434 | 61 |
 | Superethanol E85 | **0.926** | 0.913 | +0.021 | +0.192 | 45 |
 
-<sub>Snapshot of 62 priced stations on 2026-10-20; 24 updated that day, median age 1 days. A fuel enters a mean only where at least 3 stations report.</sub>
+<sub>Snapshot of 62 priced stations on 2026-10-20; 26 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
 
 ![Diesel and E10: Castanet against the French mean](fig/prices.png?v=7936b80c)
 
-Diesel sits at **2.344 €/L** — 0.017
-below the French mean, and 0.739 higher
-than a year ago. Almost all of that rise landed in one month: 35
+Diesel sits at **2.344 €/L**, 0.017
+below the French mean and 0.739 higher
+than a year ago. Much of that rise landed in one month: 35
 centimes in March 2026 alone, 48% of the twelve-month move. The local
-line has tracked the national one within a centime or two throughout, and both
-are still climbing — about -1.0 ¢/week over the last four weeks.
+line has tracked the national one within a centime or two throughout. Over the
+last 28 days local diesel has been flat within the noise (-1.0 ¢/week).
 
 ## The ceiling splits the field
 
@@ -41,9 +41,9 @@ On **8 April 2026** TotalEnergies set a hard **2,250 €/L** ceiling on diesel
 local diesel stations sat exactly on that price; the day after,
 22%. It slackened when the market fell below it in
 the summer — on 2026-07-01 only 0.1% of French
-stations were at the cap — and has bound again since early September. Today
-**29.9%** of local diesel stations post exactly 2,250 €,
-against 22.4% nationally.
+stations were at the cap — and has bound again since early September. Over the
+last 30 days of the archive **29.9%** of local diesel
+stations posted exactly 2,250 €, against 22.4% nationally.
 
 Averaging the whole area hides what the ceiling does, because it acts on only
 some brands. The 17 Total-group stations within 15 km are pinned to
@@ -53,14 +53,12 @@ it and cannot follow the market up; the 50 others are free.
 
 The two groups now stand **12.6 centimes** apart — Total-group at
 2.250, everyone else at 2.376 — after moving
-together for a year (on 2026-03-01 the gap was -5.7 ¢,
-the Total-group stations were the *cheaper* ones). The maxima are the proof that
-2,250 € is a cap and not a price they all chose: since the ceiling bound, no
-Total-group station has exceeded it, while the free brands' dearest diesel
-reached 2.468 €/L. The nearest pump on the ceiling right now is
-**6.6 km** away (Rte De La Croix Falgarde,
-Portet-sur-Garonne); filling there instead of at the local average saves
-about 0.10 €/L.
+together for a year (on 2026-03-01 the Total-group stations were the *dearer* ones, by 5.7 ¢). The maxima are the proof that
+2,250 € is a cap and not a price they all chose: no Total-group station has posted above it since 2026-07-22 (it was over on 2 of 643 days, the last on 2026-07-21), while the free
+brands' dearest diesel reached 2.468 €/L.
+
+The nearest pump on the ceiling and not flagged dry is
+**6.6 km** away (Rte De La Croix Falgarde, Portet-sur-Garonne); filling there instead of at Intermarché in Castanet (2.355) saves about 0.10 €/L.
 
 ## Which day to fill
 
@@ -71,13 +69,13 @@ flips: in weeks diesel rose, Monday is well below the week's mean and the weeken
 above it; in weeks it fell, exactly the reverse, by almost the same amount. The
 two cancel. There is **no dependable cheap day** to shop for.
 
-![Weekday effect: the cheapest-day illusion, and when changes land](fig/weekday.png?v=591d25de)
+![Weekday effect: the cheapest-day illusion, and when changes land](fig/weekday.png?v=0f32b508)
 
-Second, *when do prices move?* Here there is a real signal. Posted changes
-cluster on **Sunday** and lean upward — 63% of
-Sunday changes are increases, averaging +0.20 ¢. The move
-lands early in the week, so the practical rule is the plain one: **fill on
-Monday, before Tuesday's rise.**
+Second, *when do prices move?* Rises cluster on **Tuesday**: 62% of its
+789 changes were increases, averaging +0.48 ¢.
+That shifts *when* a price moves more than what the week costs, so the
+practical rule stays the station, not the day: the gap between pumps is many
+times the whole weekday effect.
 
 ## The dry count runs ahead
 
@@ -101,7 +99,7 @@ dash never proves the fuel is missing:
 | km | Brand | Station | Gazole | E10 | SP98 | Dry (≤ 30 d) |
 |---:|---|---|---:|---:|---:|---|
 | 1.11 | Intermarché | Route De Labège, Castanet-Tolosan | 2.355 | 2.089 | 2.229 |  |
-| 2.57 | Intermarché | Avenue De Lauragais - Lieu Dit Condamine, Pompertuzat | 2.369 | 2.109 | 2.239 |  |
+| 2.57 | Intermarché | Avenue De Lauragais - Lieu Dit Condamine, Pompertuzat | 2.359 | 2.099 | 2.229 |  |
 | 2.80 | Intermarché | 1 Rue Louis Braille, Ramonville-Saint-Agne | 2.339 | 2.089 | 2.219 |  |
 | 3.17 | TotalEnergies | 98 Avenue Tolosane, Ramonville Saint Agne | — | — | — | E10, E85, Gazole, SP98 |
 | 3.27 | TotalEnergies | Centre Commercial De L'Autan, Labege | — | — | — |  |
@@ -111,7 +109,7 @@ dash never proves the fuel is missing:
 | 5.09 | TotalEnergies | 5 Av De Gameville, Saint-Orens-de-Gameville | **2.250** | **1.990** | **1.990** | E10, E85, Gazole |
 | 5.34 | Dyneff? | Autoroute A61Aire De Toulouse Sud Nord, Deyme | 2.468 | 2.278 | 2.344 |  |
 | 5.35 | Dyneff | Autoroute A61Aire De Toulouse Sud Sud, Deyme | 2.438 | 2.248 | 2.314 |  |
-| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-de-Gameville | 2.363 | 2.196 | 2.289 |  |
+| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-de-Gameville | 2.363 | 2.169 | 2.265 |  |
 | 6.46 | Esso Express | 105 Route De Narbonne, Toulouse | 2.421 | 2.220 | 2.321 |  |
 | 6.60 | Esso | 68 Route De Revel, Toulouse | 2.399 | 2.239 | 2.359 |  |
 
@@ -126,8 +124,8 @@ Diesel across the brands that OSM could name, within 15 km:
 | TotalEnergies *(at the ceiling)* | 8 | 2.250 | 2.250 | 2.250 |
 | Total Access *(at the ceiling)* | 3 | 2.250 | 2.250 | 2.250 |
 | Carrefour | 6 | 2.287 | 2.347 | 2.429 |
+| E.Leclerc | 2 | 2.349 | 2.356 | 2.363 |
 | Intermarché | 9 | 2.339 | 2.359 | 2.429 |
-| E.Leclerc | 2 | 2.355 | 2.359 | 2.363 |
 | Auchan | 2 | 2.351 | 2.360 | 2.369 |
 | Super U | 3 | 2.328 | 2.365 | 2.369 |
 | Carrefour Market | 2 | 2.369 | 2.373 | 2.377 |

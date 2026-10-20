@@ -16,6 +16,10 @@ FUELS = ("Gazole", "SP95", "SP98", "E10", "E85", "GPLc")
 CEILING = {"Gazole": 2.250, "E10": 1.990, "SP98": 1.990}   # TotalEnergies' caps
 DIESEL_CAP, PETROL_CAP = CEILING["Gazole"], CEILING["E10"]
 CEILING_DAY = date(2026, 4, 8)   # the diesel ceiling first appeared
+# A brand group counts as "on the cap" while none of it posts above the ceiling
+# and its mean sits within this many euros of it: one capped station posting a
+# few centimes under 2.250 would otherwise reset the streak to zero.
+PIN_TOL = 0.005
 TOTAL_GROUP = ("TotalEnergies", "Total Access", "Élan (TotalEnergies)")
 
 CITIES = [

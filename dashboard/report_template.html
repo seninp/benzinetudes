@@ -3,9 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="1.11">
-<meta name="last-updated" content="2026-09-27">
+<meta name="version" content="1.12">
+<meta name="last-updated" content="2026-10-20">
 <!-- Changelog
+  1.12 (2026-10-20) The trend verbs follow the data. Before, the short answer opened "Rising"
+      and section 3 was titled "Rising everywhere except on the cap" whatever the slope, so
+      the 17 Oct build read "climbing at -2,2 centimes a week" while diesel fell; both now
+      come from the computed direction and print the size unsigned with "rose" or "fell".
+      The cap streak no longer resets when one Total-group station posts a few tenths of a
+      centime under the ceiling: it read "0 days" on 17 Oct and now counts the days the
+      group posts nothing above the cap with a mean within half a centime of it. The rise
+      day is ranked by how many standard errors its share of increases sits above a coin
+      flip; ranking by the raw share picked Sunday (26 of 41 moves) over Tuesday (487 of
+      789), and the text claims a rise day only when it clears 1.96. "1 days" fixed.
   1.11 (2026-09-27) Restructured, and two new sections. Same data as v1.10, so no price in this
       entry is new; what changed is that the report now answers questions in the order a driver
       here asks them. Five numbered sections - 1 around Castanet-Tolosan today, 2 where to fill,
@@ -455,7 +465,7 @@
     <p class="sub" id="subtitle"></p>
   </div>
   <div class="pill">
-    <span id="vpill">v1.11 · 2026-09-27</span>
+    <span id="vpill">v1.12 · 2026-10-20</span>
     <button id="theme">Dark</button>
   </div>
 </header>
@@ -1252,7 +1262,7 @@ document.getElementById('vpill').textContent =
 const FRESH = (() => {
   const f = D.freshness;
   return `Prices as posted: ${f.today} of ${f.n} on ${dayLabel(f.snapshot)} itself, the rest older ` +
-         `— ${f.median_days} days at the median, ${f.oldest_days} at the oldest (${dayLabel(f.oldest_day)}).`;
+         `— ${f.median_days} day${f.median_days === 1 ? '' : 's'} at the median, ${f.oldest_days} at the oldest (${dayLabel(f.oldest_day)}).`;
 })();
 document.getElementById('subtitle').textContent =
   `${D.meta.n_stations} stations within ${D.meta.radius} km, ${D.meta.n_diesel} posting diesel, ` +
@@ -1591,8 +1601,8 @@ document.getElementById('upd-sub').textContent =
   `${WK.window_days} days. A coin flip is 50%.`;
 document.getElementById('upd-note').textContent =
   `There is a weekly rhythm, but it is in when rises are posted, not in what the week costs: ` +
-  `${WK.rise_day ? WK.rise_day.name + "'s changes are " + pct(WK.rise_day.share_up) + ' increases' :
-    'rises cluster early in the week'}, against roughly half later on. It barely moves the level because a ` +
+  `${WK.rise_day_sig ? WK.rise_day.name + "'s changes are " + pct(WK.rise_day.share_up) + ' increases' :
+    'no weekday clears a coin flip by its error'}, against roughly half on the other days. It barely moves the level because a ` +
   `station that raises early often gives some of it back — which is exactly the shape of the panels above.`;
 function drawWeek() {
   /* One scale across the three panels, set by the widest of them. */
@@ -1625,20 +1635,29 @@ const SPLIT_FUEL = 'Gazole';
 const SP = D.split[SPLIT_FUEL];
 const TR = D.trend[SPLIT_FUEL];
 const dirWord = { rising: 'rising', falling: 'falling', flat: 'flat' };
-document.getElementById('split-title').textContent =
-  `Rising everywhere except on the cap`;
+const c1 = v => Math.abs(v).toFixed(1).replace('.', ',');
+/* "rose 1,8 centimes a week", "fell 1,8", "did not move": a signed figure after
+   "climbed" once printed "climbed -2,2" while diesel fell. */
+const moved = (sl, unit = '') => Math.abs(sl.cw) < 0.05 ? 'did not move'
+  : `${sl.cw > 0 ? 'rose' : 'fell'} ${c1(sl.cw)}${unit}`;
+const pinnedFor = SP.pinned_days == null ? ''
+  : ` — they have sat on ${eur(SP.level)} for <b>${SP.pinned_days} day${SP.pinned_days === 1 ? '' : 's'}</b>, ` +
+    `since ${dayLabel(SP.pinned_since)}`;
+document.getElementById('split-title').textContent = {
+  rising: 'Rising everywhere except on the cap',
+  falling: 'Falling everywhere except on the cap',
+  flat: 'Flat on both sides of the cap',
+}[SP.other_dir] || 'The cap splits the field';
 document.getElementById('split-sub').innerHTML =
   `Daily mean diesel price within ${D.meta.radius} km, the ${SP.total_n} TotalEnergies-group stations against ` +
   `the ${SP.other_n} others, with the ${eur(SP.level)} cap drawn in. Both lines end on ` +
   `${dayLabel(D.obs_end)}: neither is carried forward.`;
 document.getElementById('split-note').innerHTML =
-  `Over the last ${SP.other_slope.n} days the uncapped stations climbed ` +
-  `<b>${SP.other_slope.cw.toFixed(1).replace('.', ',')} ± ` +
+  `Over the last ${SP.other_slope.n} days the uncapped stations <b>${moved(SP.other_slope)} ± ` +
   `${(1.96 * SP.other_slope.se).toFixed(1).replace('.', ',')} centimes a week</b> (R² ` +
-  `${SP.other_slope.r2.toFixed(2).replace('.', ',')}), the capped ones ` +
-  `${SP.total_slope.cw.toFixed(1).replace('.', ',')} — they have been pinned to ` +
-  `${eur(SP.level)} for <b>${SP.pinned_days} days</b>, since ${dayLabel(SP.pinned_since)}. ` +
-  `So the gap has opened to <b>${SP.gap_c.toFixed(1).replace('.', ',')} centimes</b> ` +
+  `${SP.other_slope.r2.toFixed(2).replace('.', ',')}); the capped ones ${moved(SP.total_slope)}` +
+  `${pinnedFor}. ` +
+  `So the gap stands at <b>${SP.gap_c.toFixed(1).replace('.', ',')} centimes</b> ` +
   `(E10 ${D.split.E10.gap_c.toFixed(1).replace('.', ',')}, SP98 ` +
   `${D.split.SP98.gap_c.toFixed(1).replace('.', ',')}). ` +
   (SP.pre_cap
@@ -1663,18 +1682,22 @@ const A = [
      `<b>${lab}</b> ${eur(pickBest[f].prices[f])} at ${pickBest[f].ville}, ${km(pickBest[f].dist)}`
    ).join('; ') + `. The same prices repeat across several stations, so take the one on your way.`],
   [`#trend`, `The trend`,
-   `<b>Rising</b>, and not slowly: local diesel is up ${TR.loc.d90 > 0 ? '+' : ''}${(TR.loc.d90 / 100).toFixed(2).replace('.', ',')} € ` +
-   `over 90 days and climbing at ${SP.other_slope.cw.toFixed(1).replace('.', ',')} centimes a week at the ` +
-   `${SP.other_n} stations that can still move. The ${SP.total_n} Total-group sites cannot: the ` +
-   `${D.total.n_diesel} of them posting a diesel price have sat on the ${eur(SP.level)} cap for ` +
-   `${SP.pinned_days} days, so the gap between the two groups is now ` +
+   `<b>${{ rising: 'Rising', falling: 'Falling', flat: 'Flat' }[TR.loc.dir] || 'Unclear'}</b> over the last ` +
+   `${TR.loc.slope.n} days, after ${TR.loc.d90 > 0 ? '+' : ''}${(TR.loc.d90 / 100).toFixed(2).replace('.', ',')} € ` +
+   `over 90 days. The ${SP.other_n} stations that can still move ${moved(SP.other_slope, ' centimes a week')}. ` +
+   `The ${SP.total_n} Total-group sites cannot: the ` +
+   `${D.total.n_diesel} of them posting a diesel price ` +
+   (SP.pinned_days == null ? `are off the ${eur(SP.level)} cap today` :
+    `have sat on the ${eur(SP.level)} cap for ${SP.pinned_days} day${SP.pinned_days === 1 ? '' : 's'}`) +
+   `, so the gap between the two groups is now ` +
    `<b>${SP.gap_c.toFixed(1).replace('.', ',')} centimes</b>.`],
   [`#week`, `Day of the week`,
    `<b>It does not matter.</b> ${PL.cheapest.name} is cheapest and ${PL.dearest.name} dearest, but by ` +
    `${PL.spread_c.toFixed(2).replace('.', ',')} centimes across the whole week — less than the error bar, ` +
    `and it is the market's climb leaking into the week rather than a weekly habit. ` +
-   `What does cluster is when rises land: ${WK.rise_day
-      ? pct(WK.rise_day.share_up) + ` of ${WK.rise_day.name}'s changes are increases` : 'early in the week'}.`],
+   (WK.rise_day_sig
+      ? `What does cluster is when rises land: ${pct(WK.rise_day.share_up)} of ${WK.rise_day.name}'s changes are increases.`
+      : `Nor does any weekday stand out for when rises land.`)],
   [`#france`, `France`,
    `${pct(D.ceilings.Gazole.pct_at)} of French stations post diesel at exactly ${eur(D.cap.level)} today and ` +
    `${pct(D.ceilings.Gazole.archive_pct_at)} on the archive's fuller count, against ` +

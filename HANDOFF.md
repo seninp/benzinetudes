@@ -1,14 +1,14 @@
 # Benzinetudes — handoff
 
-Last session: 2026-10-12. Published as `7eabf8e` on github.com/seninp/benzinetudes.
-Nothing mid-operation; the Mac checkout equals `origin/main`.
+Last session: 2026-10-20. Data refreshed as `dab378c`, then the prose fixes below
+published on top. Nothing mid-operation; the Mac checkout equals `origin/main`.
 
 ## What this is
 
 Two reports built from the French `prix-carburants` open data, in one repo:
 
 - `README.md` — the three-city report (Castanet-Tolosan, Lyon, Gentilly).
-- `dashboard/benzine-prices.html` — the interactive Castanet dashboard (v1.11).
+- `dashboard/benzine-prices.html` — the interactive Castanet dashboard (v1.12).
 - `castanet/README.md` — the dashboard as static Markdown, for GitHub.
 
 ## Where it lives
@@ -39,22 +39,24 @@ from `data/castanet/` and parses only its own price posts (`dashboard/data/px_*.
 and the instant feed's ceiling shares. Every constant lives in `scripts/config.py`.
 Both reports count dry pumps with `common.dry_series`.
 
-## Baseline, build of 2026-10-12 (archive observed through 2026-10-11)
+## Baseline, build of 2026-10-20 (archive observed through 2026-10-19)
 
 | | Castanet | Lyon | Gentilly |
 |---|---|---|---|
 | Stations within 15 km | 110 | 238 | 660 |
-| Diesel €/L | 2.325 | 2.361 | 2.378 |
-| vs French mean 2.348 | −0.023 | +0.013 | +0.030 |
-| 30 days / 12 months | +0.029 / +0.698 | +0.024 / +0.719 | +0.024 / +0.658 |
-| Diesel at 2,250 € (30-day archive) | 28.4 % (19/67) | 27.9 % (34/122) | 39.8 % (100/251) |
-| Fuel pairs dry | 78 (29.2 %) | 71 (15.9 %) | 137 (15.5 %) |
-| Nearest 2,250 € pump | 3.2 km | 2.6 km | 1.2 km |
+| Diesel €/L | 2.344 | 2.366 | 2.383 |
+| vs French mean 2.361 | −0.017 | +0.005 | +0.022 |
+| 30 days / 12 months | −0.033 / +0.739 | −0.042 / +0.747 | −0.026 / +0.681 |
+| Diesel at 2,250 € (30-day archive) | 29.9 % (20/67) | 27.9 % (34/122) | 38.9 % (96/247) |
+| Fuel pairs dry | 47 (17.9 %) | 44 (9.9 %) | 137 (15.8 %) |
+| Nearest 2,250 € pump | 5.1 km | 2.6 km | 1.2 km |
 
-France: 22.5 % of diesel stations at the ceiling in the 30-day archive.
-Dashboard: 6 of 53 local diesel posts at 2,250 €, none flagged dry; 17 stations
-with a diesel outage open since 12 Sept; dry table 63 (56 a day earlier, 61 a
-week earlier), all local stations 77.
+France: 22.4 % of diesel stations at the ceiling in the 30-day archive.
+Dashboard: 14 of 61 local diesel posts at 2,250 €, 2 of them flagged dry; nearest
+in stock 6.6 km (Portet-sur-Garonne); Total group on the cap for 46 days, since
+3 Sept; uncapped stations falling 1.8 ¢/week; dry table 40 (58 a day earlier, 62
+a week earlier), all local stations 46. Diesel turned down after a 22 Sept peak
+of 2.381.
 
 ## Changes on 2026-10-12
 
@@ -77,6 +79,32 @@ week earlier), all local stations 77.
 - Guards: example station missing from the instant feed, an empty brand group
   in `trend.py`, a short day series in `castanet_md.py`.
 
+## Changes on 2026-10-20
+
+Two critics (code, and the reports as a driver reads them) found that fixed
+words in the prose had drifted from the computed numbers. Fixed:
+
+- Trend verbs follow the computed direction. The dashboard's short answer and
+  section 3 title said "Rising" whatever the slope ("climbing at -2,2 centimes
+  a week" on 17 Oct); `castanet/README.md` said "both are still climbing".
+- `castanet/README.md` called the Total group *cheaper* before the cap (it was
+  5.7 ¢ dearer), claimed no Total station ever exceeded the cap (two days did,
+  last 2026-07-21), said "almost all" of the rise came in one month (48 %),
+  called the 30-day share "today", and advised "fill on Monday, before
+  Tuesday's rise" while arguing there is no cheap day. All computed now.
+- The cap streak tolerates one Total station a few tenths under the cap
+  (`config.PIN_TOL`); it read "0 days" on 17 Oct, now 46.
+- The rise day ranks weekdays by the z-score of their share of increases; the
+  raw share had picked Sunday (26 of 41 moves) over Tuesday (487 of 789).
+  `rise_day_sig` is now a real test (z > 1.96).
+- "~9,600 French stations" is computed (`compare.nat_n`), ~9,400 today.
+- `dry_pct_now` guarded; `castanet_md.py` places weekday rows by `dow`; town
+  names like "LABèGE" title-cased; "1 days".
+
+Checked in `~/bz-test` on poptiplex (same archives, `make build`, diffed
+against `dab378c`): only the intended text, `weekday.png`, the HTML and
+`report_data.json` changed, plus a routine Lyon OSM refresh.
+
 ## How the restructure was checked
 
 Sources rsynced to a scratch directory on poptiplex, same archives, `make build`,
@@ -86,16 +114,35 @@ difference was one of the intended changes above.
 
 ## Open
 
-- **Critic findings not fixed.** `build_report.py` mixes `END` and `OBS_END`;
-  the three-city and dashboard Castanet sets differ (110 archive stations
-  against 71 in the instant feed, a one-pair gap in the dry count: 78 against
-  77); `ceilings_now.py` adds SP95 to the caps; publish's rsync runs outside the
-  lock; `build_report` crashes if a brand group has no price on the last day;
-  `castanet_md.py` assumes seven weekday rows; `build_readme` prints
-  `dry_pct_now` unguarded.
-- The README still hardcodes "~9,600 French stations".
-- `~/benzine` on poptiplex (the pre-merge work directory) was deleted on
-  2026-10-12, along with the three one-off scripts it held.
+From the 2026-10-20 critics, ranked by value; none is fixed yet.
+
+- **`END` against `OBS_END`.** Cards, deltas, `cap_story.now`, archive ceiling
+  shares and `meta.nat_n` read the forward-filled day; trend reads the observed
+  one. Removing the filled day in `agg.py`/`capshare.py` would end the class.
+  "Dry now" also counts back from different days in the two reports.
+- **Brands match only the instant feed's 71 stations**, so 39 archive stations
+  have no brand and count as "other"; dashboard `dry_all` uses the same 71.
+  Matching `stations.csv` closes the 110 / 71 gap and the dry 78 / 77 gap.
+- **SP95 is capped in the data** (9.6 % of posts at 1.990) and in the
+  template's `CEIL_OF`, but missing from `config.CEILING`; `ceilings_now.py`
+  and `tools/snapshot_churn.py` keep private copies.
+- **The three outputs disagree on counts**: Total-group stations 17 (split)
+  against 21 (brands); "stations on the cap" includes non-Total ones; dry
+  pairs 47 against table 40.
+- **Decimal separator**: the Markdown reports write prices "2.344 €/L" and the
+  cap "2,250 €" in one sentence; the dashboard uses decimal commas with
+  comma thousands ("9,431"). Needs a decision, not a fix.
+- Remaining fixed prose in `castanet_md.py`: "Monday looks cheapest and Sunday
+  dearest", "bound again since early September", the split-chart and dry-chart
+  annotations ("2,250 € ceiling", "8 Apr 2026").
+- Guards: an empty brand group in `build_report` split, `capped[0]` print,
+  divisions in `ceilings_now.py:46`; publish's rsync runs outside the lock.
+- Reader ideas: lead the dashboard with the nearest 2.250 € pumps not flagged
+  dry, with the age of the stock flag; put `stations_map.png` in the Castanet
+  outputs; start `ceiling_share.png` at March 2026; mark the provisional tail
+  of the dry charts; move the 2,000-word changelog out of the shipped HTML.
+- `build_report.py` (600 lines) and `castanet_md.py` are module-level scripts;
+  one function per section would make the guards testable.
 
 ## Pitfalls
 

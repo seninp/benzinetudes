@@ -86,8 +86,16 @@ DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 wd = D["weekday"]
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(9.5, 3.9))
 
-rose = [r["dev"] for r in wd["dec"]["rose"]["rows"]]
-fell = [r["dev"] for r in wd["dec"]["fell"]["rows"]]
+def by_dow(rows, key):
+    """Seven slots, Monday first; a weekday with no row stays NaN."""
+    out = [np.nan] * 7
+    for r in rows:
+        out[r["dow"]] = r[key]
+    return out
+
+
+rose = by_dow(wd["dec"]["rose"]["rows"], "dev")
+fell = by_dow(wd["dec"]["fell"]["rows"], "dev")
 x = np.arange(7)
 a1.axhline(0, color=BASE, lw=1)
 a1.plot(x, rose, color=CRITICAL, lw=2, marker="o", ms=4, label="weeks diesel rose")
@@ -98,17 +106,19 @@ a1.legend(frameon=False, fontsize=8.5, loc="upper left")
 a1.grid(axis="x", visible=False); a1.spines["left"].set_visible(False)
 a1.tick_params(length=0)
 
-upd = [c["mean_c"] for c in wd["upd"]["Gazole"]]
-rise_dow = wd["rise_day"]["dow"]
-colors = [CAST if i == rise_dow else BASE for i in range(7)]
+upd = by_dow(wd["upd"]["Gazole"], "mean_c")
+rd = wd["rise_day"] if wd.get("rise_day_sig") else None
+colors = [CAST if rd and i == rd["dow"] else BASE for i in range(7)]
 a2.axhline(0, color=BASE, lw=1)
-a2.bar(x, upd, color=colors, width=0.7)
+a2.bar(x, np.nan_to_num(upd), color=colors, width=0.7)
 a2.set_xticks(x); a2.set_xticklabels(DOW)
-a2.set_ylim(min(upd) * 1.4, max(upd) * 1.7)     # headroom so the callout clears the title
+lo, hi = np.nanmin(upd), np.nanmax(upd)
+a2.set_ylim(min(0, lo) * 1.4, max(0, hi) * 1.7)  # headroom so the callout clears the title
 a2.set_title("Mean price change posted on the day  (¢/L)", loc="left", fontsize=10.5)
-a2.annotate(f"{wd['rise_day']['name']}, {wd['rise_day']['share_up']:.0f}% up",
-            (rise_dow, upd[rise_dow]), xytext=(0, 7), textcoords="offset points",
-            ha="center", color=CAST, fontsize=9, fontweight="bold")
+if rd:
+    a2.annotate(f"{rd['name']}, {rd['share_up']:.0f}% up",
+                (rd["dow"], upd[rd["dow"]]), xytext=(0, 7), textcoords="offset points",
+                ha="center", color=CAST, fontsize=9, fontweight="bold")
 a2.grid(axis="x", visible=False); a2.spines["left"].set_visible(False)
 a2.tick_params(length=0)
 fig.tight_layout()
@@ -168,7 +178,8 @@ for f in ("Gazole", "E10", "SP98", "E85"):
     add(f"| {r['label']} | **{eur(r['value'])}** | {eur(r['nat'])} | "
         f"{sgn(r['d30'])} | {sgn(r['d365'])} | {r['n']} |")
 add(f"\n<sub>Snapshot of {meta['n_priced']} priced stations on {D['freshness']['snapshot']}; "
-    f"{D['freshness']['today']} updated that day, median age {D['freshness']['median_days']} days. "
+    f"{D['freshness']['today']} updated that day, median age {D['freshness']['median_days']} "
+    f"day{'s' * (D['freshness']['median_days'] != 1)}. "
     f"A fuel enters a mean only where at least 3 stations report.</sub>\n")
 
 tg = D["trend"]["Gazole"]["loc"]
@@ -176,14 +187,22 @@ bm = D["big_month"]
 gzc = c["Gazole"]
 dv = gzc["value"] - gzc["nat"]
 bm_name = date.fromisoformat(bm["month"] + "-01").strftime("%B %Y")
+# Every verb below follows the data: fixed words once said "still climbing" over a
+# falling slope and "almost all of that rise" over a 48 % share.
+bm_lead = ("Almost all of that rise" if bm["share"] >= 70 else
+           "Much of that rise" if bm["share"] >= 40 else "The largest single step")
+sl = tg["slope"]
+trend_s = {"rising": f"rising, about {sl['cw']:.1f} ¢/week",
+           "falling": f"falling, about {abs(sl['cw']):.1f} ¢/week",
+           "flat": f"flat within the noise ({sl['cw']:+.1f} ¢/week)"}.get(tg["dir"], "unclear")
 add(f"""![Diesel and E10: Castanet against the French mean]({v('prices.png')})
 
-Diesel sits at **{eur(gzc['value'])} €/L** — {eur(abs(dv))}
-{'below' if dv < 0 else 'above'} the French mean, and {eur(gzc['d365'])} higher
-than a year ago. Almost all of that rise landed in one month: {bm['c']:.0f}
+Diesel sits at **{eur(gzc['value'])} €/L**, {eur(abs(dv))}
+{'below' if dv < 0 else 'above'} the French mean and {eur(gzc['d365'])} higher
+than a year ago. {bm_lead} landed in one month: {bm['c']:.0f}
 centimes in {bm_name} alone, {bm['share']}% of the twelve-month move. The local
-line has tracked the national one within a centime or two throughout, and both
-are still climbing — about {tg['slope']['cw']:.1f} ¢/week over the last four weeks.
+line has tracked the national one within a centime or two throughout. Over the
+last {sl['n']} days local diesel has been {trend_s}.
 """)
 
 # ---- the ceiling and the split ---------------------------------------------
@@ -191,33 +210,47 @@ st = D["cap_story"]
 cap = D["cap"]
 gz = D["ceilings"]["Gazole"]
 ev = sp["cap_evidence"]
+CAP_D = eur(CEILING["Gazole"]).replace(".", ",")      # the ceiling keeps its French form
+CAP_P = eur(CEILING["E10"]).replace(".", ",")
+cap_day_s = f"{cap_day.day} {cap_day:%B %Y}"
+pre = sp.get("pre_cap")
+pre_s = (f" (on {pre['day']} the Total-group stations were the "
+         f"*{'dearer' if pre['gap_c'] < 0 else 'cheaper'}* ones, by {abs(pre['gap_c']):.1f} ¢)"
+         if pre else "")
+held_s = (f"no Total-group station has posted above it since {ev['since']}"
+          + (f" (it was over on {ev['over']} of {ev['days']} days, the last on "
+             f"{ev['last_over']})" if ev["over"] else "")
+          if ev.get("since") else "Total-group stations have posted above it")
+here = cap.get("castanet") if cap.get("castanet_in_town") else None
+save_s = (f"; filling there instead of at {here['brand']} in Castanet ({eur(here['price'])}) "
+          f"saves about {cap['save']:.2f} €/L" if here and cap.get("save") is not None else "")
 add(f"""## The ceiling splits the field
 
-On **8 April 2026** TotalEnergies set a hard **2,250 €/L** ceiling on diesel
-(and **1,990 €** on petrol). The day before, {st['before']['loc']['at']:.0f}% of
+On **{cap_day_s}** TotalEnergies set a hard **{CAP_D} €/L** ceiling on diesel
+(and **{CAP_P} €** on petrol). The day before, {st['before']['loc']['at']:.0f}% of
 local diesel stations sat exactly on that price; the day after,
 {st['after']['loc']['at']:.0f}%. It slackened when the market fell below it in
 the summer — on {st['trough']['day']} only {st['trough']['at']:.1f}% of French
-stations were at the cap — and has bound again since early September. Today
-**{gz['archive_pct_loc']:.1f}%** of local diesel stations post exactly 2,250 €,
-against {gz['archive_pct_at']:.1f}% nationally.
+stations were at the cap — and has bound again since early September. Over the
+last 30 days of the archive **{gz['archive_pct_loc']:.1f}%** of local diesel
+stations posted exactly {CAP_D} €, against {gz['archive_pct_at']:.1f}% nationally.
 
 Averaging the whole area hides what the ceiling does, because it acts on only
-some brands. The {sp['total_n']} Total-group stations within 15 km are pinned to
+some brands. The {sp['total_n']} Total-group stations within {meta['radius']} km are pinned to
 it and cannot follow the market up; the {sp['other_n']} others are free.
 
 ![Diesel within 15 km, Total-group against every other brand]({v('split.png')})
 
 The two groups now stand **{sp['gap_c']:.1f} centimes** apart — Total-group at
 {eur(sp['total_now'])}, everyone else at {eur(sp['other_now'])} — after moving
-together for a year (on {sp['pre_cap']['day']} the gap was {sp['pre_cap']['gap_c']:.1f} ¢,
-the Total-group stations were the *cheaper* ones). The maxima are the proof that
-2,250 € is a cap and not a price they all chose: since the ceiling bound, no
-Total-group station has exceeded it, while the free brands' dearest diesel
-reached {eur(ev['other_max'])} €/L. The nearest pump on the ceiling right now is
-**{cap['nearest']['km']:.1f} km** away ({cap['nearest']['adresse'].title()},
-{cap['nearest']['ville']}); filling there instead of at the local average saves
-about {cap['save']:.2f} €/L.
+together for a year{pre_s}. The maxima are the proof that
+{CAP_D} € is a cap and not a price they all chose: {held_s}, while the free
+brands' dearest diesel reached {eur(ev['other_max'])} €/L.
+""")
+nr = cap.get("nearest")
+if nr:
+    add(f"""The nearest pump on the ceiling and not flagged dry is
+**{nr['km']:.1f} km** away ({nr['adresse'].title()}, {nr['ville']}){save_s}.
 """)
 
 # ---- weekday ----------------------------------------------------------------
@@ -232,12 +265,19 @@ above it; in weeks it fell, exactly the reverse, by almost the same amount. The
 two cancel. There is **no dependable cheap day** to shop for.
 
 ![Weekday effect: the cheapest-day illusion, and when changes land]({v('weekday.png')})
-
-Second, *when do prices move?* Here there is a real signal. Posted changes
-cluster on **{rd['name']}** and lean upward — {rd['share_up']:.0f}% of
-{rd['name']} changes are increases, averaging {rd['mean_c']:+.2f} ¢. The move
-lands early in the week, so the practical rule is the plain one: **fill on
-Monday, before Tuesday's rise.**
+""")
+if D["weekday"].get("rise_day_sig"):
+    add(f"""Second, *when do prices move?* Rises cluster on **{rd['name']}**: {rd['share_up']:.0f}% of its
+{rd['up'] + rd['down']} changes were increases, averaging {rd['mean_c']:+.2f} ¢.
+That shifts *when* a price moves more than what the week costs, so the
+practical rule stays the station, not the day: the gap between pumps is many
+times the whole weekday effect.
+""")
+else:
+    add("""Second, *when do prices move?* No weekday's share of increases clears a
+coin flip by its error. The
+practical rule is the station, not the day: the gap between pumps is many times
+the whole weekday effect.
 """)
 
 # ---- dry count --------------------------------------------------------------
@@ -251,8 +291,8 @@ def before(d, ref):
 add(f"""## The dry count runs ahead
 
 An out-of-stock flag appears in the annual archive before the price story turns.
-The count of station-fuel pairs flagged dry within 15 km peaked at **{peak}** on
-**{peak_day:%-d %B %Y}** — {before(peak_day, cap_day)} the 2,250 € ceiling appeared — then
+The count of station-fuel pairs flagged dry within {meta['radius']} km peaked at **{peak}** on
+**{peak_day:%-d %B %Y}** — {before(peak_day, cap_day)} the {CAP_D} € ceiling appeared — then
 fell back. It sits at {dh['all'][-1]} now.
 
 ![Out-of-stock flags within 15 km, over time]({v('dry.png')})
@@ -289,8 +329,8 @@ for s in D["stations"][:14]:
     add(f"| {s['dist']:.2f} | {brand} | {s['adresse'].title()}, {s['ville']} | "
         f"{cell(p['Gazole'],'Gazole')} | {cell(p['E10'],'E10')} | "
         f"{cell(p['SP98'],'SP98')} | {dry} |")
-add("\n<sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2,250 €, "
-    "petrol 1,990 €). Brand `?` — two stations share one OSM feature.</sub>\n")
+add(f"\n<sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel {CAP_D} €, "
+    f"petrol {CAP_P} €). Brand `?` — two stations share one OSM feature.</sub>\n")
 
 # ---- brands -----------------------------------------------------------------
 add("## By brand\n")

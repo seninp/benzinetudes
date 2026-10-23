@@ -28,6 +28,7 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 94400005,Vitry-sur-Seine,34 AV. HENRI BARBUSSE,4.03,TotalEnergies,recognised,node/2137682823,brand=TotalEnergies | operator=Total | name=Relais de Vitry,38,
 94240004,L'Hay-les-Roses,110 Boulevard Paul Vaillant-Couturier,4.05,Esso,recognised,node/1908612038,brand=Esso | name=Esso,31,
 92220010,BAGNEUX,98T AV DE BOURG LA REINE,4.27,Esso,recognised,way/146245692,brand=Esso | name=Esso,59,
+75012020,Paris,238 RUE DE CHARENTON,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,29,
 94220004,Charenton-le-Pont,4 BIS AV DE LA LIBERTE,4.39,TotalEnergies,recognised,node/2117639904,brand=Total | name=Relais Total de Conflans,31,
 94550002,Chevilly-Larue,14 AV DU GENERAL DE GAULLE,4.49,TotalEnergies,recognised,node/965881397,brand=TotalEnergies | operator=Total | name=TotalEnergies,30,
 92260001,Fontenay-aux-Roses,21 Avenue Jeanne et Maurice Dolivet,4.58,Esso,recognised,node/2070065948,brand=Esso | name=Esso,31,
@@ -45,6 +46,7 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 92140009,CLAMART,5 Rue de Vanves,5.38,Esso,recognised,way/257225659,brand=Esso | name=Esso,20,
 94550001,Chevilly-Larue,264 Avenue de Stalingrad,5.43,Esso Express,recognised,way/155548626,brand=Esso Express | name=Esso Express,45,
 94594002,RUNGIS,103 Boulevard Circulaire E Fruileg,5.45,TotalEnergies,recognised,node/600083236,brand=TotalEnergies | name=TotalEnergies,52,
+75012021,PARIS,55 BLD DE PICPUS,5.51,TotalEnergies,recognised,node/3286567614,brand=TotalEnergies | name=Total Relais du Bel Air,26,
 75015011,Paris,19 BD DES FRERES VOISINS,5.55,TotalEnergies,recognised,way/96711347,brand=TotalEnergies | name=TotalEnergies access,55,1
 92130006,Issy-les-Moulineaux,18-22 BLD DES FRERES VOISIN,5.59,TotalEnergies,recognised,way/96711347,brand=TotalEnergies | name=TotalEnergies access,37,
 75007004,Paris,37 RUE FABERT,5.59,TotalEnergies,recognised,node/1191594862,brand=Total | name=Total,103,
@@ -309,8 +311,7 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 92220006,BAGNEUX,98 Avenue de Bourg-la-Reine,4.28,Esso,recognised,way/146245692,brand=Esso | name=Esso,35,1
 92320004,CHâTILLON,15/17 avenue de verdun,4.3,,unmatched,,,,
 75012004,Paris,238 Rue de Charenton,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,32,1
-75012018,PARIS,238 Rue de Charenton,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,29,
-75012020,Paris,238 RUE DE CHARENTON,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,29,1
+75012018,PARIS,238 Rue de Charenton,4.35,TotalEnergies,recognised,node/4647664891,brand=Total | name=Relais de Bercy,29,1
 94220001,Charenton-le-Pont,4 Avenue de la Liberté,4.39,TotalEnergies,recognised,node/2117639904,brand=Total | name=Relais Total de Conflans,31,1
 75015001,PARIS,76 / 78 Boulevard Garibaldi,4.46,,unmatched,,,,
 75015032,PARIS,76 BOULEVARD GARIBALDI,4.46,,unmatched,,,,
@@ -335,7 +336,6 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 75011003,PARIS,175 Avenue Ledru-Rollin,5.45,Élan (TotalEnergies),recognised,node/3286543311,brand=Elan | name=Elan,19,
 75012011,Paris,51 Boulevard Soult,5.49,,unmatched,,,,
 75012017,PARIS,55 BOULEVARD DE PICPUS,5.49,TotalEnergies,recognised,node/3286567614,brand=TotalEnergies | name=Total Relais du Bel Air,38,1
-75012021,PARIS,55 BLD DE PICPUS,5.51,TotalEnergies,recognised,node/3286567614,brand=TotalEnergies | name=Total Relais du Bel Air,26,
 75007001,Paris,37 Rue Fabert,5.59,TotalEnergies,recognised,node/1191594862,brand=Total | name=Total,103,1
 92130002,ISSY-LES-MOULINEAUX,18 Boulevard des frères Voisin,5.59,TotalEnergies,recognised,way/96711347,brand=TotalEnergies | name=TotalEnergies access,37,1
 75015008,PARIS,34 Boulevard de Grenelle,5.86,TotalEnergies,recognised,node/1937157672,brand=Total | operator=Total | name=Total,47,1

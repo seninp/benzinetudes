@@ -1,7 +1,7 @@
 # Benzinetudes — handoff
 
-Last session: 2026-10-20. Data refreshed as `dab378c`, then the prose fixes below
-published on top. Nothing mid-operation; the Mac checkout equals `origin/main`.
+Last session: 2026-10-23. Data refreshed through 2026-10-22 as `c1c190f`; no
+code changed. Nothing mid-operation; the Mac checkout equals `origin/main`.
 
 ## What this is
 
@@ -39,24 +39,29 @@ from `data/castanet/` and parses only its own price posts (`dashboard/data/px_*.
 and the instant feed's ceiling shares. Every constant lives in `scripts/config.py`.
 Both reports count dry pumps with `common.dry_series`.
 
-## Baseline, build of 2026-10-20 (archive observed through 2026-10-19)
+## Baseline, build of 2026-10-23 (archive observed through 2026-10-22)
 
 | | Castanet | Lyon | Gentilly |
 |---|---|---|---|
 | Stations within 15 km | 110 | 238 | 660 |
-| Diesel €/L | 2.344 | 2.366 | 2.383 |
-| vs French mean 2.361 | −0.017 | +0.005 | +0.022 |
-| 30 days / 12 months | −0.033 / +0.739 | −0.042 / +0.747 | −0.026 / +0.681 |
-| Diesel at 2,250 € (30-day archive) | 29.9 % (20/67) | 27.9 % (34/122) | 38.9 % (96/247) |
-| Fuel pairs dry | 47 (17.9 %) | 44 (9.9 %) | 137 (15.8 %) |
-| Nearest 2,250 € pump | 5.1 km | 2.6 km | 1.2 km |
+| Diesel €/L | 2.348 | 2.368 | 2.383 |
+| vs French mean 2.364 | −0.016 | +0.004 | +0.019 |
+| 30 days / 12 months | −0.033 / +0.749 | −0.046 / +0.753 | −0.025 / +0.693 |
+| Diesel at 2.250 € (30-day archive) | 29.9 % (20/67) | 28.1 % (34/121) | 40.2 % (99/246) |
+| Fuel pairs dry | 40 (15.3 %) | 55 (12.4 %) | 100 (11.6 %) |
+| Nearest 2.250 € pump | 3.2 km | 2.5 km | 1.2 km |
 
-France: 22.4 % of diesel stations at the ceiling in the 30-day archive.
-Dashboard: 14 of 61 local diesel posts at 2.250 €, 2 of them flagged dry; nearest
-in stock 6.6 km (Portet-sur-Garonne); Total group on the cap for 46 days, since
-3 Sept; uncapped stations falling 1.8 ¢/week; dry table 40 (58 a day earlier, 62
-a week earlier), all local stations 47, the same as the three-city count. Diesel turned down after a 22 Sept peak
-of 2.381.
+Dashboard: 14 of 61 local diesel posts at 2.250 €, none flagged dry; nearest in
+stock 3.2 km (TotalEnergies, Ramonville Saint Agne); Total group pinned to the
+cap since 3 Sept (17 stations at 2.250 against 50 others at 2.382); uncapped
+stations falling 1.2 ¢/week. Local diesel over 28 days is flat within the
+noise (−0.6 ¢/week) but the 14-day slope is +1.3 ¢/week, so the post-peak
+decline may be ending. Dry table 33 (30 a day earlier, 49 a week earlier), all
+local stations 40, the same as the three-city count; peak 85 on 6 April 2026.
+
+Against 2026-10-20 (archive through 10-19): Castanet diesel +0.4 ¢, dry pairs
+47 → 40, Lyon 44 → 55, Gentilly 137 → 100; the nearest capped pump moved from
+5.1 km to 3.2 km. The tail revises, so read the dry moves as provisional.
 
 ## Changes on 2026-10-12
 

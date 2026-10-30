@@ -64,7 +64,7 @@ The nearest pump posting the 2.250 € ceiling right now is 8.1 km away (43 Rout
 
 ![Castanet-Tolosan: diesel and E10 price history against the French mean](outputs/castanet/figures/prices.png?v=54cc39cb)
 
-![Castanet-Tolosan: map of stations within 15 km](outputs/castanet/figures/stations_map.png?v=eaaae365)
+![Castanet-Tolosan: map of stations within 15 km](outputs/castanet/figures/stations_map.png?v=3b369e23)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -138,7 +138,7 @@ The nearest pump posting the 2.250 € ceiling right now is 2.3 km away (181, Bo
 
 ![Gentilly: diesel and E10 price history against the French mean](outputs/gentilly/figures/prices.png?v=049759bb)
 
-![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=5bd6d9f4)
+![Gentilly: map of stations within 15 km](outputs/gentilly/figures/stations_map.png?v=42492698)
 
 The twelve nearest stations in the snapshot. A dash means the fuel was not
 reported — capped stations drop out of the feed per fuel when they run dry,
@@ -146,7 +146,7 @@ so a dash never proves the fuel is missing:
 
 | km | Brand | Station | Gazole | E10 | SP98 | Dry (≤ 30 d) |
 |---:|---|---|---:|---:|---:|---|
-| 0.27 | Esso Express | 67 Avenue Raspail, Gentilly | 2.508 | 2.154 | 2.254 |  |
+| 0.27 | Esso Express | 67 Avenue Raspail, Gentilly | 2.488 | 2.134 | 2.234 |  |
 | 0.89 | Esso | 23 Avenue Paul Doumer, Arcueil | 2.549 | 2.279 | 2.459 |  |
 | 0.92 | ? | 70-74 Av Aristide Briand, Montrouge | 2.579 | 2.429 | 2.599 |  |
 | 1.21 | TotalEnergies | 27 Avenue De La Porte D'Italie, Paris | — | **1.990** | — | Gazole, SP98 |

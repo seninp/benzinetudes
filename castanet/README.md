@@ -22,7 +22,7 @@ from the instant feed and are current.
 | Petrol SP98 | **2.167** | 2.202 | -0.050 | +0.377 | 62 |
 | Superethanol E85 | **0.928** | 0.908 | +0.011 | +0.194 | 45 |
 
-<sub>Snapshot of 64 priced stations on 2026-10-30; 12 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
+<sub>Snapshot of 64 priced stations on 2026-10-30; 13 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
 
 ![Diesel and E10: Castanet against the French mean](fig/prices.png?v=d1a986c8)
 
@@ -120,7 +120,7 @@ Diesel across the brands that OSM could name, within 15 km:
 
 | Brand | Stations | Cheapest | Median | Dearest |
 |---|---:|---:|---:|---:|
-| Total Access *(at the ceiling)* | 3 | 2.250 | 2.250 | 2.250 |
+| Total Access *(at the ceiling)* | 2 | 2.250 | 2.250 | 2.250 |
 | TotalEnergies *(at the ceiling)* | 2 | 2.250 | 2.250 | 2.250 |
 | Super U | 3 | 2.335 | 2.358 | 2.399 |
 | Carrefour | 6 | 2.369 | 2.394 | 2.420 |
@@ -128,7 +128,7 @@ Diesel across the brands that OSM could name, within 15 km:
 | Intermarché | 9 | 2.369 | 2.399 | 2.499 |
 | Carrefour Market | 2 | 2.389 | 2.406 | 2.424 |
 | Auchan | 2 | 2.389 | 2.419 | 2.449 |
-| Esso | 6 | 2.384 | 2.420 | 2.442 |
+| Esso | 6 | 2.374 | 2.420 | 2.442 |
 | Avia | 6 | 2.439 | 2.439 | 2.479 |
 | Esso Express | 4 | 2.250 | 2.447 | 2.467 |
 | Carrefour Contact | 1 | 2.459 | 2.459 | 2.459 |

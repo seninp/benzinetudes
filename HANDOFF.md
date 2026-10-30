@@ -1,6 +1,6 @@
 # Benzinetudes — handoff
 
-Last session: 2026-10-23. Data refreshed through 2026-10-22 as `c1c190f`; no
+Last session: 2026-10-30. Data refreshed through 2026-10-29 as `9a13d66`; no
 code changed. Nothing mid-operation; the Mac checkout equals `origin/main`.
 
 ## What this is
@@ -17,6 +17,15 @@ Two reports built from the French `prix-carburants` open data, in one repo:
 |---|---|---|
 | Mac | `~/git/benzine` | edit sources here, uncommitted |
 | poptiplex `psenin@192.168.10.51` | `~/git/benzinetudes` | builds, commits, pushes; matplotlib in `.venv` |
+
+## Git rules
+
+`seninp/benzinetudes` is a personal repo. The Mac never commits, pushes or
+writes to GitHub for it: `gh` here is the corporate `psenin-sanofi` account, and
+a write from it is visible to Sanofi security (it also fails with a 403).
+Edit sources uncommitted and run `make publish`; poptiplex commits as
+`seninp <seninp@gmail.com>` and pushes. A HANDOFF-only edit goes the same way.
+Reads (`git fetch`) are fine.
 
 ## How to rebuild
 
@@ -39,29 +48,31 @@ from `data/castanet/` and parses only its own price posts (`dashboard/data/px_*.
 and the instant feed's ceiling shares. Every constant lives in `scripts/config.py`.
 Both reports count dry pumps with `common.dry_series`.
 
-## Baseline, build of 2026-10-23 (archive observed through 2026-10-22)
+## Baseline, build of 2026-10-30 (archive observed through 2026-10-29)
 
 | | Castanet | Lyon | Gentilly |
 |---|---|---|---|
 | Stations within 15 km | 110 | 238 | 660 |
-| Diesel €/L | 2.348 | 2.368 | 2.383 |
-| vs French mean 2.364 | −0.016 | +0.004 | +0.019 |
-| 30 days / 12 months | −0.033 / +0.749 | −0.046 / +0.753 | −0.025 / +0.693 |
-| Diesel at 2.250 € (30-day archive) | 29.9 % (20/67) | 28.1 % (34/121) | 40.2 % (99/246) |
-| Fuel pairs dry | 40 (15.3 %) | 55 (12.4 %) | 100 (11.6 %) |
-| Nearest 2.250 € pump | 3.2 km | 2.5 km | 1.2 km |
+| Diesel €/L | 2.369 | 2.376 | 2.384 |
+| vs French mean 2.380 | −0.011 | −0.004 | +0.004 |
+| 30 days / 12 months | +0.005 / +0.711 | −0.018 / +0.702 | −0.015 / +0.654 |
+| Diesel at 2.250 € (30-day archive) | 29.9 % (20/67) | 27.7 % (33/119) | 41.8 % (102/244) |
+| Fuel pairs dry | 41 (15.7 %) | 44 (10.2 %) | 117 (13.6 %) |
+| Nearest 2.250 € pump | 8.1 km | 2.5 km | 2.3 km |
 
-Dashboard: 14 of 61 local diesel posts at 2.250 €, none flagged dry; nearest in
-stock 3.2 km (TotalEnergies, Ramonville Saint Agne); Total group pinned to the
-cap since 3 Sept (17 stations at 2.250 against 50 others at 2.382); uncapped
-stations falling 1.2 ¢/week. Local diesel over 28 days is flat within the
-noise (−0.6 ¢/week) but the 14-day slope is +1.3 ¢/week, so the post-peak
-decline may be ending. Dry table 33 (30 a day earlier, 49 a week earlier), all
-local stations 40, the same as the three-city count; peak 85 on 6 April 2026.
+Dashboard: 7 of 54 local diesel posts at 2.250 €, none flagged dry; nearest in
+stock 8.1 km (Portet sur Garonne); Total group pinned to the cap since 3 Sept
+(17 stations at 2.250 against 50 others at 2.409, 15.9 ¢ apart); uncapped
+stations flat (+0.3 ¢/week). Local diesel over 28 days is flat within the noise
+(+0.4 ¢/week) and the 14-day slope is +1.0 ¢/week, so the post-peak decline
+may have ended; the local peak since the cap was 2.381 on 22 Sept. Dry table 34
+(39 a day earlier, 33 a week earlier), all local stations 41 (50 a day
+earlier, 40 a week earlier); peak 85 on 6 April 2026.
 
-Against 2026-10-20 (archive through 10-19): Castanet diesel +0.4 ¢, dry pairs
-47 → 40, Lyon 44 → 55, Gentilly 137 → 100; the nearest capped pump moved from
-5.1 km to 3.2 km. The tail revises, so read the dry moves as provisional.
+Against the 2026-10-23 build (archive through 10-22): Castanet diesel +2.1 ¢,
+dry pairs 40 → 41, Lyon 55 → 44, Gentilly 100 → 117; the nearest capped pump
+moved from 3.2 km to 8.1 km (the Ramonville pump is flagged dry again). The
+tail revises, so read the dry moves as provisional.
 
 ## Changes on 2026-10-12
 

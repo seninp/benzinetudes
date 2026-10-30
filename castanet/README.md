@@ -9,29 +9,29 @@ effect, and the out-of-stock count that runs ahead of the price.**
 
 The data is the French government's `prix-carburants` open feed. Every number
 below is regenerated from it — none is typed by hand. Every series runs to
-**2026-10-22**, the last day the annual archive observed; built
-2026-10-23 (see [Reading the data](#reading-the-data)). The snapshot tables come
+**2026-10-29**, the last day the annual archive observed; built
+2026-10-30 (see [Reading the data](#reading-the-data)). The snapshot tables come
 from the instant feed and are current.
 
 ## Where prices stand
 
 | Fuel | Castanet €/L | France | 30 days | 12 months | Stations |
 |---|---:|---:|---:|---:|---:|
-| Diesel (Gazole) | **2.348** | 2.364 | -0.033 | +0.749 | 67 |
-| Petrol E10 (SP95-E10) | **2.117** | 2.135 | -0.011 | +0.448 | 63 |
-| Petrol SP98 | **2.188** | 2.227 | -0.014 | +0.423 | 61 |
-| Superethanol E85 | **0.925** | 0.911 | +0.016 | +0.193 | 46 |
+| Diesel (Gazole) | **2.369** | 2.380 | +0.005 | +0.711 | 67 |
+| Petrol E10 (SP95-E10) | **2.091** | 2.109 | -0.052 | +0.395 | 63 |
+| Petrol SP98 | **2.167** | 2.202 | -0.050 | +0.377 | 62 |
+| Superethanol E85 | **0.928** | 0.908 | +0.011 | +0.194 | 45 |
 
-<sub>Snapshot of 61 priced stations on 2026-10-23; 32 updated that day, median age 0 days. A fuel enters a mean only where at least 3 stations report.</sub>
+<sub>Snapshot of 64 priced stations on 2026-10-30; 12 updated that day, median age 1 day. A fuel enters a mean only where at least 3 stations report.</sub>
 
-![Diesel and E10: Castanet against the French mean](fig/prices.png?v=f3597822)
+![Diesel and E10: Castanet against the French mean](fig/prices.png?v=d1a986c8)
 
-Diesel sits at **2.348 €/L**, 0.016
-below the French mean and 0.749 higher
+Diesel sits at **2.369 €/L**, 0.011
+below the French mean and 0.711 higher
 than a year ago. Much of that rise landed in one month: 35
-centimes in March 2026 alone, 47% of the twelve-month move. The local
+centimes in March 2026 alone, 49% of the twelve-month move. The local
 line has tracked the national one within a centime or two throughout. Over the
-last 28 days local diesel has been flat within the noise (-0.6 ¢/week).
+last 28 days local diesel has been flat within the noise (+0.4 ¢/week).
 
 ## The ceiling splits the field
 
@@ -42,22 +42,22 @@ local diesel stations sat exactly on that price; the day after,
 the summer — on 2026-07-01 only 0.1% of French
 stations were at the cap — and has bound again since early September. Over the
 last 30 days of the archive **29.9%** of local diesel
-stations posted exactly 2.250 €, against 22.5% nationally.
+stations posted exactly 2.250 €, against 22.4% nationally.
 
 Averaging the whole area hides what the ceiling does, because it acts on only
 some brands. The 17 Total-group stations within 15 km are pinned to
 it and cannot follow the market up; the 50 others are free.
 
-![Diesel within 15 km, Total-group against every other brand](fig/split.png?v=cf86e328)
+![Diesel within 15 km, Total-group against every other brand](fig/split.png?v=204228ae)
 
-The two groups now stand **13.2 centimes** apart — Total-group at
-2.250, everyone else at 2.382 — after moving
+The two groups now stand **15.9 centimes** apart — Total-group at
+2.250, everyone else at 2.409 — after moving
 together for a year (on 2026-03-01 the Total-group stations were the *dearer* ones, by 5.7 ¢). The maxima are the proof that
-2.250 € is a cap and not a price they all chose: no Total-group station has posted above it since 2026-07-22 (it was over on 2 of 646 days, the last on 2026-07-21), while the free
-brands' dearest diesel reached 2.486 €/L.
+2.250 € is a cap and not a price they all chose: no Total-group station has posted above it since 2026-07-22 (it was over on 2 of 653 days, the last on 2026-07-21), while the free
+brands' dearest diesel reached 2.499 €/L.
 
 The nearest pump on the ceiling and not flagged dry is
-**3.2 km** away (98 Avenue Tolosane, Ramonville Saint Agne); filling there instead of at Intermarché in Castanet (2.339) saves about 0.09 €/L.
+**8.1 km** away (43 Route D Espagne, Portet sur Garonne); filling there instead of at Intermarché in Castanet (2.369) saves about 0.12 €/L.
 
 ## Which day to fill
 
@@ -68,10 +68,10 @@ flips: in weeks diesel rose, Monday is well below the week's mean and the weeken
 above it; in weeks it fell, exactly the reverse, by almost the same amount. The
 two cancel. There is **no dependable cheap day** to shop for.
 
-![Weekday effect: the cheapest-day illusion, and when changes land](fig/weekday.png?v=15a58ee2)
+![Weekday effect: the cheapest-day illusion, and when changes land](fig/weekday.png?v=8e786737)
 
 Second, *when do prices move?* Rises cluster on **Tuesday**: 61% of its
-803 changes were increases, averaging +0.46 ¢.
+789 changes were increases, averaging +0.49 ¢.
 That shifts *when* a price moves more than what the week costs, so the
 practical rule stays the station, not the day: the gap between pumps is many
 times the whole weekday effect.
@@ -81,9 +81,9 @@ times the whole weekday effect.
 An out-of-stock flag appears in the annual archive before the price story turns.
 The count of station-fuel pairs flagged dry within 15 km peaked at **85** on
 **6 April 2026** — two days before the 2.250 € ceiling appeared — then
-fell back. It sits at 40 now.
+fell back. It sits at 41 now.
 
-![Out-of-stock flags within 15 km, over time](fig/dry.png?v=2468ed97)
+![Out-of-stock flags within 15 km, over time](fig/dry.png?v=ea49d40b)
 
 Read the tail with care: outage flags and their end dates land in the archive a
 day or two late, so the last few days of this line are provisional and revise
@@ -97,20 +97,20 @@ dash never proves the fuel is missing:
 
 | km | Brand | Station | Gazole | E10 | SP98 | Dry (≤ 30 d) |
 |---:|---|---|---:|---:|---:|---|
-| 1.11 | Intermarché | Route De Labège, Castanet-Tolosan | 2.339 | 2.039 | 2.169 |  |
-| 2.57 | Intermarché | Avenue De Lauragais - Lieu Dit Condamine, Pompertuzat | 2.359 | 2.039 | 2.169 |  |
-| 2.80 | Intermarché | 1 Rue Louis Braille, Ramonville-Saint-Agne | 2.335 | 2.035 | 2.169 |  |
-| 3.17 | TotalEnergies | 98 Avenue Tolosane, Ramonville Saint Agne | **2.250** | **1.990** | **1.990** | E85 |
+| 1.11 | Intermarché | Route De Labège, Castanet-Tolosan | 2.369 | 2.049 | 2.179 |  |
+| 2.57 | Intermarché | Avenue De Lauragais - Lieu Dit Condamine, Pompertuzat | 2.399 | 2.069 | 2.194 |  |
+| 2.80 | Intermarché | 1 Rue Louis Braille, Ramonville-Saint-Agne | 2.369 | 2.049 | 2.179 |  |
+| 3.17 | TotalEnergies | 98 Avenue Tolosane, Ramonville Saint Agne | — | — | — | E10, Gazole, SP98 |
 | 3.27 | TotalEnergies | Centre Commercial De L'Autan, Labege | — | — | — |  |
-| 3.89 | Carrefour | Centre Commercial Labege 2, Labège | 2.363 | 2.149 | 2.255 |  |
-| 4.17 | Avia | 53 Av. Tolosane, Ramonville-Saint-Agne | 2.439 | 2.299 | 2.399 |  |
-| 4.63 | Super U | Za De La Balme, Belberaud | 2.338 | 2.058 | 2.179 |  |
-| 5.09 | TotalEnergies | 5 Av De Gameville, Saint-Orens-de-Gameville | — | — | — | E10, E85, Gazole, SP98 |
-| 5.34 | Dyneff? | Autoroute A61Aire De Toulouse Sud Nord, Deyme | 2.486 | 2.289 | 2.355 |  |
-| 5.35 | Dyneff | Autoroute A61Aire De Toulouse Sud Sud, Deyme | 2.456 | 2.259 | 2.325 |  |
-| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-de-Gameville | 2.363 | 2.149 | 2.255 |  |
-| 6.46 | Esso Express | 105 Route De Narbonne, Toulouse | 2.421 | 2.176 | 2.284 |  |
-| 6.60 | Esso | 68 Route De Revel, Toulouse | 2.399 | 2.239 | 2.359 |  |
+| 3.89 | Carrefour | Centre Commercial Labege 2, Labège | 2.400 | 2.128 | 2.239 |  |
+| 4.17 | Avia | 53 Av. Tolosane, Ramonville-Saint-Agne | 2.459 | 2.239 | 2.339 |  |
+| 4.63 | Super U | Za De La Balme, Belberaud | 2.358 | 2.034 | 2.158 |  |
+| 5.09 | TotalEnergies | 5 Av De Gameville, Saint-Orens-de-Gameville | — | — | — | E10, Gazole, SP98 |
+| 5.34 | Dyneff? | Autoroute A61Aire De Toulouse Sud Nord, Deyme | 2.492 | 2.256 | 2.329 |  |
+| 5.35 | Dyneff | Autoroute A61Aire De Toulouse Sud Sud, Deyme | 2.462 | 2.226 | 2.299 |  |
+| 5.65 | E.Leclerc | Allée Des Champs Pinsons, Saint-Orens-de-Gameville | 2.399 | 2.128 | 2.239 |  |
+| 6.46 | Esso Express | 105 Route De Narbonne, Toulouse | 2.438 | 2.138 | 2.238 |  |
+| 6.60 | Esso | 68 Route De Revel, Toulouse | 2.439 | 2.199 | 2.279 |  |
 
 <sub>Bold prices sit exactly on a TotalEnergies ceiling (diesel 2.250 €, petrol 1.990 €). Brand `?` — two stations share one OSM feature.</sub>
 
@@ -120,19 +120,19 @@ Diesel across the brands that OSM could name, within 15 km:
 
 | Brand | Stations | Cheapest | Median | Dearest |
 |---|---:|---:|---:|---:|
-| TotalEnergies *(at the ceiling)* | 7 | 2.250 | 2.250 | 2.250 |
-| Total Access *(at the ceiling)* | 5 | 2.250 | 2.250 | 2.250 |
-| Carrefour | 6 | 2.319 | 2.352 | 2.429 |
-| Intermarché | 9 | 2.335 | 2.359 | 2.419 |
-| E.Leclerc | 2 | 2.356 | 2.359 | 2.363 |
-| Super U | 3 | 2.338 | 2.360 | 2.365 |
-| Auchan | 2 | 2.351 | 2.360 | 2.369 |
-| Carrefour Market | 2 | 2.339 | 2.381 | 2.424 |
-| Esso | 6 | 2.349 | 2.405 | 2.427 |
-| Esso Express | 4 | 2.250 | 2.417 | 2.428 |
-| Avia | 6 | 2.399 | 2.419 | 2.449 |
-| Dyneff | 3 | 2.399 | 2.456 | 2.486 |
+| Total Access *(at the ceiling)* | 3 | 2.250 | 2.250 | 2.250 |
+| TotalEnergies *(at the ceiling)* | 2 | 2.250 | 2.250 | 2.250 |
+| Super U | 3 | 2.335 | 2.358 | 2.399 |
+| Carrefour | 6 | 2.369 | 2.394 | 2.420 |
+| E.Leclerc | 2 | 2.389 | 2.394 | 2.399 |
+| Intermarché | 9 | 2.369 | 2.399 | 2.499 |
+| Carrefour Market | 2 | 2.389 | 2.406 | 2.424 |
+| Auchan | 2 | 2.389 | 2.419 | 2.449 |
+| Esso | 6 | 2.384 | 2.420 | 2.442 |
+| Avia | 6 | 2.439 | 2.439 | 2.479 |
+| Esso Express | 4 | 2.250 | 2.447 | 2.467 |
 | Carrefour Contact | 1 | 2.459 | 2.459 | 2.459 |
+| Dyneff | 3 | 2.439 | 2.462 | 2.492 |
 
 ## Reading the data
 

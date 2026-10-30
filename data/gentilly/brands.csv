@@ -11,6 +11,7 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 75014010,Paris,RUE LEGION ETRANGERE,2.21,,unmatched,,,,
 75013025,PARIS,"181, BOULEVARD VINCENT AURIOL",2.34,Total Access,recognised,way/221071441,brand=Total Access | name=Total Access,54,
 94200008,Ivry-sur-Seine,168-180 BLD DE STALINGRAD,2.46,TotalEnergies,recognised,node/25210516,brand=Total | operator=Total | name=Total,17,
+92242003,MALAKOFF,12 Avenue Pierre Brossolette,2.52,TotalEnergies,recognised,way/83791472,brand=Total | operator=Total | name=Total,43,
 75013028,PARIS,85 RUE JEANNE DARC,2.57,BP,recognised,node/625171506,brand=BP | operator=BP | name=BP,54,
 75013024,PARIS,114 BD DE L HOPITAL,2.61,TotalEnergies,recognised,way/78536213,brand=Total | name=Total,32,
 94800007,VILLEJUIF,117 BLD MAXIME GORKI,2.93,Total Access,recognised,node/330170596,brand=Total Access | name=TotalEnergies Access,71,
@@ -241,8 +242,9 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 91270002,VIGNEUX-SUR-SEINE,5 Avenue Henri Barbusse,13.93,Intermarché,recognised,way/145735563,brand=Intermarché | operator=Groupement des Mousquetaires | name=Intermarché Super,21,
 93120005,LA COURNEUVE,AUTOROUTE A1 - AIRE DE LA COURNEUVE OUEST - SENS LILLE/PARIS,14.01,TotalEnergies,recognised,node/25214713,brand=TotalEnergies | name=TotalEnergies,42,
 94470002,Boissy-Saint-Léger,36 Avenue du Général Leclerc,14.02,BP,recognised,way/100219269,brand=BP | name=BP,39,
-92000019,NANTERRE,"77, AVENUE LENINE",14.02,TotalEnergies,recognised,node/581704882,brand=TotalEnergies | name=TotalEnergies,56,
+92000019,NANTERRE,"77, AVENUE LENINE",14.02,TotalEnergies,recognised,node/581704882,brand=TotalEnergies | name=TotalEnergies,56,1
 91160010,Saulx-les-Chartreux,1 rue du pont neuf,14.03,Carrefour Market,recognised,node/5644368103,brand=Carrefour Market | name=Carrefour Market,8,
+92000017,NANTERRE,84-90 AVENUE LENINE,14.05,TotalEnergies,recognised,node/581704882,brand=TotalEnergies | name=TotalEnergies,10,
 78000021,VERSAILLES,60 AV DE LA REPUBLIQUE,14.05,Esso,recognised,node/1430980483,brand=Esso | name=Esso,39,
 93330006,Neuilly-sur-Marne,29-33 BLD DU MARECHAL FOCH,14.05,Total Access,recognised,node/1352863213,brand=Total Access | name=Total Access,1,
 94470006,Boissy-Saint-Léger,55 Av du général Leclerc,14.14,Avia,recognised,node/748713162,brand=Avia | name=Avia,42,
@@ -281,7 +283,6 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 92240006,Malakoff,6 Avenue Pierre Brossolette,2.44,TotalEnergies,recognised,way/83791472,brand=Total | operator=Total | name=Total,172,1
 92242002,MALAKOFF,RD 306-6/12 AVENUE PIERRE BROSSO,2.44,TotalEnergies,recognised,way/83791472,brand=Total | operator=Total | name=Total,172,1
 94200007,Ivry-sur-Seine,168 Boulevard de Stalingrad,2.46,TotalEnergies,recognised,node/25210516,brand=Total | operator=Total | name=Total,17,1
-92242003,MALAKOFF,12 Avenue Pierre Brossolette,2.52,TotalEnergies,recognised,way/83791472,brand=Total | operator=Total | name=Total,43,
 75013027,Paris,85 RUE JEANNE DARC,2.58,BP,recognised,node/625171506,brand=BP | operator=BP | name=BP,2,1
 75013012,Paris,85 Rue Jeanne d'Arc,2.59,BP,recognised,node/625171506,brand=BP | operator=BP | name=BP,7,1
 75013019,Paris,85 Rue Jeanne d'Arc,2.6,BP,recognised,node/625171506,brand=BP | operator=BP | name=BP,12,1
@@ -627,7 +628,6 @@ id,ville,adresse,dist_km,brand,source,osm,osm_tags,match_m,shared
 94470004,BOISSY-SAINT-LéGER,ZAC DE BOISSY RN 19,14.01,,unmatched,,,,
 94471001,BOISSY-SAINT-LéGER,92 centre commercial Boissy 2,14.01,,unmatched,,,,
 92000001,NANTERRE,77 Avenue Vladimir Illitch Lénine,14.04,TotalEnergies,recognised,node/581704882,brand=TotalEnergies | name=TotalEnergies,36,1
-92000017,NANTERRE,84-90 AVENUE LENINE,14.05,TotalEnergies,recognised,node/581704882,brand=TotalEnergies | name=TotalEnergies,10,1
 78000002,Versailles,60 Boulevard de la République,14.08,Esso,recognised,node/1430980483,brand=Esso | name=Esso,34,1
 93250005,Villemomble,41 Avenue de Rosny-sous-Bois,14.08,Societe Regionale De Distribution,raw,node/5001273506,brand=Societe Regionale De Distribution | operator=Societe Regionale De Distribution | name=Station-service,48,
 93700001,Drancy,274 Avenue Jean Jaurès,14.08,Esso,recognised,node/1249118712,brand=Esso | name=Esso,13,
